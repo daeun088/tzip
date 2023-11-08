@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    android:orientation="vertical"
+    tools:context=".Login"
+    android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tzipLogo"
+        android:layout_marginBottom="19dp"
+        />
+
+    <TextView
+        android:id="@+id/tzip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="여행의 즐거움을 \n 압축하다"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/textLogo"
+        android:layout_marginBottom="100dp"
+        />
+
+    <EditText
+        android:id="@+id/id"
+        android:hint="id"
+        android:inputType="text"
+        android:layout_width="245dp"
+        android:layout_height="40dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_style"
+        android:paddingLeft="15dp"
+        android:layout_margin="14dp"
+        android:marginTop="30dp"
+        />
+
+    <EditText
+        android:id="@+id/pw"
+        android:hint="pw"
+        android:inputType="text"
+        android:textSize="20dp"
+        android:layout_width="245dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:paddingLeft="15dp"
+        android:background="@drawable/edittext_style"
+        />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="login"
+        android:textAllCaps="false"
+        android:background="@drawable/orange_button"
+        android:textSize="15sp"
+        android:textColor="#FFF"
+        android:layout_marginTop="19dp"
+    />
+
+
+</LinearLayout>
