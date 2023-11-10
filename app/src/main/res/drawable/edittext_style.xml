@@ -3,10 +3,10 @@
     <item>
         <shape android:shape="rectangle">
             <stroke android:width="1dp" android:color="#9D9D9D"/>
-            <corners android:bottomLeftRadius="18dp"
-                android:bottomRightRadius="18dp"
-                android:topLeftRadius="18dp"
-                android:topRightRadius="18dp"/>
+            <corners android:bottomLeftRadius="30dp"
+                android:bottomRightRadius="30dp"
+                android:topLeftRadius="30dp"
+                android:topRightRadius="30dp"/>
         </shape>
     </item>
     <!--테두리 레이아웃-->
@@ -14,10 +14,10 @@
     <item android:bottom="1dp" android:left="1dp" android:right="1dp" android:top="1dp">
         <shape android:shape="rectangle">
             <solid android:color="#FFFFFF"/>
-            <corners android:bottomLeftRadius="18dp"
-            android:bottomRightRadius="18dp"
-            android:topLeftRadius="18dp"
-            android:topRightRadius="18dp"/>
+            <corners android:bottomLeftRadius="30dp"
+            android:bottomRightRadius="30dp"
+            android:topLeftRadius="30dp"
+            android:topRightRadius="30dp"/>
         </shape>
     </item>
     <!--채우기 레이아웃-->
