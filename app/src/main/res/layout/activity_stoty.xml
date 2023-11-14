@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,7 +31,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:src="@drawable/sandwich"/>
+        android:src="@drawable/sandwich"
+        android:scaleType="fitXY"/>
 
 
     <LinearLayout
@@ -59,6 +61,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="참여 인원: "
+                android:textSize="15dp"
                 android:fontFamily="@font/notosanskr_bold"
                 />
 
@@ -66,6 +69,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="2023.10.24 오후 3:00"
+                android:textSize="15dp"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:fontFamily="@font/notosanskr_bold"
@@ -77,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="장소: "
+            android:textSize="15dp"
             android:fontFamily="@font/notosanskr_bold"/>
 
         <TextView
