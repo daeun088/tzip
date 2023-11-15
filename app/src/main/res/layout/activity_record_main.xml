@@ -259,141 +259,191 @@
             android:layout_marginLeft="25dp"
             android:text="기록을 기다리는 여행"/>
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="115dp"
-            android:background="@drawable/trip_block_layout"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
-            android:contentDescription="trip_block">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/trip_block_picture"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@drawable/trip_block_picture"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/testimage" />
-            <TextView
-                android:id="@+id/trip_block_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="즉흥적으로 떠나는 도쿄여행!!"
-                android:layout_toRightOf="@id/trip_block_picture"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:fontFamily="@font/inter"
-                />
+                android:orientation="vertical"
+                android:contentDescription="내용 있을 경우"
+                android:visibility="invisible">
 
-            <TextView
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:background="@drawable/trip_block_layout"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:contentDescription="trip_block">
+
+                    <ImageView
+                        android:id="@+id/trip_block_picture"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/trip_block_picture"
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/testimage" />
+                    <TextView
+                        android:id="@+id/trip_block_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="즉흥적으로 떠나는 도쿄여행!!"
+                        android:layout_toRightOf="@id/trip_block_picture"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/trip_block_picture"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="35dp"
+                        android:textSize="12sp"
+                        android:text="2023.10.12~10.14"
+                        android:fontFamily="@font/inter"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/trip_block_picture"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/trip_block_picture"
+                        android:text="이준희님과 4명의 여행"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/inter"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="40dp"
+                        android:layout_alignBottom="@+id/trip_block_picture"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="-8dp"
+                        android:fontFamily="@font/inter"
+                        android:text=".\n.\n."
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:background="@drawable/trip_block_layout"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:contentDescription="trip_block">
+
+                    <ImageView
+                        android:id="@+id/trip_block_picture2"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/trip_block_picture"
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/testimage" />
+                    <TextView
+                        android:id="@+id/trip_block_title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="즉흥적으로 떠나는 도쿄여행!!"
+                        android:layout_toRightOf="@id/trip_block_picture2"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/trip_block_picture2"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="35dp"
+                        android:textSize="12sp"
+                        android:text="2023.10.12~10.14"
+                        android:fontFamily="@font/inter"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/trip_block_picture2"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/trip_block_picture2"
+                        android:text="이준희님과 4명의 여행"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/inter"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="40dp"
+                        android:layout_alignBottom="@+id/trip_block_picture2"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="-8dp"
+                        android:fontFamily="@font/inter"
+                        android:text=".\n.\n."
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/trip_block_picture"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="35dp"
-                android:textSize="12sp"
-                android:text="2023.10.12~10.14"
-                android:fontFamily="@font/inter"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/trip_block_picture"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/trip_block_picture"
-                android:text="이준희님과 4명의 여행"
-                android:textSize="11sp"
-                android:fontFamily="@font/inter"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="일정에 등록되어 있는 글이 없어요"
+                    android:gravity="center"
+                    android:layout_margin="50dp"
+                    android:fontFamily="@font/inter"/>
 
-            <Button
-                android:layout_width="20dp"
-                android:layout_height="40dp"
-                android:layout_alignBottom="@+id/trip_block_picture"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="-8dp"
-                android:fontFamily="@font/inter"
-                android:text=".\n.\n."
-                android:textSize="8dp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:text="일정 추가하기"
+                    android:background="@drawable/orange_button"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    />
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:text="기록 추가하기"
+                    android:background="@drawable/orange_button"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    />
+            </LinearLayout>
 
-        <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="115dp"
-        android:background="@drawable/trip_block_layout"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp"
-        android:contentDescription="trip_block">
 
-        <ImageView
-            android:id="@+id/trip_block_picture2"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/trip_block_picture"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/testimage" />
-        <TextView
-            android:id="@+id/trip_block_title2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="즉흥적으로 떠나는 도쿄여행!!"
-            android:layout_toRightOf="@id/trip_block_picture2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:fontFamily="@font/inter"
-            />
+        </FrameLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/trip_block_picture2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="35dp"
-            android:textSize="12sp"
-            android:text="2023.10.12~10.14"
-            android:fontFamily="@font/inter"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/trip_block_picture2"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/trip_block_picture2"
-            android:text="이준희님과 4명의 여행"
-            android:textSize="11sp"
-            android:fontFamily="@font/inter"/>
-
-        <Button
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_alignBottom="@+id/trip_block_picture2"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="-8dp"
-            android:fontFamily="@font/inter"
-            android:text=".\n.\n."
-            android:textSize="8dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
     </LinearLayout>
 
 
