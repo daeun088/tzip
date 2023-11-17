@@ -16,12 +16,6 @@
             android:name=".nevigation_bar"
             android:exported="false" />
         <activity
-            android:name=".Emergency"
-            android:exported="false" />
-        <activity
-            android:name=".Notification"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
