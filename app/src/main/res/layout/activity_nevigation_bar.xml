@@ -23,7 +23,9 @@
         android:layout_gravity="bottom"
         app:labelVisibilityMode="unlabeled"
         app:itemBackground="@drawable/nevigatiojn_bar_edge"
-        app:menu="@menu/bottom_menu"
-        />
+        app:menu="@menu/bottom_menu"/>
+<!--        app:itemIconTint="@drawble/menu_seletor_color"-->
+<!--        app:itemTextColor="@drawble/menu_seletor_color"-->
+
 
 </LinearLayout>
