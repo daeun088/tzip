@@ -5,7 +5,7 @@
     <item
         android:id="@+id/review"
         android:enabled="true"
-        android:icon="@drawable/ic_review"
+        android:icon="@drawable/review"
         android:title="Review"
         app:showAsAction="always"
         />
@@ -13,14 +13,14 @@
     <item
         android:id="@+id/schedule"
         android:enabled="true"
-        android:icon="@drawable/ic_schedule"
+        android:icon="@drawable/schedule"
         android:title="Schedule"
         app:showAsAction="always"
         />
     <item
         android:id="@+id/home"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home"
         android:title="Home"
         app:showAsAction="always"
         />
@@ -28,7 +28,7 @@
     <item
         android:id="@+id/community"
         android:enabled="true"
-        android:icon="@drawable/ic_community"
+        android:icon="@drawable/community"
         android:title="Community"
         app:showAsAction="always"
         />
@@ -36,7 +36,7 @@
     <item
         android:id="@+id/mypage"
         android:enabled="true"
-        android:icon="@drawable/ic_mypage"
+        android:icon="@drawable/mypage"
         android:title="Mypage"
         app:showAsAction="always"
         />
