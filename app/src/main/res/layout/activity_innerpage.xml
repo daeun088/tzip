@@ -1,20 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="510dp"
+        android:layout_height="600dp"
         android:background="@drawable/slidinguppanel"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            android:id="@+id/plan_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="일정 참여자 구하기"
-            android:fontFamily=""/>
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/plan_in_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="제목"
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/plan_in"
+            android:layout_marginStart="20dp"
+            android:textSize="20dp"
+            />
+
+        <EditText
+            android:id="@+id/input_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/plan_in_title"
+            app:layout_constraintTop_toBottomOf="@id/plan_in_title"
+            android:layout_marginHorizontal="20dp"
+            android:hint="   제목을 입력하세요."
+            android:fontFamily="@font/notosanskr_regular"
+            android:textSize="15dp"
+            android:background="@drawable/grayrec"/>
+
+        <TextView
+            android:id="@+id/plan_in_people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="인원"
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_title"
+            android:layout_marginHorizontal="20dp"
+            android:textSize="20dp"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grayrec"
+            app:layout_constraintTop_toBottomOf="@id/plan_in_people"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal"
+            android:id="@+id/people_updown">
+
+            <TextView
+                android:id="@+id/present_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:text="현재\n인원"
+                android:textSize="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageButton
+                android:id="@+id/btn_minus1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/btn_minus"
+                app:layout_constraintStart_toEndOf="@id/present_people"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="15dp"/>
+
+            <TextView
+                android:id="@+id/pre_peo_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="18dp"
+                app:layout_constraintStart_toEndOf="@id/btn_minus1"
+                android:fontFamily="@font/notosanskr_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="10dp"/>
+
+            <ImageButton
+                android:id="@+id/btn_plus1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/btn_plus"
+                app:layout_constraintStart_toEndOf="@id/pre_peo_num"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/max_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:text="총\n인원"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toStartOf="@id/btn_minus2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="15dp"/>
+
+
+            <ImageButton
+                android:id="@+id/btn_minus2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/btn_minus"
+                app:layout_constraintEnd_toStartOf="@id/max_peo_num"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/max_peo_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toStartOf="@id/btn_plus2"
+                android:fontFamily="@font/notosanskr_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="10dp"/>
+
+            <ImageButton
+                android:id="@+id/btn_plus2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/btn_plus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="30dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/kakao_open_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="카톡 오픈채팅 링크"
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/people_updown"
+            android:layout_marginStart="20dp"
+            android:textSize="20dp"
+            />
+
+        <EditText
+            android:id="@+id/kakao_open_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/grayrec"
+            android:fontFamily="@font/notosanskr_regular"
+            android:hint="   카카오톡 오픈채팅 링크를 입력하세요."
+            android:textSize="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kakao_open_title"/>
+
+        <TextView
+            android:id="@+id/more_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="추가 설명"
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/kakao_open_link"
+            android:layout_marginStart="20dp"
+            android:textSize="20dp"
+            />
+
+        <EditText
+            android:id="@+id/more_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/grayrec"
+            android:fontFamily="@font/notosanskr_regular"
+            android:hint="   추가 설명을 적어주세요."
+            android:textSize="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/more_info"/>
 
 
 
