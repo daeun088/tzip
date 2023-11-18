@@ -19,7 +19,7 @@
         android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/notification_alert_edge"
+        android:background="@drawable/nevigation_top_bar_edge"
         app:titleTextColor="@color/black"
         app:menu="@menu/top_menu">
 
