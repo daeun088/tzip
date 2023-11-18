@@ -48,6 +48,11 @@ public class nevigation_bar extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
                     return true;
                 }
+                else if (item.getItemId() == R.id.alert_Button) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
+                    return true;
+                    //이후에 fragmentMypage를 알림 페이지로 설정하면 됨
+                }
 
                 return false;
             }

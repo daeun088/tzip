@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,17 +15,41 @@
 
     </FrameLayout>
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/nevigation_top_bar_edge"
+        app:titleTextColor="@color/black"
+        app:menu="@menu/top_menu">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="나의 여행 일정"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@drawable/nevigation_bar_edge"
         app:labelVisibilityMode="unlabeled"
-        app:itemBackground="@drawable/nevigatiojn_bar_edge"
-        app:menu="@menu/bottom_menu"/>
-<!--        app:itemIconTint="@drawble/menu_seletor_color"-->
-<!--        app:itemTextColor="@drawble/menu_seletor_color"-->
+        app:menu="@menu/bottom_menu" />
 
 
-</LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>
