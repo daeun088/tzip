@@ -3,15 +3,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="2"
     tools:context=".Fragment_schedule">
 
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="schedule Fragment" />
+        android:layout_weight="1"
+        android:background="@drawable/schedule_default_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingStart="16dp"
+            android:paddingBottom="15dp"
+            android:shadowColor="@color/black"
+            android:shadowDy="5"
+            android:shadowRadius="7"
+            android:text="여행의 즐거움을 압축하다\n"
+            android:textColor="@color/white"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingStart="19dp"
+            android:paddingBottom="15dp"
+            android:shadowColor="@color/black"
+            android:shadowDy="5"
+            android:shadowRadius="7"
+            android:text="T.zip"
+            android:textColor="@color/orange"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/schedule_default_block"
+                />
+
+
+
+
+
+
+
+
+
+
+    </ScrollView>
 
 </LinearLayout>

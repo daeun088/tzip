@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Tzip"
         tools:targetApi="31">
         <activity
+            android:name=".schedule_plan_tab"
+            android:exported="false" />
+        <activity
             android:name=".nevigation_bar"
             android:exported="false" />
         <activity
