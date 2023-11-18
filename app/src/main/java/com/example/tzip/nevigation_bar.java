@@ -14,6 +14,7 @@ public class nevigation_bar extends AppCompatActivity {
     Fragment_home fragmentHome;
     Fragment_mypage fragmentMypage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class nevigation_bar extends AppCompatActivity {
         fragmentCommunity = new Fragment_community();
         fragmentHome = new Fragment_home();
         fragmentMypage = new Fragment_mypage();
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
 
@@ -47,6 +49,11 @@ public class nevigation_bar extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.mypage) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
                     return true;
+                }
+                else if (item.getItemId() == R.id.alert_Button) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
+                    return true;
+                    //이후에 fragmentMypage를 알림 페이지로 설정하면 됨
                 }
 
                 return false;
