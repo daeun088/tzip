@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@drawable/nevigatiojn_bar_edge"
+        app:itemBackground="@drawable/nevigation_bar_edge"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu" />
 
