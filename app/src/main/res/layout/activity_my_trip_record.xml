@@ -137,6 +137,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp">
+
+        <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
+
         <Button
             android:layout_width="200dp"
             android:layout_height="40dp"
