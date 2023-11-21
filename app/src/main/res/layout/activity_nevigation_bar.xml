@@ -7,13 +7,7 @@
     android:orientation="vertical"
     tools:context=".nevigation_bar">
 
-    <FrameLayout
-        android:id="@+id/containers"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
 
-    </FrameLayout>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/custom_toolbar"
@@ -34,6 +28,13 @@
             android:textStyle="bold"/>
 
     </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/containers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
