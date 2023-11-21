@@ -4,7 +4,11 @@ plugins {
 
 android {
     namespace = "com.example.tzip"
-    compileSdk = 33
+    compileSdk = 34
+
+    viewBinding {
+        enable = true
+    }
 
     defaultConfig {
         applicationId = "com.example.tzip"
@@ -36,5 +40,5 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation("com.sothree.slidinguppanel:library:3.4.0")
+    implementation("com.github.hannesa2:AndroidSlidingUpPanel:4.2.1")
 }

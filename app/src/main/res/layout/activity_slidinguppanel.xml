@@ -1,110 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+
     android:gravity="bottom"
-    android:background="#00FF00"
-    app:umanoDragView="@id/drawer"
-    app:umanoPanelHeight="125dp"
-    app:umanoOverlay="true"
-    app:umanoShadowHeight="10dp">
+    app:umanoDragView="@id/slide_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/back_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#42A5F5">
+
+        <TextView
+            android:id="@+id/tv_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Background Layout"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/slide_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btn_touch"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="터치잠금"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_toggle" />
 
         <Button
-            android:id="@+id/btn_list"
-            android:background="#000000"
-
-            android:text="목록"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            android:textStyle="bold"
+            android:id="@+id/btn_toggle"
             android:layout_width="100dp"
-            android:layout_height="40dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="40dp"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="열기"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_enable"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="비활성화"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_toggle" />
+
+        <TextView
+            android:id="@+id/tv_slideText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:text="slideOffset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_slideOffset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_slideText1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:id="@+id/drawer"
-        android:background="#FFFFFF"
-        android:orientation="vertical">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="600dp">
-
-            <EditText
-                android:id="@+id/et_placeName"
-                android:hint="그곳은 어떤 장소인가요?"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:padding="10dp"/>
-
-            <EditText
-                android:id="@+id/et_placeFeel"
-                android:layout_below="@+id/et_placeName"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:hint="그곳에서의 추억"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="10dp"
-                android:padding="10dp"/>
-            <GridView
-                android:id="@+id/gv_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_placeFeel"
-                android:layout_alignLeft="@id/et_placeFeel"
-                android:layout_alignRight="@id/et_placeFeel"
-                android:horizontalSpacing="5dp"
-                android:verticalSpacing="10dp"
-                android:numColumns="4"/>
-            <Button
-                android:id="@+id/btn_stamp"
-                android:text="남기기"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/gv_image"
-                android:layout_marginTop="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="60dp"/>
-
-
-
-        </RelativeLayout>
-        <View
-            android:id="@+id/swipe"
-            android:background="#FFFFFF"
-            android:layout_width="60dp"
-            android:layout_height="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:foregroundGravity="bottom"/>
-    </LinearLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
