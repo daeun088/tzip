@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="함께 새로운 여행을 압축해요"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:fontFamily="@font/inter"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="100dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="닉네임"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/nickname"
+        android:hint="사용하실 닉네임을 입력해주세요."
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_style"
+        android:paddingStart="15dp"
+        android:layout_margin="14dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이메일"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/email"
+        android:hint="이메일을 입력해주세요."
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_style"
+        android:paddingStart="15dp"
+        android:layout_margin="14dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="비밀번호"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/pw"
+        android:hint="비밀번호를 입력해주세요."
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_style"
+        android:paddingStart="15dp"
+        android:layout_margin="14dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="비밀번호 확인"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/pw_check"
+        android:hint="비밀번호를 다시 한 번 입력해주세요."
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:background="@drawable/edittext_style"
+        android:paddingStart="15dp"
+        android:layout_margin="14dp"
+        />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="회원가입"
+        android:textAllCaps="false"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"
+        android:background="@drawable/orange_button"
+        android:textSize="15sp"
+        android:textColor="#FFF"
+        android:layout_marginTop="19dp"
+        />
+
+
+</LinearLayout>
