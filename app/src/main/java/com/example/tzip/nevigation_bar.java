@@ -14,6 +14,7 @@ public class nevigation_bar extends AppCompatActivity {
     Fragment_home fragmentHome;
     Fragment_mypage fragmentMypage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class nevigation_bar extends AppCompatActivity {
         fragmentCommunity = new Fragment_community();
         fragmentHome = new Fragment_home();
         fragmentMypage = new Fragment_mypage();
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
 

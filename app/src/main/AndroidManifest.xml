@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Tzip"
+        android:theme="@style/Base.Theme.Tzip"
         tools:targetApi="31">
         <activity
             android:name=".ReacordAdd"
@@ -26,6 +26,9 @@
             android:exported="false" />
         <activity
             android:name=".Login" />
+        <activity
+            android:name=".schedule_plan_tab"
+            android:exported="false" />
         <activity
             android:name=".nevigation_bar"
             android:exported="false" />
