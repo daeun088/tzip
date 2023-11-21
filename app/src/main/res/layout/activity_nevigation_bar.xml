@@ -43,7 +43,9 @@
         android:layout_alignParentBottom="true"
         app:itemBackground="@drawable/nevigation_bar_edge"
         app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu"
+        android:backgroundTint="@color/bottom_nevigation_bar_color_selector"
+        app:itemTextColor="@color/bottom_nevigation_bar_color_selector"/>
 
 
 
