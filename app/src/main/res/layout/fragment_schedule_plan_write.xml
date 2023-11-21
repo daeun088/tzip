@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:paddingStart="25dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/nevigation_top_bar_edge"
+        android:background="@drawable/schedule_plan_write_title_edge"
         android:id="@+id/title"/>
 
         <LinearLayout
@@ -49,13 +49,32 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3">
 
-                <EditText
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
-                    android:paddingHorizontal="8dp"
-                    android:hint="입력" />
+                    android:layout_height="match_parent">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_pensil"
+                        android:id="@+id/ic_pensil"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="22dp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="18dp"
+                        android:paddingHorizontal="8dp"
+                        android:hint="입력"
+                        android:scrollHorizontally="false"
+                        android:backgroundTint="@color/light_gray"
+                        android:textColorHighlight="@color/orange"
+                        android:textColorHint="@color/light_gray"
+                        android:lineSpacingExtra="20dp"
+                        android:layout_below="@+id/ic_pensil"/>
+
+                </RelativeLayout>
 
             </ScrollView>
 
