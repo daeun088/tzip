@@ -82,9 +82,61 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="35dp"
+        android:layout_marginVertical="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/default_profile"
+            android:text="김민"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:id="@+id/profile1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/default_profile"
+            android:text="김민"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/profile1"
+            android:layout_marginHorizontal="15dp"
+            android:id="@+id/profile2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/default_profile"
+            android:text="김민"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/profile2"
+            android:id="@+id/profile3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/default_profile"
+            android:text="김민"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/profile3"
+            android:layout_marginHorizontal="15dp"
+            android:id="@+id/profile4"/>
 
 
-
+    </RelativeLayout>
 
 
 </LinearLayout>
