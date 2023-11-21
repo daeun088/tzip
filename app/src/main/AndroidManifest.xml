@@ -25,7 +25,9 @@
             android:name=".SignUp"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Login" />
+        <activity
+            android:name=".nevigation_bar"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
