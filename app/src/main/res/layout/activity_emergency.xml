@@ -190,7 +190,11 @@
             android:layout_height="wrap_content"
             android:text="설정 완료"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            android:textColor="@color/white"
+            android:background="@drawable/orange_btn"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
