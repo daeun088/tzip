@@ -229,7 +229,7 @@
             android:fontFamily="@font/notosanskr_bold"
             android:layout_marginBottom="5dp"
             android:background="@drawable/orange_btn"
-            android:text="기록 작성"
+            android:text="기록하기"
             android:textColor="@color/white" />
     </RelativeLayout>
 
