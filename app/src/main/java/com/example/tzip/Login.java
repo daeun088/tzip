@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
             }
-        });
+        }); //회원가입 창으로 넘어가는 인텐트
 
         Button signInButton = findViewById(R.id.loginButton);
         signInButton.setOnClickListener(new View.OnClickListener() {

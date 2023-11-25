@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
-        android:src="@drawable/tzipLogo" />
+        android:src="@drawable/tziplogo" />
 
     <TextView
         android:id="@+id/tzip"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:src="@drawable/textLogo" />
+        android:src="@drawable/textlogo" />
 
     <EditText
         android:id="@+id/id"
@@ -43,7 +43,6 @@
         android:background="@drawable/edittext_style"
         android:hint="id"
         android:inputType="text"
-        android:marginTop="30dp"
         android:paddingLeft="15dp"
         android:textColorHint="#7e7e7e"
         android:textSize="20sp" />
