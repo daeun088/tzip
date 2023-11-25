@@ -101,11 +101,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="경포대 해수욕장 13:00"/>
+            android:text="경포대 해수욕장 13:00"
+            android:fontFamily="@font/notosanskr_regular"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="내용을 추가해주세요"/>
+            android:hint="내용을 추가해주세요"
+            android:textSize="13dp"/>
 
     </LinearLayout>
 
