@@ -5,6 +5,18 @@
     android:orientation="vertical"
     android:background="@color/white">
 
+    <ImageButton
+        android:id="@+id/Back_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/back_btn"
+        android:contentDescription="뒤로가기 버튼"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +27,7 @@
         android:textSize="20sp"
         android:fontFamily="@font/inter"
         android:layout_marginBottom="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:textStyle="bold"/>
 
     <TextView

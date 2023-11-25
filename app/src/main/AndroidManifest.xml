@@ -35,7 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".SignUp"
-            android:exported="false" />
+            android:exported="true" />
         <activity android:name=".Login" />
         <activity
             android:name=".schedule_plan_tab"
