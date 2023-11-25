@@ -34,13 +34,21 @@ public class Login extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.pw);
 
         Button signUpButton = findViewById(R.id.signUpText);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        /*signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
                 signUp(email, password);
+            }
+        });*/
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, SignUp.class);
+                startActivity(intent);
             }
         });
 
