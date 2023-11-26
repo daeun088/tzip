@@ -73,6 +73,7 @@ public class SignUp extends AppCompatActivity {
                             userMap.put(FirebaseId.email, email);
                             userMap.put(FirebaseId.password, password);
                             userMap.put(FirebaseId.nickname, nickname);
+                            userMap.put(FirebaseId.profileImageUrl, null);
                             userDB.collection(FirebaseId.user).document(user.getUid()).set(userMap, SetOptions.merge());
                             updateUI(user);
                         } else {

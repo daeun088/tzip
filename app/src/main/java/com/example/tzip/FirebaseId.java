@@ -8,5 +8,6 @@ public class FirebaseId {
 
     public static String nickname = "nickname";
 
+    public static String profileImageUrl = "profileImageUrl";
 
 }
