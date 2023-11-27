@@ -73,7 +73,7 @@ public class SignUp extends AppCompatActivity {
                             userMap.put(FirebaseId.email, email);
                             userMap.put(FirebaseId.password, password);
                             userMap.put(FirebaseId.nickname, nickname);
-                            userMap.put(FirebaseId.profileImageUrl, null);
+                            userMap.put(FirebaseId.profileImageUrl, "null");
                             userDB.collection(FirebaseId.user).document(user.getUid()).set(userMap, SetOptions.merge());
                             updateUI(user);
                         } else {
@@ -91,10 +91,10 @@ public class SignUp extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Intent intent = new Intent(this, Login.class);
-            intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
+            //intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
 
             startActivity(intent);
-            finish();
+            //finish();
         }
     }
 
