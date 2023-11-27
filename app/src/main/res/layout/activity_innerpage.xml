@@ -5,13 +5,16 @@
     android:layout_height="600dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/innerpage"
-    android:layout_gravity="bottom">
+    android:layout_gravity="bottom"
+    android:background="#000000"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/slidinguppanel"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:background="@drawable/slidingup_panel_rec"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
         <View
             android:layout_width="100dp"
