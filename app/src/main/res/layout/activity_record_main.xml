@@ -17,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:drawableStart="@drawable/siren"
             android:fontFamily="@font/inter"
             android:drawablePadding="6sp"
             android:paddingTop="15sp"
@@ -73,7 +72,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/detailIcon"
+                android:src="@drawable/detail_icon"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:background="#FFFFFF"
@@ -153,7 +152,7 @@
             android:contentDescription="프로필"
             >
             <ImageView
-                android:id="@+id/profilePic"
+                android:id="@+id/profilePic2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/profile"
@@ -166,7 +165,7 @@
                 android:text="김민"
                 android:fontFamily="@font/inter"
                 android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@id/profilePic"
+                android:layout_toRightOf="@id/profilePic2"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_centerVertical="true"/>
@@ -180,7 +179,7 @@
             android:layout_marginVertical="10dp"
             android:contentDescription="friend_record_block">
             <ImageView
-                android:id="@+id/friend_record_picture"
+                android:id="@+id/friend_record_picture2"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:src="@drawable/testimage"
@@ -191,7 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="가을 바다 구경"
-                android:layout_toRightOf="@id/friend_record_picture"
+                android:layout_toRightOf="@id/friend_record_picture2"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:textSize="15sp"
@@ -203,8 +202,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/friend_record_picture"
-                android:layout_alignBaseline="@id/friend_record_picture"
+                android:layout_toRightOf="@id/friend_record_picture2"
+                android:layout_alignBaseline="@id/friend_record_picture2"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="50dp"
                 android:fontFamily="@font/inter"
@@ -241,7 +240,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/detailIcon"
+            android:src="@drawable/detail_icon"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:background="#FFFFFF"
@@ -324,18 +323,16 @@
                         android:textSize="11sp"
                         android:fontFamily="@font/inter"/>
 
-                    <Button
-                        android:layout_width="20dp"
-                        android:layout_height="40dp"
-                        android:layout_alignBottom="@+id/trip_block_picture"
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="-8dp"
-                        android:fontFamily="@font/inter"
-                        android:text=".\n.\n."
-                        android:textSize="8dp"
-                        android:textStyle="bold" />
+                        android:layout_alignBottom="@+id/trip_block_picture"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@color/white"
+                        android:src="@drawable/menu" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -392,18 +389,15 @@
                         android:textSize="11sp"
                         android:fontFamily="@font/inter"/>
 
-                    <Button
-                        android:layout_width="20dp"
-                        android:layout_height="40dp"
-                        android:layout_alignBottom="@+id/trip_block_picture2"
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="-8dp"
-                        android:fontFamily="@font/inter"
-                        android:text=".\n.\n."
-                        android:textSize="8dp"
-                        android:textStyle="bold" />
+                        android:layout_alignBottom="@+id/trip_block_picture2"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@color/white"
+                        android:src="@drawable/menu" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -421,8 +415,8 @@
                     android:fontFamily="@font/inter"/>
 
                 <Button
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="일정 추가하기"
                     android:background="@drawable/orange_btn"
                     android:textColor="@color/white"
@@ -430,8 +424,8 @@
                     android:layout_margin="5dp"
                     />
                 <Button
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="기록 추가하기"
                     android:background="@drawable/orange_btn"
                     android:textColor="@color/white"
