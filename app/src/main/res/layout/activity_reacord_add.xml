@@ -67,7 +67,7 @@
             android:padding="15dp">
 
             <TextView
-                android:id="@+id/trip_title"
+                android:id="@+id/trip_title2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -77,24 +77,24 @@
                 android:text="강릉 2박 3일 여행" />
 
             <ImageView
-                android:id="@+id/location_icon"
+                android:id="@+id/location_icon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/trip_title"
+                android:layout_below="@+id/trip_title2"
                 android:src="@drawable/location_pin" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/location_icon"
-                android:layout_toEndOf="@+id/location_icon"
+                android:layout_alignBottom="@+id/location_icon2"
+                android:layout_toEndOf="@+id/location_icon2"
                 android:text="강릉"
                 android:layout_marginLeft="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/location_icon"
+                android:layout_alignBottom="@+id/location_icon2"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
                 android:text="2023.10.12~10.14" />
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@id/trip_title"
+                android:layout_alignBaseline="@id/trip_title2"
                 android:src="@drawable/go_btn" />
 
         </RelativeLayout>
@@ -186,7 +186,8 @@
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
             android:layout_width="200dp"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp"
+            android:inputType="text"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,7 +197,8 @@
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
             android:layout_width="200dp"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp"
+            android:inputType="text"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -206,7 +208,8 @@
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
             android:layout_width="200dp"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp"
+            android:inputType="text"/>
 
 
     </LinearLayout>

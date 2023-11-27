@@ -66,7 +66,7 @@
             android:background="@drawable/schedule_plan_block">
 
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="30sp"
@@ -77,12 +77,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text2"
+                android:id="@+id/text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/text1"
+                android:layout_alignBaseline="@+id/text2"
                 android:layout_marginStart="6sp"
-                android:layout_toRightOf="@id/text1"
+                android:layout_toRightOf="@id/text2"
                 android:text="신라호텔"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
@@ -101,7 +101,7 @@
                 android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text1"
+                android:layout_below="@+id/text2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginVertical="13dp"
                 android:contentDescription="여행 사진"

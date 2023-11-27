@@ -34,15 +34,14 @@ public class Login extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.pw);
 
         Button signUpButton = findViewById(R.id.signUpText);
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-
-                signUp(email, password);
+                Intent intent = new Intent(Login.this, SignUp.class);
+                startActivity(intent);
             }
-        });
+        }); //회원가입 창으로 넘어가는 인텐트
 
         Button signInButton = findViewById(R.id.loginButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -71,28 +70,6 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private void signUp(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Log.d(TAG, "createUserWithEmail:failure");
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
     private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -117,7 +94,7 @@ public class Login extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, nevigation_bar.class);
             intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
 
             startActivity(intent);
