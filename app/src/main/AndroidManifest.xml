@@ -13,6 +13,9 @@
         android:theme="@style/Base.Theme.Tzip"
         tools:targetApi="31">
         <activity
+            android:name=".nevigation_bar_test_code"
+            android:exported="false" />
+        <activity
             android:name=".Emergency"
             android:exported="false" />
         <activity
@@ -30,8 +33,7 @@
         <activity
             android:name=".SignUp"
             android:exported="false" />
-        <activity
-            android:name=".Login" />
+        <activity android:name=".Login" />
         <activity
             android:name=".schedule_plan_tab"
             android:exported="false" />
