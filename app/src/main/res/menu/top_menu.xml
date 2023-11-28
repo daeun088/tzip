@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/alert_Button"
-        android:enabled="true"
+        android:enabled="false"
         android:icon="@drawable/alert_btn"
         android:title="alert_button"
         app:showAsAction="always"
