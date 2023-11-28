@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_review#newInstance} factory method to
+ * Use the {@link Fragment_schedule_plan#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_review extends Fragment {
+public class Fragment_community_story extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class Fragment_review extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment_review() {
+    public Fragment_community_story() {
         // Required empty public constructor
     }
 
@@ -34,11 +34,11 @@ public class Fragment_review extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_review.
+     * @return A new instance of fragment Fragment_schedule_plan.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment_review newInstance(String param1, String param2) {
-        Fragment_review fragment = new Fragment_review();
+    public static Fragment_community_story newInstance(String param1, String param2) {
+        Fragment_community_story fragment = new Fragment_community_story();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +59,6 @@ public class Fragment_review extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_review, container, false);
+        return inflater.inflate(R.layout.fragment_community_story, container, false);
     }
 }

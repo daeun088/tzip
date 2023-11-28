@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:drawableStart="@drawable/siren"
             android:fontFamily="@font/inter"
             android:drawablePadding="6sp"
             android:paddingTop="15sp"
@@ -141,14 +141,18 @@
         <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
 
         <Button
+            android:id="@+id/record_add_btn"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:text="기록 작성"
-            android:background="@drawable/orange_button"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="5dp" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/orange_btn"
+            android:text="기록 작성"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 

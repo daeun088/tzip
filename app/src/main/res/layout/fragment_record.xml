@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,18 +29,6 @@
             android:textColor="#000000"
             android:textSize="22sp"
             android:textStyle="bold"
-            />
-
-        <ImageButton
-            android:id="@+id/Back_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:src="@drawable/back_btn"
-            android:contentDescription="뒤로가기 버튼"
             />
     </RelativeLayout>
     <!--헤더-->
@@ -237,15 +229,15 @@
                 android:textColor="@color/black"
                 android:layout_marginLeft="25dp"
                 />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_icon"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="#FFFFFF"
-            android:contentDescription="상세 보기 버튼"
-            />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_icon"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:background="#FFFFFF"
+                android:contentDescription="상세 보기 버튼"
+                />
         </LinearLayout>
 
         <TextView
@@ -435,5 +427,6 @@
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

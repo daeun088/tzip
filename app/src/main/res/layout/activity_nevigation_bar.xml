@@ -7,6 +7,16 @@
     android:orientation="vertical"
     tools:context=".nevigation_bar">
 
+<<<<<<< HEAD
+=======
+    <FrameLayout
+        android:id="@+id/containers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_below="@+id/custom_toolbar"
+        android:layout_above="@+id/bottom_navigationview">
+>>>>>>> ca998f99cece0408d19a11cadd2ffe39f86ff968
 
 
     <androidx.appcompat.widget.Toolbar
@@ -14,18 +24,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/nevigation_top_bar_edge"
-        app:titleTextColor="@color/black"
-        app:menu="@menu/top_menu">
+        app:menu="@menu/top_menu"
+        app:titleTextColor="@color/black">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="나의 여행 일정"
             android:layout_gravity="center"
             android:paddingTop="10dp"
+            android:text="나의 여행 일정"
             android:textColor="#000000"
             android:textSize="22sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -47,12 +57,6 @@
         app:menu="@menu/bottom_menu"
         android:backgroundTint="@color/bottom_nevigation_bar_color_selector"
         app:itemTextColor="@color/bottom_nevigation_bar_color_selector"/>
-
-
-
-
-
-
 
 
 </RelativeLayout>

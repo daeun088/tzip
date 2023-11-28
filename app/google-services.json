@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1037993683485",
+    "project_id": "tzip-21e7a",
+    "storage_bucket": "tzip-21e7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037993683485:android:06aab38ad62d2ec0a434f4",
+        "android_client_info": {
+          "package_name": "com.example.tzip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7xDvRL1bRyyjf_01CKicEmNnU9gKcD4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
