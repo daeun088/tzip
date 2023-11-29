@@ -5,29 +5,6 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_first">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="여행 일정 공유하기"
-            android:fontFamily="@font/notosanskr_bold"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_alert"
-            android:layout_gravity="end"
-            android:layout_margin="18dp"
-            />
-    </FrameLayout>
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -104,45 +81,6 @@
         android:textColor="#FFFFFF"
         android:layout_marginBottom="40dp"
         android:layout_gravity="center"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/rectangle_first">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/record"
-            android:layout_weight="1"
-            />
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/plan"
-            android:layout_weight="1"
-            />
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/home"
-            android:layout_weight="1"
-            />
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/community"
-            android:layout_weight="1"
-            />
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/mypage"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
 
 
 
