@@ -81,6 +81,7 @@
         android:layout_marginRight="40dp"
         android:background="#FFFFFF"
         android:stateListAnimator="@null"
+        style="@style/whiteButton"
         android:text="회원가입 >"
         android:textColor="@color/black"
         />
