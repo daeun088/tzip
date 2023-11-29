@@ -14,22 +14,28 @@ import android.widget.TextView;
 import com.example.tzip.databinding.FragmentRecordAddBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class RecordAdd extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseFirestore recordDB = FirebaseFirestore.getInstance();
     TextView dataPickerText;
     FragmentRecordAddBinding binding;
     Calendar calendar;
 
-    private String mParam1;
-    private String mParam2;
 
     public RecordAdd() {
         // Required empty public constructor
@@ -47,10 +53,6 @@ public class RecordAdd extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,7 +62,26 @@ public class RecordAdd extends Fragment {
 
         dataPickerText = binding.tripDateText;
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        Long today = MaterialDatePicker.todayInUtcMilliseconds();
+
+        binding.recordAddBtn.setOnClickListener( v -> {
+            CollectionReference record = recordDB.collection("record");
+            String place = binding.tripPlace.getText().toString();
+            String date = binding.tripDateText.getText().toString();
+            String friend = binding.tripFriendList.getText().toString();
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            Map<String, Object> recordMap = new HashMap<>();
+            recordMap.put(FirebaseId.documentId,uid);
+            recordMap.put(FirebaseId.recordTitle, "null");
+            recordMap.put(FirebaseId.place, place);
+            recordMap.put(FirebaseId.date, date);
+            recordMap.put(FirebaseId.friend, friend);
+            recordMap.put(FirebaseId.contentImage, "null");
+            recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+            recordMap.put("recordBlock", "null");
+            record.document("record").set(recordMap);
+        });
+
 
         binding.tripDateBtn.setOnClickListener(v -> {
             if (isAdded()) {

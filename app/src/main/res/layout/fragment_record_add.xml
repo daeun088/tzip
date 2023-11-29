@@ -154,6 +154,7 @@
             android:textColor="@color/black"
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
+            android:id="@+id/trip_place"
             android:layout_width="280dp"
             android:layout_height="40dp"
             android:textSize="15sp"
@@ -183,7 +184,7 @@
             android:id="@+id/trip_date_text"
             android:layout_width="280dp"
             android:layout_height="40dp"
-            android:background="@drawable/bottom_stroke" />
+            android:background="@drawable/bottom_stroke_black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -193,6 +194,7 @@
             android:textColor="@color/black"
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
+            android:id="@+id/trip_friend_list"
             android:layout_width="280dp"
             android:layout_height="40dp"
             android:inputType="text"/>
@@ -208,6 +210,7 @@
         <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
 
         <Button
+            android:id="@+id/record_add_btn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -216,8 +219,7 @@
             android:background="@drawable/orange_btn"
             android:text="기록하기"
             android:includeFontPadding="false"
-            android:textColor="@color/white"
-            style="@style/MyButtonStyle"/>
+            android:textColor="@color/white" />
     </RelativeLayout>
     </LinearLayout>
 

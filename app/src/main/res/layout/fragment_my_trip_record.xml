@@ -113,7 +113,6 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/orange_btn"
             android:text="기록 작성"
-            style="@style/MyButtonStyle"
             android:textColor="@color/white" />
     </RelativeLayout>
 
