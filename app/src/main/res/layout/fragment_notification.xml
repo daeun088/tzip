@@ -4,38 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/notification_alert_edge"
-        android:gravity="top"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp"
-            android:text="알림"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/Back_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:src="@drawable/back_btn" />
-
-    </RelativeLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"

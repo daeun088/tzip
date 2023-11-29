@@ -2,52 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="내 초대 코드"
-        android:textSize="28sp"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"/>
-    
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
         android:layout_marginStart="21dp"
+        android:layout_marginTop="1dp"
         android:text="친구의 초대화면에서 입력하세요."
         android:textColor="@color/orange"
         android:textSize="16sp"
-        android:textStyle="bold"/>
-    
+        android:textStyle="bold" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/friend_request_code_block"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="20dp">
+        android:background="@drawable/friend_request_code_block">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nae03iNvIte1Co3de"
-            android:textColor="@color/black"
             android:paddingVertical="13dp"
-            android:paddingStart="12dp"/>
+            android:paddingStart="12dp"
+            android:text="Nae03iNvIte1Co3de"
+            android:textColor="@color/black" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_copy"
-            android:background="@color/white"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_copy" />
 
     </RelativeLayout>
 
@@ -55,41 +54,40 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:text="친구 코드를 입력해서 추가하기"
-        android:textSize="28sp"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"/>
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
         android:layout_marginStart="22dp"
+        android:layout_marginTop="1dp"
         android:text="친구의 초대 코드를 입력해서 추가하세요."
         android:textColor="@color/orange"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/friend_request_code_block"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="20dp">
+        android:background="@drawable/friend_request_code_block">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="w12hf12w5qn15dlkqndiwqifwiq"
-            android:textColor="@color/black"
             android:paddingVertical="13dp"
-            android:paddingStart="12dp"/>
+            android:paddingStart="12dp"
+            android:text="w12hf12w5qn15dlkqndiwqifwiq"
+            android:textColor="@color/black" />
 
 
     </RelativeLayout>
-
 
 
 </LinearLayout>

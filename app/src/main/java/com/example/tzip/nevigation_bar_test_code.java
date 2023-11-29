@@ -21,6 +21,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,17 +32,34 @@ import android.view.View;
 
 import android.widget.Toast;
 
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.view.Gravity;
+import android.widget.LinearLayout.LayoutParams;
+
+import org.w3c.dom.Text;
+
+import android.app.Activity;
+
 public class nevigation_bar_test_code extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private Button dynamicButton;
 
+    private Toolbar toolbar;
     Fragment_community fragmentCommunity;
     Fragment_schedule fragmentSchedule;
-    Fragment_review fragmentReview;
+    Fragment_record fragmentRecord;
     Fragment_home fragmentHome;
     Fragment_mypage fragmentMypage;
     Fragment_notification fragmentNotification;
+
+    TextView toolbar_title;
+    ImageButton toolbar_button;
+
+    private long backPressedTime = 0;
+    private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
+
+    int post_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +67,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         setContentView(R.layout.activity_nevigation_bar_test_code);
 
         fragmentSchedule = new Fragment_schedule();
-        fragmentReview = new Fragment_review();
+        fragmentRecord = new Fragment_record();
         fragmentCommunity = new Fragment_community();
         fragmentHome = new Fragment_home();
         fragmentMypage = new Fragment_mypage();
@@ -58,146 +76,190 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
         toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_button = findViewById(R.id.toolbar_Button);
 
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.containers); //현재 화면에 띄워진(containers에 속하는) fragment 찾기
-        if (currentFragment instanceof Fragment_home) {
-
-        } else if (currentFragment instanceof Fragment_community) {
-            // Fragment_community에 대한 처리
-        } else if (currentFragment instanceof Fragment_review) {
-            // Fragment_review에 대한 처리
-        } else if (currentFragment instanceof Fragment_schedule) {//현재 schedule만 fragment에 적혀있으므로 얘만 해놓음
-            setToolbarContent("나의 여행 일정", false); //showBackButton이 true이면 back버튼이 나옴
-            addButtonToToolbar("알림"); //해당 프레그먼트에 필요한 상단바의 버튼 종류 전달
-        } else if (currentFragment instanceof Fragment_mypage) {
-            // Fragment_mypage에 대한 처리
-        } else if (currentFragment instanceof Fragment_notification) {
-            setToolbarContent("알림", true); //showBackButton이 true이면 back버튼이 나옴
-            addButtonToToolbar("하단 바 없애기"); //"하단 바 없애기"가 전달되면 버튼은 생성되지 않고 하단바만 사라지게 됨
-            addButtonToToolbar("등록");//해당 프레그먼트에 필요한 상단바의 버튼 종류 전달
-        }
-
-
-
-
-
-        // 초기 상단바 설정
-        setToolbarContent("나의 여행 일정", true);
-
-        // 초기 버튼 추가
-        addButtonToToolbar("동적 버튼");
+        BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+        navigationBarView.setSelectedItemId(R.id.Home);
 
         // 프래그먼트 초기화 및 화면 설정
         initFragments();
 
-        BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+
         navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if (item.getItemId() == R.id.home) {
+                post_id = item.getItemId();
+                if (post_id == R.id.Home) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+                    setToolbarForHome();
                     return true;
-                } else if (item.getItemId() == R.id.community) {
+                } else if (post_id == R.id.community) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentCommunity).commit();
+                    setToolbarForCommunity();
                     return true;
-                } else if (item.getItemId() == R.id.review) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentReview).commit();
+                } else if (post_id == R.id.review) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentRecord).commit();
+                    setToolbarForRecord();
                     return true;
-                } else if (item.getItemId() == R.id.schedule) {
+                } else if (post_id == R.id.schedule) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedule).commit();
+                    setToolbarForSchedule();
                     return true;
-                } else if (item.getItemId() == R.id.mypage) {
+                } else if (post_id == R.id.mypage) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
+                    setToolbarForMypage();
                     return true;
                 }
-                else if (item.getItemId() == R.id.alert_Button) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
-                    return true;
-                    //이후에 fragmentMypage를 알림 페이지로 설정하면 됨
-                }
-
                 return false;
             }
         });
     }
 
-    // 프래그먼트 초기화
-    private void initFragments() {
-        // 각각의 프래그먼트를 초기화하고 기본 화면으로 설정
-        // (Fragment_home, Fragment_community, Fragment_review, Fragment_schedule, Fragment_mypage)
-        // ... 각 프래그먼트의 초기 설정 코드 추가 ...
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.containers, new Fragment_home()).addToBackStack(null).commit();
-    }//뒤로가기 버튼 누를 시 이전 프레그먼트가 보여지게 설정
-
-    // 상단바 내용 동적으로 변경
-    private void setToolbarContent(String title, boolean showBackButton) {
-        getSupportActionBar().setTitle(""); // 초기화
-
-        // 새로운 TextView 생성
-        TextView customTitle = new TextView(this);
-        customTitle.setText(title);
-        customTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22); // 크기 설정
-        customTitle.setTextColor(Color.BLACK);
-        customTitle.setGravity(Gravity.CENTER); // gravity 설정
-        customTitle.setTypeface(null, Typeface.BOLD); // 스타일 설정
-
-        // Toolbar에 새로운 TextView 추가
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(customTitle);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(showBackButton);
+    // 홈 프래그먼트에 대한 상단바 설정
+    private void setToolbarForHome() {
+        setToolbarContent("홈", false);
+        addButtonToToolbar("알림");
     }
 
-    // 툴바에 버튼 추가
-    private void addButtonToToolbar(String toolbar_identifier) {
+    // 커뮤니티 프래그먼트에 대한 상단바 설정
+    private void setToolbarForCommunity() {
+        setToolbarContent("커뮤", false);
+        addButtonToToolbar("알림");
+    }
 
-        MenuItem dynamicButton = null;
-        if(toolbar_identifier.equals("알림")){ //상단바에 알림 버튼이 필요한 경우
-            dynamicButton = toolbar.getMenu().add(Menu.NONE, Menu.NONE, 1, "알림 버튼");
-            dynamicButton.setIcon(R.drawable.alert_btn);
-            dynamicButton.setActionView(new View(this)); // View를 추가하여 setTag를 사용할 수 있도록 함
-            dynamicButton.getActionView().setTag("알림");
-            }
-        else if(toolbar_identifier.equals("등록")){
-            dynamicButton = toolbar.getMenu().add(Menu.NONE, Menu.NONE, 1, "등록 버튼");
-            dynamicButton.setIcon(R.drawable.ic_reg);
-            dynamicButton.setActionView(new View(this)); // View를 추가하여 setTag를 사용할 수 있도록 함
-            dynamicButton.getActionView().setTag("등록");
+    // 레코드 프래그먼트에 대한 상단바 설정
+    private void setToolbarForRecord() {
+        setToolbarContent("나의 여행 기록", false);
+        addButtonToToolbar("등록");
+    }
+
+    // 스케줄 프래그먼트에 대한 상단바 설정
+    private void setToolbarForSchedule() {
+        setToolbarContent("나의 여행 일정", false);
+        addButtonToToolbar("알림");
+    }
+
+    // 마이페이지 프래그먼트에 대한 상단바 설정
+    private void setToolbarForMypage() {
+        setToolbarContent("마이페이지", false);
+        addButtonToToolbar("알림");
+    }
+    // 알림 프래그먼트에 대한 상단바 설정
+    private void setToolbarForNotification() {
+        setToolbarContent("알림", true);
+        addButtonToToolbar("버튼 없애기");
+        addButtonToToolbar("하단 바 없애기");
+    }
+
+
+    @Override
+    public void onBackPressed() {//밑줄 상관 x
+        if (System.currentTimeMillis() - backPressedTime < BACK_PRESS_INTERVAL) {
+            // 두 번째로 뒤로가기 키를 눌렀을 때
+            moveTaskToBack(true); // 태스크를 백그라운드로 이동
+            finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
+            System.exit(0);
+        } else {
+            // 첫 번째로 뒤로가기 키를 눌렀을 때
+            showToast("한 번 더 누르면 종료됩니다.");
+            backPressedTime = System.currentTimeMillis();
         }
-        else if(toolbar_identifier.equals("하단 바 없애기")){
-            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-            navigationBarView.setVisibility(View.GONE); //하단바가 일시적으로 사라짐 (이후에 다른 프레그먼트로 넘어가면 다시 하단바가 생김)
-        }
+    }
 
-
-
-        // 버튼에 대한 클릭 이벤트 처리
-        dynamicButton.setOnMenuItemClickListener(item -> {
-            String tag = (String) item.getActionView().getTag();
-            if (tag != null && tag.equals("알림")) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).commit();
-                return true;
-            }
-            else if(tag != null && tag.equals("등록")) {
-                //등록 버튼은 누르면 게시글이 등록되어야 하기 때문에 따로 구현이 필요할듯
-
-                showToast("등록이 완료되었습니다.");
-                //등록 후에 토스트 띄우고 홈 화면으로 가도록
-                getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
-                return true;
-            }
-            else {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {//상단바의 뒤로가기 버튼 클릭시의 이벤트 처리
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                if (post_id == R.id.Home) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                    navigationBarView.setVisibility(View.VISIBLE);//하단바의 visibility 바꿔주기
+                    setToolbarForHome();
+                    return true;
+                } else if (post_id == R.id.community) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentCommunity).commit();
+                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                    navigationBarView.setVisibility(View.VISIBLE);
+                    setToolbarForCommunity();
+                    return true;
+                } else if (post_id == R.id.review) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentRecord).commit();
+                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                    navigationBarView.setVisibility(View.VISIBLE);
+                    setToolbarForRecord();
+                    return true;
+                } else if (post_id == R.id.schedule) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedule).commit();
+                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                    navigationBarView.setVisibility(View.VISIBLE);
+                    setToolbarForSchedule();
+                    return true;
+                } else if (post_id == R.id.mypage) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
+                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                    navigationBarView.setVisibility(View.VISIBLE);
+                    setToolbarForMypage();
+                    return true;
+                }
                 return false;
             }
-        });
-
-        // 동적으로 추가한 버튼을 상단바에 보이도록 갱신
-        toolbar.postInvalidate();
-
+        }
+        return super.onOptionsItemSelected(item);
     }
+
+
+        // 프래그먼트 초기화
+        private void initFragments () {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+            post_id = R.id.Home;
+            setToolbarForHome();
+    }
+
+
+        private void setToolbarContent (String title,boolean showBackButton){
+            getSupportActionBar().setTitle(""); // 초기화
+
+            toolbar_title.setText(title);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(showBackButton);
+        }
+
+        // 툴바에 버튼 추가
+        private void addButtonToToolbar (String toolbar_identifier){
+            if (toolbar_identifier.equals("알림")) { //상단바에 알림 버튼이 필요한 경우
+                toolbar_button.setImageResource(R.drawable.ic_alert);
+                toolbar_button.setTag("알림");
+                toolbar_button.setVisibility(View.VISIBLE); //visibility visible로 바꿔주기
+            } else if (toolbar_identifier.equals("등록")) {
+                toolbar_button.setImageResource(R.drawable.ic_reg);
+                toolbar_button.setTag("등록");
+                toolbar_button.setVisibility(View.VISIBLE);
+            } else if (toolbar_identifier.equals("하단 바 없애기")) {
+                BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+                navigationBarView.setVisibility(View.GONE);
+            } else if (toolbar_identifier.equals("버튼 없애기")) {
+                toolbar_button.setVisibility(View.GONE);
+            }
+
+            toolbar_button.setOnClickListener(view -> {
+                //String tag = (String) toolbar.getTag();
+                String tag = (String) toolbar_button.getTag();
+                if (tag != null &&tag.equals("알림")){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).addToBackStack(null).commit();
+                    setToolbarForNotification();
+                } else if (tag != null && tag.equals("등록")) {
+                    //등록 버튼은 누르면 게시글이 등록되어야 하기 때문에 따로 구현이 필요할듯
+
+                    showToast("등록이 완료되었습니다.");
+                    //등록 후에 토스트 띄우고 홈 화면으로 가도록
+                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+                    setToolbarForHome();
+                }
+            });
+        }
+
 
 
     private void showToast(String message) {
@@ -205,3 +267,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
 }
 
+
+//post_id를 통해서 이전 프레그먼트의 id를 기억해놓고 뒤로가기 버튼 클릭 시 onOptionsItemSelected()에서 기억해놓은 id로 해당 프레그먼트 실행
+//하단바와 상단바 버튼의 visivility는 계속 재설정 해줘야함. 하단바 : 알림 창에 들어간 후 뒤로가기 버튼 클릭시 사라졌던 하단바가 돌아오지 않음
