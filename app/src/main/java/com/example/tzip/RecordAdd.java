@@ -5,10 +5,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import androidx.core.util.Pair;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tzip.databinding.FragmentRecordAddBinding;
@@ -16,7 +17,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -80,6 +80,8 @@ public class RecordAdd extends Fragment {
             recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
             recordMap.put("recordBlock", "null");
             record.document("record").set(recordMap);
+
+            updateUI();
         });
 
 
@@ -112,6 +114,13 @@ public class RecordAdd extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void updateUI() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        RecordWriting recordWriting = new RecordWriting();
+        transaction.replace(R.id.containers, recordWriting);
+        transaction.commit();
     }
 
 }
