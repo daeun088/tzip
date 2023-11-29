@@ -7,18 +7,6 @@
     android:orientation="vertical"
     tools:context=".nevigation_bar">
 
-<<<<<<< HEAD
-=======
-    <FrameLayout
-        android:id="@+id/containers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_below="@+id/custom_toolbar"
-        android:layout_above="@+id/bottom_navigationview">
->>>>>>> ca998f99cece0408d19a11cadd2ffe39f86ff968
-
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
