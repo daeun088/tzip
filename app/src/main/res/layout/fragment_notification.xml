@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:id="@+id/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:text="김민 님으로부터 여행 참가 신청이 도착했습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/Permission_Button_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/A"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toStartOf="@+id/Refuse_Button_1"
+                    android:background="@drawable/notification_permission_button"
+                    android:minWidth="0dp"
+                    android:minHeight="48dp"
+                    android:paddingHorizontal="30sp"
+                    android:text="확인"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/Refuse_Button_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/A"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/notification_permission_button"
+                    android:minWidth="0dp"
+                    android:minHeight="48dp"
+                    android:paddingHorizontal="30sp"
+                    android:text="삭제"
+
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="김민 님과 친구가 됐습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:id="@+id/B"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:text="김민 님으로부터 긴급 메시지가 도착했습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/Permission_Button_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/B"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/notification_emergency_button"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="90sp"
+                    android:paddingVertical="25sp"
+                    android:text="긴급 메시지 내용 확인"
+                    android:textColor="#FB6E52"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="김민2 님과 친구가 됐습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="김민3 님과 친구가 됐습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginVertical="7dp"
+                android:background="@drawable/notification_alert_block">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="김민4 님과 친구가 됐습니다."
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

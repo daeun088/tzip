@@ -2,12 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/alert_Button"
-        android:enabled="false"
-        android:icon="@drawable/alert_btn"
-        android:title="alert_button"
-        app:showAsAction="always"
-        />
 
 </menu>

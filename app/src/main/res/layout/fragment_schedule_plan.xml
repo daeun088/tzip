@@ -32,12 +32,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="40dp"
                 android:text="오후 6:00"
+                android:layout_marginStart="80dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -94,12 +94,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="40dp"
                 android:text="오후 6:00"
+                android:layout_marginStart="80dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -145,11 +145,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text5"
-                    android:layout_alignParentEnd="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginVertical="13dp"
-                    android:layout_marginEnd="40dp"
                     android:contentDescription="여행 사진"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="40dp"
                     android:src="@drawable/schedule_plan_block_example2" />
 
 
@@ -160,20 +160,20 @@
                     android:layout_below="@+id/text5"
                     android:layout_centerHorizontal="true"
                     android:layout_marginVertical="13dp"
-                    android:layout_toLeftOf="@+id/image6"
                     android:contentDescription="여행 사진"
+                    android:layout_toLeftOf="@+id/image6"
                     android:src="@drawable/schedule_plan_block_example3" />
             </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="40dp"
                 android:text="오후 6:00"
+                android:layout_marginStart="80dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -229,12 +229,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="40dp"
                 android:text="오후 6:00"
+                android:layout_marginStart="80dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -290,12 +290,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="40dp"
                 android:text="오후 6:00"
+                android:layout_marginStart="80dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginEnd="40dp"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
