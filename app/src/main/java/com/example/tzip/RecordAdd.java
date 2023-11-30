@@ -79,7 +79,8 @@ public class RecordAdd extends Fragment {
             recordMap.put(FirebaseId.contentImage, "null");
             recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
             recordMap.put("recordBlock", "null");
-            record.document("record").set(recordMap);
+            //record.document("record").set(recordMap); document 이름 지정 코드
+            record.document().set(recordMap);
 
             updateUI();
         });
@@ -119,6 +120,12 @@ public class RecordAdd extends Fragment {
     private void updateUI() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         RecordWriting recordWriting = new RecordWriting();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseId.date, binding.tripDateText.getText().toString());
+        bundle.putString(FirebaseId.place, binding.tripPlace.getText().toString());
+        recordWriting.setArguments(bundle);
+
         transaction.replace(R.id.containers, recordWriting);
         transaction.commit();
     }

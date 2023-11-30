@@ -1,42 +1,45 @@
 package com.example.tzip;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecordWriting#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.tzip.databinding.FragmentRecordWritingBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+
 public class RecordWriting extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    FragmentRecordWritingBinding binding;
+    private static final int PICK_IMAGE_REQUEST = 1;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public RecordWriting() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecordWriting_F.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RecordWriting newInstance(String param1, String param2) {
         RecordWriting fragment = new RecordWriting();
         Bundle args = new Bundle();
@@ -58,7 +61,98 @@ public class RecordWriting extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_record_writing, container, false);
+        // 기존 코드에서 수정: binding 객체 초기화
+        binding = FragmentRecordWritingBinding.inflate(inflater, container, false);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String date = bundle.getString(FirebaseId.date, "");
+            String place = bundle.getString(FirebaseId.place, "");
+            binding.tripDate.setText("여행일시 - " + date);
+            binding.tripPlace.setText("여행장소 - " + place);
+        }//add에서 입력된 데이터 불러오기
+
+        binding.recordMainImageBtn.setOnClickListener( v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            // Get a default Storage bucket
+        });
+
+        // 수정된 부분: 올바른 binding 객체 반환
+        return binding.getRoot();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            // 선택된 이미지를 ImageView에 설정
+            Uri imageUri = data.getData();
+            binding.recordPicture.setImageURI(imageUri);
+
+            // ImageView의 Drawable이 BitmapDrawable인지 확인하고 null이 아닌 경우에만 업로드
+            Drawable drawable = binding.recordPicture.getDrawable();
+            if (drawable instanceof BitmapDrawable) {
+                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                // 선택된 이미지를 Firebase Storage에 업로드
+                uploadImageToFirebaseStorage(bitmap);
+            } else {
+                // 다른 Drawable 타입이거나 null인 경우에 대한 처리
+                Log.e("daeun", "ImageView의 Drawable이 유효하지 않습니다.");
+            }
+        }
+    }
+
+    private void uploadImageToFirebaseStorage(Bitmap bitmap) {
+        // Get a default Storage bucket
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Points to the root reference
+        StorageReference storageRef = storage.getReference();
+
+        // Create a reference for a new image
+        StorageReference mountainImagesRef = storageRef.child(getPath("jpg"));
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //0-100
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            Log.d("daeun", "이미지뷰의 이미지 업로드 실패", exception);
+        }).addOnSuccessListener(taskSnapshot -> {
+            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            // ...
+            Log.d("daeun", "이미지뷰의 이미지 업로드 성공");
+        });
+    }
+
+
+    public String getTitle(){
+        return binding.recordTitle.getText().toString();
+    }
+
+    private String getPath(String extension) {
+        String uid = getUidOfCurrentUser();
+
+        String dir = (uid != null) ? uid : "public";
+
+        String fileName = (uid != null) ? (uid + "_" + System.currentTimeMillis() + "." + extension)
+                : ("anonymous" + "_" + System.currentTimeMillis() + "." + extension);
+
+        return dir + "/" + fileName;
+    }
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null ? true : false;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+    }
+
+
+
 }

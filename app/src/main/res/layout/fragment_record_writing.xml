@@ -14,10 +14,12 @@
             android:id="@+id/record_picture"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@color/black">
+            android:background="@color/black"
+            android:scaleType="centerCrop">
         </ImageView>
 
         <EditText
+            android:id="@+id/record_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/record_picture"
@@ -32,11 +34,15 @@
             android:textColor="@color/white" />
 
         <ImageButton
+            android:id="@+id/record_main_image_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/record_picture"
             android:layout_alignEnd="@id/record_picture"
-            android:layout_margin="8dp"
+            android:layout_alignBottom="@id/record_picture"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/pencil" />
 
     </RelativeLayout>
@@ -48,10 +54,12 @@
         android:background="@drawable/bottom_stroke"
         android:padding="14dp">
         <TextView
+            android:id="@+id/trip_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="여행일시 - 2023.10.22~24"/>
         <TextView
+            android:id="@+id/trip_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="여행장소 - 강릉"
