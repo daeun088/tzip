@@ -13,51 +13,13 @@
         android:theme="@style/Base.Theme.Tzip"
         tools:targetApi="31">
         <activity
-            android:name=".RecoedWriting"
-            android:exported="false" />
-        <activity
-            android:name=".RecordLoad"
-            android:exported="false" />
-        <activity
-            android:name=".Emergency"
-            android:exported="false" />
-        <activity
-            android:name=".Notification"
-            android:exported="false" />
-        <activity
-            android:name=".ReacordAdd"
-            android:exported="false" />
-        <activity
-            android:name=".MyTripRecord"
-            android:exported="false" />
-        <activity
-            android:name=".RecordMain"
-            android:exported="false" />
-        <activity
-            android:name=".SignUp"
-            android:exported="true" />
-        <activity android:name=".Login"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".schedule_plan_tab"
-            android:exported="false" />
-        <activity
-            android:name=".nevigation_bar"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
     </application>
 
