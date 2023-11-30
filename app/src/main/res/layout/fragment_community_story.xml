@@ -77,7 +77,7 @@
         android:background="@drawable/orange_btn"
         android:fontFamily="@font/notosanskr_bold"
         android:gravity="center"
-        android:text="기록하기"
+        android:text="신청하기"
         android:textColor="#FFFFFF"
         android:textSize="15dp" />
 

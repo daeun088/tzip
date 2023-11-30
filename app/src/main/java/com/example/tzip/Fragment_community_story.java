@@ -46,8 +46,7 @@ public class Fragment_community_story extends Fragment implements ModalBottomShe
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_community_story, container, false);
-
-        Button button = (Button) v.findViewById(R.id.home_comeon);
+        Button button = v.findViewById(R.id.);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +56,12 @@ public class Fragment_community_story extends Fragment implements ModalBottomShe
             }
         });
 
+
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void onDismis(boolean isSwitchOn) {
     }
 }

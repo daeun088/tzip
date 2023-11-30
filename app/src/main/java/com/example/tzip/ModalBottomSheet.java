@@ -19,41 +19,24 @@ public class ModalBottomSheet extends BottomSheetDialogFragment {
         void onDismis(boolean isSwitchOn);
     }
 
-
-
     private OnDismissListener dismissListener;
     private Switch onOffSwitch;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bottom_sheet, container, false);
+        View view = inflater.inflate(R.layout.activity_community_innerpage, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Button button = view.findViewById(R.id.ok_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        onOffSwitch = view.findViewById(R.id.on_off_switch);
     }
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        dismissListener.onDismis(isSwitchOn());
-    }
-
-    boolean isSwitchOn() {
-        return onOffSwitch.isChecked();
     }
 
     void setOnDismissListener(OnDismissListener listener) {
