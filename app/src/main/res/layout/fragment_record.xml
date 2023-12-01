@@ -387,6 +387,7 @@
                     android:fontFamily="@font/inter"/>
 
                 <Button
+                    android:id="@+id/schedule_add_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="일정 추가하기"
@@ -396,6 +397,7 @@
                     android:layout_margin="5dp"
                     />
                 <Button
+                    android:id="@+id/record_add_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="기록 추가하기"
