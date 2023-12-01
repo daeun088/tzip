@@ -1,26 +1,38 @@
 package com.example.tzip;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_mypage#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.tzip.databinding.FragmentMypageBinding;
+import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Fragment_mypage extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FragmentMypageBinding binding;
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +40,6 @@ public class Fragment_mypage extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_mypage.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Fragment_mypage newInstance(String param1, String param2) {
         Fragment_mypage fragment = new Fragment_mypage();
         Bundle args = new Bundle();
@@ -58,7 +61,92 @@ public class Fragment_mypage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentMypageBinding.inflate(inflater, container, false);
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            list.add("Item=" + i);
+        }
+
+        binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+        binding.friendList.setAdapter(new MyAdapter(list));
+        binding.friendList.addItemDecoration(new MyItemDecoration());
+
+        binding.logout.setOnClickListener( v -> {
+            FirebaseAuth.getInstance().signOut();
+            //로그아웃 되었습니다 띄우고 login activity로 이동
+        });
+
+        binding.emergencySetting.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            //여기 액티비티 이동? 프레그먼트 이동?
+
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mypage, container, false);
+        return binding.getRoot();
+    }
+
+    private class MyViewHolder extends RecyclerView.ViewHolder {
+        private MypageFriendRecyclerviewBinding binding;
+
+        private MyViewHolder(MypageFriendRecyclerviewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+
+    private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+        private List<String> list;
+
+        private MyAdapter(List<String> list) {
+            this.list = list;
+        }
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            MypageFriendRecyclerviewBinding binding = MypageFriendRecyclerviewBinding.inflate(LayoutInflater.from(parent.getContext()) ,parent, false);
+            return new MyViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            String text = list.get(position);
+            holder.binding.friendName.setText(text);
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+    }
+
+    private class MyItemDecoration extends RecyclerView.ItemDecoration {
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            int index = parent.getChildAdapterPosition(view) + 1;
+
+            if (index % 3 == 0)
+                outRect.set(20, 20, 20, 60);
+            else
+                outRect.set(20, 20, 20, 20);
+
+            view.setBackgroundColor(0xFFECE9E9);
+            ViewCompat.setElevation(view, 20.0f);
+        }
+
+        @Override
+        public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            Drawable dr = ResourcesCompat.getDrawable(getResources(), R.drawable.setting, null);
+
+            int width = parent.getWidth();
+            int height = parent.getHeight();
+            int drWidth = dr.getIntrinsicWidth();
+            int drHeight = dr.getIntrinsicHeight();
+            int left = width / 2 - drWidth / 2;
+            int top = height / 2 - drHeight / 2;
+
+            c.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.setting), left, top, null);
+        }
     }
 }

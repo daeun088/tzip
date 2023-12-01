@@ -1,17 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment_mypage">
+    android:orientation="vertical">
 
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:orientation="horizontal"
+        android:contentDescription="프로필"
+        android:paddingVertical= "28dp"
+        >
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/profile"
+            android:layout_marginStart="20dp"
+            android:clipToOutline="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="김민"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/profilePic"
+            android:textColor="@color/black"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"/>
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/setting"
+            style="@style/whiteButton"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="30dp"
+            />
+        
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/emergency_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:background="@drawable/bottom_stroke"
+        android:layout_marginHorizontal="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="긴급메세지 설정"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textColor="@color/black"
+            android:includeFontPadding="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            />
+    </RelativeLayout>
+
+
+    <Button
+        android:layout_width="275dp"
+        android:background="@drawable/orange_btn"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="긴급메세지 발송하기"
+        android:fontFamily="@font/notosanskr_bold"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="mypage Fragment" />
+        android:layout_marginVertical="10dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:background="@drawable/bottom_stroke"
+        android:layout_marginHorizontal="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구 목록"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textColor="@color/black"
+            android:includeFontPadding="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <!--안에 들어갈 건 mypage_friend_recyclerview-->
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/bottom_stroke"
+        android:id="@+id/logout">
+        
+        <ImageView
+            android:id="@+id/logoutImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logout"/>
+            
+
+        <TextView
+            android:layout_toRightOf="@id/logoutImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="15dp"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
+            android:text="로그아웃" />
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            />
+
+
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
