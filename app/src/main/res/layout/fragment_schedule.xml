@@ -44,21 +44,11 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-
-        <ImageButton
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/schedule_block_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/schedule_default_block"
-            />
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
-    </ScrollView>
 
 </LinearLayout>
