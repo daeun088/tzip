@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:gravity="center_horizontal"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오픈채팅 링크"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:textSize="20sp"
+        android:textColor="#000000"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open/link of open kakao"
+        android:textColor="#333333"
+        android:layout_marginStart="20dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/notosanskr_regular"
+        android:includeFontPadding="false"/>
+
+
+</LinearLayout>
