@@ -79,7 +79,7 @@ public class Fragment_mypage extends Fragment {
 
         binding.emergencySetting.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            //여기 액티비티 이동? 프레그먼트 이동?
+            //프레그먼트 이동 -> 프레그먼트로 바뀌면 진행
 
         });
 
@@ -130,8 +130,6 @@ public class Fragment_mypage extends Fragment {
                 outRect.set(20, 20, 20, 60);
             else
                 outRect.set(20, 20, 20, 20);
-
-            view.setBackgroundColor(0xFFECE9E9);
             ViewCompat.setElevation(view, 20.0f);
         }
 

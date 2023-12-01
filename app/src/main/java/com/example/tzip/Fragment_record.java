@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tzip.databinding.FragmentRecordBinding;
+import com.example.tzip.databinding.FragmentScheduleBinding;
+
+import org.jetbrains.annotations.Async;
 
 import com.example.tzip.nevigation_bar_test_code;
 
@@ -67,7 +70,22 @@ public class Fragment_record extends Fragment {
             transaction.replace(R.id.containers, mytriprecord);
             transaction.commit();
         });
+
+        binding.scheduleAddBtn.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            Fragment_schedule schedule = new Fragment_schedule();
+            transaction.replace(R.id.containers, schedule);
+            transaction.commit();
+        });
+
+        binding.recordAddBtn.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            RecordAdd recordadd = new RecordAdd();
+            transaction.replace(R.id.containers, recordadd);
+            transaction.commit();
+        });
         // Inflate the layout for this fragment
+        //네비게이션바로 인텐트 넘기는 거 전달해줘야될 수도
         return binding.getRoot();
     }
 }
