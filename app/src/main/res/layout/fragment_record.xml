@@ -61,7 +61,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/profile"
+                android:background="@drawable/profilepic"
                 android:layout_marginStart="20dp"
                 android:clipToOutline="true"
                 />
@@ -126,7 +126,7 @@
                 android:id="@+id/profilePic2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/profile"
+                android:background="@drawable/profilepic"
                 android:layout_marginStart="20dp"
                 android:clipToOutline="true"
                 />

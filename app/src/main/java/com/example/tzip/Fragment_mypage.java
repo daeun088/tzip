@@ -1,5 +1,6 @@
 package com.example.tzip;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -17,10 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMypageBinding;
 import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.TotpSecret;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,7 @@ public class Fragment_mypage extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     FragmentMypageBinding binding;
+
 
     private String mParam1;
     private String mParam2;
@@ -74,6 +80,10 @@ public class Fragment_mypage extends Fragment {
 
         binding.logout.setOnClickListener( v -> {
             FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getContext(), "로그아웃이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), Login.class);
+            getActivity().finish();
+            startActivity(intent);
             //로그아웃 되었습니다 띄우고 login activity로 이동
         });
 
@@ -82,6 +92,8 @@ public class Fragment_mypage extends Fragment {
             //프레그먼트 이동 -> 프레그먼트로 바뀌면 진행
 
         });
+
+
 
         // Inflate the layout for this fragment
         return binding.getRoot();

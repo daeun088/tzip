@@ -98,6 +98,7 @@ public class Login extends AppCompatActivity {
             intent.putExtra("USER_PROFILE", "email: " + user.getEmail() + "\n" + "uid: " + user.getUid());
 
             startActivity(intent);
+            finish();
         }
     }
 
