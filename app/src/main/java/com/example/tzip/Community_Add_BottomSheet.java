@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
@@ -13,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class ModalBottomSheet extends BottomSheetDialogFragment {
+public class Community_Add_BottomSheet extends BottomSheetDialogFragment {
 
     interface OnDismissListener {
         void onDismis(boolean isSwitchOn);

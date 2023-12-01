@@ -21,6 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CommunityAdd"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".CommunityLoad"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

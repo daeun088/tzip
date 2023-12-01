@@ -18,6 +18,7 @@
             android:bottomRightRadius="30dp"
             android:topLeftRadius="30dp"
             android:topRightRadius="30dp"/>
+            <padding android:right="10dp" android:left="10dp"/>
         </shape>
     </item>
     <!--채우기 레이아웃-->
