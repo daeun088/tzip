@@ -119,39 +119,44 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
 
     // 홈 프래그먼트에 대한 상단바 설정
-    private void setToolbarForHome() {
+    protected void setToolbarForHome() {
         setToolbarContent("홈", false);
         addButtonToToolbar("알림");
     }
 
     // 커뮤니티 프래그먼트에 대한 상단바 설정
-    private void setToolbarForCommunity() {
+    protected void setToolbarForCommunity() {
         setToolbarContent("커뮤", false);
         addButtonToToolbar("알림");
     }
 
     // 레코드 프래그먼트에 대한 상단바 설정
-    private void setToolbarForRecord() {
-        setToolbarContent("나의 여행 기록", false);
-        addButtonToToolbar("등록");
+    protected void setToolbarForRecord() {
+        setToolbarContent("여행 기록", false);
+        addButtonToToolbar("알림");
     }
 
     // 스케줄 프래그먼트에 대한 상단바 설정
-    private void setToolbarForSchedule() {
+    protected void setToolbarForSchedule() {
         setToolbarContent("나의 여행 일정", false);
         addButtonToToolbar("알림");
     }
 
     // 마이페이지 프래그먼트에 대한 상단바 설정
-    private void setToolbarForMypage() {
+    protected void setToolbarForMypage() {
         setToolbarContent("마이페이지", false);
         addButtonToToolbar("알림");
     }
     // 알림 프래그먼트에 대한 상단바 설정
-    private void setToolbarForNotification() {
+    protected void setToolbarForNotification() {
         setToolbarContent("알림", true);
         addButtonToToolbar("버튼 없애기");
         addButtonToToolbar("하단 바 없애기");
+    }
+    protected void setToolbarForAddRecord() {
+        setToolbarContent("나의 여행 기록", true);
+        addButtonToToolbar("하단 바 없애기");
+        addButtonToToolbar("알림");
     }
 
 
@@ -173,41 +178,49 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {//상단바의 뒤로가기 버튼 클릭시의 이벤트 처리
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
-                if (post_id == R.id.Home) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
-                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-                    navigationBarView.setVisibility(View.VISIBLE);//하단바의 visibility 바꿔주기
-                    setToolbarForHome();
-                    return true;
-                } else if (post_id == R.id.community) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentCommunity).commit();
-                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-                    navigationBarView.setVisibility(View.VISIBLE);
-                    setToolbarForCommunity();
-                    return true;
-                } else if (post_id == R.id.review) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentRecord).commit();
-                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-                    navigationBarView.setVisibility(View.VISIBLE);
-                    setToolbarForRecord();
-                    return true;
-                } else if (post_id == R.id.schedule) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedule).commit();
-                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-                    navigationBarView.setVisibility(View.VISIBLE);
-                    setToolbarForSchedule();
-                    return true;
-                } else if (post_id == R.id.mypage) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
-                    BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
-                    navigationBarView.setVisibility(View.VISIBLE);
-                    setToolbarForMypage();
-                    return true;
-                }
-                return false;
+                handleSomeMenuItemClick();
+                return true;
             }
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void handleSomeMenuItemClick() {
+        // 원하는 동작 수행
+        // 예: 네비게이션 바 변경
+        NevigationBarChange(post_id);
+    }
+
+    protected void NevigationBarChange(int post_id) {
+        // 네비게이션 바 변경에 대한 로직 작성
+        if (post_id == R.id.Home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);//하단바의 visibility 바꿔주기
+            setToolbarForHome();
+        } else if (post_id == R.id.community) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentCommunity).commit();
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);
+            setToolbarForCommunity();
+        } else if (post_id == R.id.review) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentRecord).commit();
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);
+            setToolbarForRecord();
+        } else if (post_id == R.id.schedule) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedule).commit();
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);
+            setToolbarForSchedule();
+        } else if (post_id == R.id.mypage) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);
+            setToolbarForMypage();
+        }
     }
 
 
@@ -219,7 +232,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
 
 
-        private void setToolbarContent (String title,boolean showBackButton){
+        protected void setToolbarContent (String title,boolean showBackButton){
             getSupportActionBar().setTitle(""); // 초기화
 
             toolbar_title.setText(title);
@@ -227,7 +240,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         }
 
         // 툴바에 버튼 추가
-        private void addButtonToToolbar (String toolbar_identifier){
+        protected void addButtonToToolbar (String toolbar_identifier){
             if (toolbar_identifier.equals("알림")) { //상단바에 알림 버튼이 필요한 경우
                 toolbar_button.setImageResource(R.drawable.ic_alert);
                 toolbar_button.setTag("알림");
@@ -262,7 +275,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
 
 
-    private void showToast(String message) {
+    protected void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

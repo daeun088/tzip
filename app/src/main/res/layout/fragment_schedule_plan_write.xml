@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:text="호텔"
         android:textSize="38sp"
+        android:fontFamily="@font/notosanskr_bold"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:paddingStart="25dp"
-        android:paddingVertical="15dp"
         android:background="@drawable/schedule_plan_write_title_edge"
         android:id="@+id/title"/>
 
