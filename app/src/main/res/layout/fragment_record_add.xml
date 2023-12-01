@@ -1,44 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_stroke"
-        android:gravity="top"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/inter"
-            android:drawablePadding="6sp"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp"
-            android:text="기록 추가하기"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            />
-
-        <ImageButton
-            android:id="@+id/Back_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:src="@drawable/back_btn"
-            android:contentDescription="뒤로가기 버튼"
-            />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -185,20 +154,38 @@
             android:textColor="@color/black"
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:id="@+id/trip_place"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:textSize="15sp"
             android:inputType="text"/>
-        <TextView
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="여행 날짜"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/notosanskr_bold"/>
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:inputType="text"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여행 날짜"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/notosanskr_bold"/>
+            <ImageButton
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/calendar"
+                android:id="@+id/trip_date_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/white"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/trip_date_text"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bottom_stroke_black" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -207,8 +194,9 @@
             android:textColor="@color/black"
             android:fontFamily="@font/notosanskr_bold"/>
         <EditText
-            android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:id="@+id/trip_friend_list"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
             android:inputType="text"/>
 
 
@@ -217,24 +205,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp">
+        android:paddingBottom="40dp">
 
         <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
 
         <Button
+            android:id="@+id/record_add_btn"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
             android:fontFamily="@font/notosanskr_bold"
-            android:layout_marginBottom="5dp"
             android:background="@drawable/orange_btn"
             android:text="기록하기"
+            android:includeFontPadding="false"
             android:textColor="@color/white" />
     </RelativeLayout>
+    </LinearLayout>
 
 
-</LinearLayout>
+</ScrollView>

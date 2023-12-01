@@ -9,5 +9,11 @@ public class FirebaseId {
     public static String nickname = "nickname";
 
     public static String profileImageUrl = "profileImageUrl";
+    public static String place = "place";
+    public static String date = "date";
+    public static String friend = "friend";
+    public static String recordTitle = "recordTitle";
+    public static String contentImage = "contentImage";
+    public static String timestamp = "timestamp";
 
 }

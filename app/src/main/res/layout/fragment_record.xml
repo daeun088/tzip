@@ -3,35 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="10dp"
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_stroke"
-        android:gravity="top"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/inter"
-            android:drawablePadding="6sp"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp"
-            android:text="여행 기록"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            />
-    </RelativeLayout>
-    <!--헤더-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +40,7 @@
                 />
 
             <ImageButton
+                android:id="@+id/friend_detail_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/detail_icon"
@@ -230,6 +209,7 @@
                 android:layout_marginLeft="25dp"
                 />
             <ImageButton
+                android:id="@+id/my_record_detail_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/detail_icon"
