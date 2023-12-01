@@ -78,6 +78,13 @@ public class Fragment_mypage extends Fragment {
         binding.friendList.setAdapter(new MyAdapter(list));
         binding.friendList.addItemDecoration(new MyItemDecoration());
 
+        binding.moveFriendList.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FriendList friendList = new FriendList();
+            transaction.replace(R.id.containers, friendList);
+            transaction.commit();
+        });
+
         binding.logout.setOnClickListener( v -> {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(getContext(), "로그아웃이 완료되었습니다.", Toast.LENGTH_SHORT).show();
