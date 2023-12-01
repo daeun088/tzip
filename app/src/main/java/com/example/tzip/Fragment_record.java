@@ -41,6 +41,14 @@ public class Fragment_record extends Fragment {
             activity.setToolbarForAddRecord(); // 액티비티의 메서드 호출
         }
     }
+    private void callMyTripRecordMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForMyTripRecord(); // 액티비티의 메서드 호출
+        }
+    }
+
+
 
     public static Fragment_record newInstance(String param1, String param2) {
         Fragment_record fragment = new Fragment_record();
@@ -73,6 +81,7 @@ public class Fragment_record extends Fragment {
 
         binding.myRecordDetailBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callMyTripRecordMethod();
             MyTripRecord mytriprecord = new MyTripRecord();
             transaction.replace(R.id.containers, mytriprecord);
             transaction.commit();

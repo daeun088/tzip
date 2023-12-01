@@ -158,6 +158,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         addButtonToToolbar("하단 바 없애기");
         addButtonToToolbar("알림");
     }
+    protected void setToolbarForMyTripRecord() {
+        setToolbarContent("나의 여행 기록", true);
+        addButtonToToolbar("알림");
+    }
 
 
     @Override
