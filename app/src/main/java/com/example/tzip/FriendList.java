@@ -3,10 +3,14 @@ package com.example.tzip;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.tzip.databinding.FragmentFriendListBinding;
+import com.example.tzip.databinding.FragmentFriendRequestBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +21,7 @@ public class FriendList extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    FragmentFriendListBinding binding;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -58,7 +63,15 @@ public class FriendList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentFriendListBinding.inflate(inflater, container, false);
+
+        binding.addFriendBtn.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            Fragment_friend_request fragmentFriendRequest = new Fragment_friend_request();
+            transaction.replace(R.id.containers, fragmentFriendRequest);
+            transaction.commit();
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend_list, container, false);
+        return binding.getRoot();
     }
 }

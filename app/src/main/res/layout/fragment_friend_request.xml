@@ -88,14 +88,13 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/friend_request_code_block">
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="13dp"
             android:fontFamily="@font/notosanskr_bold"
             android:includeFontPadding="false"
             android:paddingStart="12dp"
-            android:text="w12hf12w5qn15dlkqndiwqifwiq"
             android:textColor="@color/black" />
 
 
