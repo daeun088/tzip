@@ -46,17 +46,6 @@ public class Fragment_community_story extends Fragment implements ModalBottomShe
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_community_story, container, false);
-        Button button = v.findViewById(R.id.);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ModalBottomSheet modalBottomSheet = new ModalBottomSheet();
-                modalBottomSheet.setOnDismissListener(ThirdActivity.this);
-                modalBottomSheet.show(getSupportFragmentManager(), null);
-            }
-        });
-
-
         // Inflate the layout for this fragment
         return v;
     }
