@@ -119,36 +119,36 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
 
     // 홈 프래그먼트에 대한 상단바 설정
-    private void setToolbarForHome() {
+    protected void setToolbarForHome() {
         setToolbarContent("홈", false);
         addButtonToToolbar("알림");
     }
 
     // 커뮤니티 프래그먼트에 대한 상단바 설정
-    private void setToolbarForCommunity() {
+    protected void setToolbarForCommunity() {
         setToolbarContent("커뮤", false);
         addButtonToToolbar("알림");
     }
 
     // 레코드 프래그먼트에 대한 상단바 설정
-    private void setToolbarForRecord() {
+    protected void setToolbarForRecord() {
         setToolbarContent("나의 여행 기록", false);
-        addButtonToToolbar("등록");
+        addButtonToToolbar("알림");
     }
 
     // 스케줄 프래그먼트에 대한 상단바 설정
-    private void setToolbarForSchedule() {
+    protected void setToolbarForSchedule() {
         setToolbarContent("나의 여행 일정", false);
         addButtonToToolbar("알림");
     }
 
     // 마이페이지 프래그먼트에 대한 상단바 설정
-    private void setToolbarForMypage() {
+    protected void setToolbarForMypage() {
         setToolbarContent("마이페이지", false);
         addButtonToToolbar("알림");
     }
     // 알림 프래그먼트에 대한 상단바 설정
-    private void setToolbarForNotification() {
+    protected void setToolbarForNotification() {
         setToolbarContent("알림", true);
         addButtonToToolbar("버튼 없애기");
         addButtonToToolbar("하단 바 없애기");
@@ -219,7 +219,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
 
 
-        private void setToolbarContent (String title,boolean showBackButton){
+        protected void setToolbarContent (String title,boolean showBackButton){
             getSupportActionBar().setTitle(""); // 초기화
 
             toolbar_title.setText(title);
@@ -227,7 +227,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         }
 
         // 툴바에 버튼 추가
-        private void addButtonToToolbar (String toolbar_identifier){
+        protected void addButtonToToolbar (String toolbar_identifier){
             if (toolbar_identifier.equals("알림")) { //상단바에 알림 버튼이 필요한 경우
                 toolbar_button.setImageResource(R.drawable.ic_alert);
                 toolbar_button.setTag("알림");
@@ -262,7 +262,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
 
 
-    private void showToast(String message) {
+    protected void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

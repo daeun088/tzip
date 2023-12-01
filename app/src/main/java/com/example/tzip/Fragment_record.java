@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.tzip.databinding.FragmentRecordBinding;
 
+import com.example.tzip.nevigation_bar_test_code;
+
 public class Fragment_record extends Fragment {
     private FragmentRecordBinding binding;
     private static final String ARG_PARAM1 = "param1";
@@ -22,6 +24,13 @@ public class Fragment_record extends Fragment {
     public Fragment_record() {
         // Required empty public constructor
     }
+    private void callHomeMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForHome(); // 액티비티의 메서드 호출
+        }
+    }
+
 
     public static Fragment_record newInstance(String param1, String param2) {
         Fragment_record fragment = new Fragment_record();
