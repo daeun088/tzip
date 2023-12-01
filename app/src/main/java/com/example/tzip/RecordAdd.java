@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,14 +65,15 @@ public class RecordAdd extends Fragment {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
         binding.recordAddBtn.setOnClickListener( v -> {
-            CollectionReference record = recordDB.collection("record");
             String place = binding.tripPlace.getText().toString();
             String date = binding.tripDateText.getText().toString();
             String friend = binding.tripFriendList.getText().toString();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+            // 사용자의 uid로 기록 서브컬렉션에 접근
+            CollectionReference recordsCollection = recordDB.collection("record").document(uid).collection("records");
+
             Map<String, Object> recordMap = new HashMap<>();
-            recordMap.put(FirebaseId.documentId,uid);
             recordMap.put(FirebaseId.recordTitle, "null");
             recordMap.put(FirebaseId.place, place);
             recordMap.put(FirebaseId.date, date);
@@ -79,10 +81,17 @@ public class RecordAdd extends Fragment {
             recordMap.put(FirebaseId.contentImage, "null");
             recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
             recordMap.put("recordBlock", "null");
-            //record.document("record").set(recordMap); document 이름 지정 코드
-            record.document().set(recordMap);
 
-            updateUI();
+            // 서브컬렉션 'records'에 새로운 문서 추가
+            recordsCollection.add(recordMap)
+                    .addOnSuccessListener(documentReference -> {
+                        // 성공적으로 추가되었을 때의 작업
+                        updateUI();
+                    })
+                    .addOnFailureListener(e -> {
+                        // 실패했을 때의 작업
+                        Log.e("Firestore", "Error adding record document", e);
+                    });
         });
 
 
