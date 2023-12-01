@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import com.example.tzip.databinding.FragmentScheduleBinding;
 import org.jetbrains.annotations.Async;
 
 import com.example.tzip.nevigation_bar_test_code;
+import android.view.MenuItem;
 
 public class Fragment_record extends Fragment {
     private FragmentRecordBinding binding;
@@ -27,13 +29,18 @@ public class Fragment_record extends Fragment {
     public Fragment_record() {
         // Required empty public constructor
     }
-    private void callHomeMethod() {
+    private void callScheduleMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
-            activity.setToolbarForHome(); // 액티비티의 메서드 호출
+            activity.setToolbarForSchedule(); // 액티비티의 메서드 호출
         }
     }
-
+    private void callAddRecordMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForAddRecord(); // 액티비티의 메서드 호출
+        }
+    }
 
     public static Fragment_record newInstance(String param1, String param2) {
         Fragment_record fragment = new Fragment_record();
@@ -73,6 +80,7 @@ public class Fragment_record extends Fragment {
 
         binding.scheduleAddBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
             Fragment_schedule schedule = new Fragment_schedule();
             transaction.replace(R.id.containers, schedule);
             transaction.commit();
@@ -80,6 +88,7 @@ public class Fragment_record extends Fragment {
 
         binding.recordAddBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callAddRecordMethod();
             RecordAdd recordadd = new RecordAdd();
             transaction.replace(R.id.containers, recordadd);
             transaction.commit();

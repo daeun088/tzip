@@ -197,6 +197,7 @@
             android:layout_height="wrap_content"
             android:text="설정 완료"
             android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
             android:layout_gravity="center"
             android:paddingVertical="1dp"
             android:textColor="@color/white"
