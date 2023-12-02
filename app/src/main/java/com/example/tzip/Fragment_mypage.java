@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMypageBinding;
@@ -30,6 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.tzip.nevigation_bar_test_code;
+
 
 public class Fragment_mypage extends Fragment {
 
@@ -38,12 +41,18 @@ public class Fragment_mypage extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     FragmentMypageBinding binding;
 
-
     private String mParam1;
     private String mParam2;
 
     public Fragment_mypage() {
         // Required empty public constructor
+    }
+
+    private void callEmergecyMessageSettingMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForEmergencyMessage(); // 액티비티의 메서드 호출
+        }
     }
 
     public static Fragment_mypage newInstance(String param1, String param2) {
@@ -96,11 +105,11 @@ public class Fragment_mypage extends Fragment {
 
         binding.emergencySetting.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            //프레그먼트 이동 -> 프레그먼트로 바뀌면 진행
-
+            callEmergecyMessageSettingMethod();
+            Fragment_emergency fragmentEmergency = new Fragment_emergency();
+            transaction.replace(R.id.containers, fragmentEmergency);
+            transaction.commit();
         });
-
-
 
         // Inflate the layout for this fragment
         return binding.getRoot();

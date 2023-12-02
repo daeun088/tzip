@@ -158,6 +158,19 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         addButtonToToolbar("하단 바 없애기");
         addButtonToToolbar("알림");
     }
+    protected void setToolbarForMyTripRecord() {
+        setToolbarContent("나의 여행 기록", true);
+        addButtonToToolbar("알림");
+    }
+    protected void setToolbarForFriendTripRecord() {
+        setToolbarContent("친구의 여행 기록", true);
+        addButtonToToolbar("알림");
+    }
+    protected void setToolbarForEmergencyMessage() {
+        setToolbarContent("긴급메시지", true);
+        addButtonToToolbar("버튼 없애기");
+        addButtonToToolbar("하단 바 없애기");
+    }
 
 
     @Override

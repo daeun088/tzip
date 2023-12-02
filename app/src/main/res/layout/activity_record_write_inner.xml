@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="20dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="일정 블럭 추가하기"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="새로 추가하기"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/edittext_style"
+        android:fontFamily="@font/notosanskr_bold"
+        android:hint="날짜를 입력하세요"
+        android:includeFontPadding="false"
+        android:textColor="#000000"
+        android:layout_marginVertical="10dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/edittext_style"
+        android:hint="장소를 입력하세요"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:textColor="#000000"
+        android:layout_marginVertical="10dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/linerac"
+            android:fontFamily="@font/notosanskr_bold"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:layout_marginStart="10dp"
+            android:text="시간을 설정하세요"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/trip_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:src="@drawable/schedule_plan_clock"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orange_btn"
+        android:text="모집하기"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:textSize="15sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>
