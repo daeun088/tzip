@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +25,36 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMypageBinding;
 import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.TotpSecret;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.example.tzip.nevigation_bar_test_code;
 
 
 public class Fragment_mypage extends Fragment {
-
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
+
+    String uid = currentUser.getUid();
+
+    FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+    DocumentReference userDocRef = userDB.collection("user").document(uid);
+    //Firestore에서 문서 참조
+
     FragmentMypageBinding binding;
 
     private String mParam1;
@@ -78,6 +94,20 @@ public class Fragment_mypage extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentMypageBinding.inflate(inflater, container, false);
 
+        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String nickname = document.getString("nickname");
+                        binding.userNickname.setText(nickname);
+
+                    }
+                }
+            }
+        }); // user collection에서 uid로 접근 -> nickname 가져옴
+
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add("Item=" + i);
@@ -86,6 +116,7 @@ public class Fragment_mypage extends Fragment {
         binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
         binding.friendList.setAdapter(new MyAdapter(list));
         binding.friendList.addItemDecoration(new MyItemDecoration());
+
 
         binding.moveFriendList.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

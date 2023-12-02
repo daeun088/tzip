@@ -79,7 +79,15 @@ public class RecordWriting extends Fragment {
             // Get a default Storage bucket
         });
 
-        // 수정된 부분: 올바른 binding 객체 반환
+        binding.galleryBtn.setOnClickListener( v -> {
+            //갤러리에서 사진 받아오면 현재 입력 중인 여행 블럭에 사진 추가한 후
+            //밑에 다시 입력할 수 있는 뷰 띄우기
+        });
+
+        binding.addScheduleBtn.setOnClickListener( v -> {
+            //바텀시트 띄우기
+        });
+
         return binding.getRoot();
     }
 

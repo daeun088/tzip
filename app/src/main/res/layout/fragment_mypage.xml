@@ -21,9 +21,9 @@
             android:clipToOutline="true"
             />
         <TextView
+            android:id="@+id/user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김민"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/profilePic"
             android:textColor="@color/black"
