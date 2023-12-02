@@ -122,19 +122,19 @@
 
             <TextView
                 android:id="@+id/emergency_message_title"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="2dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/notification_alert_edge"
+                android:fontFamily="@font/notosanskr_bold"
                 android:gravity="center"
                 android:text="긴급 상황 시 친구들에게 보낼\n    메시지를 입력해주세요."
                 android:textColor="@color/black"
-                android:fontFamily="@font/notosanskr_bold"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -157,6 +157,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/emergency_setting_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="설정 완료"

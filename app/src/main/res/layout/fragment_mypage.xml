@@ -16,14 +16,14 @@
             android:id="@+id/profilePic"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@drawable/profile"
+            android:background="@drawable/profilepic"
             android:layout_marginStart="20dp"
             android:clipToOutline="true"
             />
         <TextView
+            android:id="@+id/user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김민"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/profilePic"
             android:textColor="@color/black"
@@ -80,6 +80,7 @@
         />
 
     <RelativeLayout
+        android:id="@+id/move_friend_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="10dp"

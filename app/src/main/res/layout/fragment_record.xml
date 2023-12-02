@@ -61,7 +61,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/profile"
+                android:background="@drawable/profilepic"
                 android:layout_marginStart="20dp"
                 android:clipToOutline="true"
                 />
@@ -126,7 +126,7 @@
                 android:id="@+id/profilePic2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/profile"
+                android:background="@drawable/profilepic"
                 android:layout_marginStart="20dp"
                 android:clipToOutline="true"
                 />
@@ -386,16 +386,7 @@
                     android:layout_margin="50dp"
                     android:fontFamily="@font/inter"/>
 
-                <Button
-                    android:id="@+id/schedule_add_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일정 추가하기"
-                    android:background="@drawable/orange_btn"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    />
+
                 <Button
                     android:id="@+id/record_add_btn"
                     android:layout_width="wrap_content"
@@ -403,7 +394,7 @@
                     android:text="기록 추가하기"
                     android:background="@drawable/orange_btn"
                     android:textColor="@color/white"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
                     />
             </LinearLayout>

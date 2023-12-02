@@ -96,13 +96,6 @@ public class Fragment_record extends Fragment {
             transaction.commit();
         });
 
-        binding.scheduleAddBtn.setOnClickListener( v -> {
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
-            Fragment_schedule schedule = new Fragment_schedule();
-            transaction.replace(R.id.containers, schedule);
-            transaction.commit();
-        });
 
         binding.recordAddBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
