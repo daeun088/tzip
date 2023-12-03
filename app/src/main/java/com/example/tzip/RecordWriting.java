@@ -10,17 +10,21 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -36,6 +40,7 @@ public class RecordWriting extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
 
     public RecordWriting() {
         // Required empty public constructor
@@ -84,12 +89,26 @@ public class RecordWriting extends Fragment {
             //밑에 다시 입력할 수 있는 뷰 띄우기
         });
 
+        // 바텀시트 띄우기 여기서부터 <민>
+        dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
+
         binding.addScheduleBtn.setOnClickListener( v -> {
-            //바텀시트 띄우기
+            View contentView = RecordWriting.this.getLayoutInflater().inflate(R.layout.fregment_record_write_inner, null);
+            dialog.setContentView(contentView);
+
+            attachListenerToContentView(contentView);
+
+            dialog.show();
         });
+
+        // 여기까지 <민>
 
         return binding.getRoot();
     }
+
+    private void attachListenerToContentView(View contentView) {
+
+    } // 이너페이지 안에 있는 애들 리스너 달아주기 <민>
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
