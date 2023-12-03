@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +40,50 @@ public class Fragment_home extends Fragment {
     public Fragment_home() {
         // Required empty public constructor
     }
+
+    // 카드 밑에 버튼들을 위함
+
+    private void callScheduleMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForSchedule(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callRecordMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForRecord(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callCommunityMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForCommunity(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callMypageMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForMypage(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callAlertMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForEmergencyMessage(); // 액티비티의 메서드 호출
+        }
+    }
+
+    //카드 밑에 버튼들을 위함
+
+    public static Fragment_home newInstance() {
+        return new Fragment_home();
+    }
+
 
     public static Fragment_home newInstance(String param1, String param2) {
         Fragment_home fragment = new Fragment_home();
@@ -71,6 +117,61 @@ public class Fragment_home extends Fragment {
         binding.recyclerviewHomeCard.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
         binding.recyclerviewHomeCard.setAdapter(new CardAdapter(list));
         binding.recyclerviewHomeCard.addItemDecoration(new MyItemDecoration());
+
+        // 카드 밑 메뉴 버튼
+
+        binding.homeGoSchedule.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_schedule schedule = new Fragment_schedule();
+            transaction.replace(R.id.containers, schedule);
+            transaction.commit();
+        });
+
+        binding.homeGoRecord.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_record record = new Fragment_record();
+            transaction.replace(R.id.containers, record);
+            transaction.commit();
+        });
+
+        binding.homeGoCommunity.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_community community = new Fragment_community();
+            transaction.replace(R.id.containers, community);
+            transaction.commit();
+        });
+
+        binding.homeGoMypage.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_mypage mypage = new Fragment_mypage();
+            transaction.replace(R.id.containers, mypage);
+            transaction.commit();
+        });
+
+        binding.homeGoAlert.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_emergency emergency = new Fragment_emergency();
+            transaction.replace(R.id.containers, emergency);
+            transaction.commit();
+        });
+
+        // 카드 밑 메뉴 버튼
+
+        // see all
+        binding.homeGoSeeall.setOnClickListener( v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callScheduleMethod();
+            Fragment_community community = new Fragment_community();
+            transaction.replace(R.id.containers, community);
+            transaction.commit();
+        });
+
+        // see all
 
         return binding.getRoot();
     }
