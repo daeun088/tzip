@@ -1,19 +1,16 @@
 package com.example.tzip;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class FregmentRecordWriteInner extends BottomSheetDialogFragment{
+public class RecordWritingInner extends BottomSheetDialogFragment{
 
     @Override
     @Nullable
