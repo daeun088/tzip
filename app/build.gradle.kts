@@ -68,6 +68,7 @@ dependencies {
     // FirebaseUI Storage only
     implementation ("com.firebaseui:firebase-ui-storage:8.0.2")
 
+
     // For @GlideModule
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 

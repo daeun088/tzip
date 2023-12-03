@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMypageBinding;
-import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
+import com.example.tzip.databinding.ItemMypageFriendBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -147,9 +147,9 @@ public class Fragment_mypage extends Fragment {
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        private MypageFriendRecyclerviewBinding binding;
+        private ItemMypageFriendBinding binding;
 
-        private MyViewHolder(MypageFriendRecyclerviewBinding binding) {
+        private MyViewHolder(ItemMypageFriendBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -164,7 +164,7 @@ public class Fragment_mypage extends Fragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            MypageFriendRecyclerviewBinding binding = MypageFriendRecyclerviewBinding.inflate(LayoutInflater.from(parent.getContext()) ,parent, false);
+            ItemMypageFriendBinding binding = ItemMypageFriendBinding.inflate(LayoutInflater.from(parent.getContext()) ,parent, false);
             return new MyViewHolder(binding);
         }
 
