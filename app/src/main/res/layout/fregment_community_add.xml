@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textColor="@color/black"
+            android:background="@drawable/bottom_stroke"
+            android:text="기존 여행 일정 불러오기"/>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/friend_record_layout"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/trip_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="5dp"
+                    android:text="강릉 2박 3일 여행" />
+
+                <ImageView
+                    android:id="@+id/location_icon2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/trip_title2"
+                    android:src="@drawable/location_pin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/location_icon2"
+                    android:layout_toEndOf="@+id/location_icon2"
+                    android:text="강릉"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/location_icon2"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:text="2023.10.12~10.14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBaseline="@id/trip_title2"
+                    android:src="@drawable/go_btn" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/friend_record_layout"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/trip_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="5dp"
+                    android:text="강릉 2박 3일 여행" />
+
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/trip_title"
+                    android:src="@drawable/location_pin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/location_icon"
+                    android:layout_toEndOf="@+id/location_icon"
+                    android:text="강릉"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/location_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:text="2023.10.12~10.14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBaseline="@id/trip_title"
+                    android:src="@drawable/go_btn" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textColor="@color/black"
+            android:background="@drawable/bottom_stroke"
+            android:text="새로운 여행 기록하기"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="40dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여행 장소"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/notosanskr_bold"/>
+            <EditText
+                android:id="@+id/trip_place"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:textSize="15sp"
+                android:inputType="text"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="여행 날짜"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/notosanskr_bold"/>
+                <ImageButton
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/calendar"
+                    android:id="@+id/trip_date_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/trip_date_text"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bottom_stroke_black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여행 참여자"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/notosanskr_bold"/>
+            <EditText
+                android:id="@+id/trip_friend_list"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:inputType="text"/>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp">
+
+            <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
+
+            <Button
+                android:id="@+id/record_add_btn"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/notosanskr_bold"
+                android:background="@drawable/orange_btn"
+                android:text="기록하기"
+                android:includeFontPadding="false"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>
