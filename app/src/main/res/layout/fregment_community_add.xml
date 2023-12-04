@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -150,10 +149,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여행 장소"
+                android:text="일정 장소"
                 android:textSize="15sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/notosanskr_bold"/>
+                android:fontFamily="@font/notosanskr_bold"
+                android:includeFontPadding="false"/>
             <EditText
                 android:id="@+id/trip_place"
                 android:layout_width="280dp"

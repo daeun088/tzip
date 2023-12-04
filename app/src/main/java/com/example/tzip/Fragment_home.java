@@ -18,12 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.tzip.databinding.FragmentCommunityBinding;
 import com.example.tzip.databinding.FragmentHomeBinding;
+import com.example.tzip.databinding.FragmentRecordAddBinding;
 import com.example.tzip.databinding.ItemCommunityInnerBinding;
 import com.example.tzip.databinding.ItemHomeCardBinding;
 import com.example.tzip.databinding.ItemHomeListBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,11 @@ public class Fragment_home extends Fragment {
 
     FragmentHomeBinding binding;
     ItemHomeListBinding binding2;
+
+
+
+    // 리사이클러뷰 가져오기
+    TextView dataPickerText;
 
     public Fragment_home() {
         // Required empty public constructor

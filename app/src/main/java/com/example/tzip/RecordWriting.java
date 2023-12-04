@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.example.tzip.databinding.FragmentRecordWritingBinding;
+import com.example.tzip.databinding.FregmentRecordWriteInnerBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

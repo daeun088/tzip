@@ -71,7 +71,10 @@ public class RecordAdd extends Fragment {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             // 사용자의 uid로 기록 서브컬렉션에 접근
-            CollectionReference recordsCollection = recordDB.collection("record").document(uid).collection("records");
+            CollectionReference recordsCollection = recordDB
+                    .collection("record")
+                    .document(uid)
+                    .collection("records");
 
             Map<String, Object> recordMap = new HashMap<>();
             recordMap.put(FirebaseId.recordTitle, "null");
