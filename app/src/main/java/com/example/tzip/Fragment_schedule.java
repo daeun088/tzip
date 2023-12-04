@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tzip.databinding.FragmentScheduleBinding;
-import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
 import com.example.tzip.databinding.ScheduleMainRecyclerviewBinding;
 
 import java.util.ArrayList;

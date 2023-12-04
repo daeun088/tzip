@@ -36,6 +36,7 @@
         android:background="@drawable/friend_request_code_block">
 
         <TextView
+            android:id="@+id/my_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="13dp"
@@ -46,6 +47,7 @@
             android:textColor="@color/black" />
 
         <ImageButton
+            android:id="@+id/copy_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -89,6 +91,7 @@
         android:background="@drawable/friend_request_code_block">
 
         <EditText
+            android:id="@+id/friend_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="13dp"
@@ -96,9 +99,18 @@
             android:includeFontPadding="false"
             android:paddingStart="12dp"
             android:textColor="@color/black" />
-
-
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추가하기"
+        android:background="@drawable/orange_btn"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"/>
 
 
 </LinearLayout>

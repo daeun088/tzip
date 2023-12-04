@@ -12,9 +12,10 @@
         android:orientation="horizontal"
         android:paddingTop="20dp">
         <TextView
+            android:id="@+id/friend_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="친구 710"
+            android:text="친구"
             android:fontFamily="@font/notosanskr_regular"
             android:layout_gravity="center"
             android:paddingLeft="20dp"
@@ -29,8 +30,24 @@
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/no_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="친구를 추가해주세요."
+            android:fontFamily="@font/notosanskr_bold"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            android:textColor="@color/orange" />
+    </FrameLayout>
+
 
 </LinearLayout>
