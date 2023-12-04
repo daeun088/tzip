@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class RecordWritingInner extends BottomSheetDialogFragment{

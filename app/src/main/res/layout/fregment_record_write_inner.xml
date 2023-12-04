@@ -36,6 +36,7 @@
         android:textSize="20sp" />
 
     <EditText
+        android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
@@ -46,6 +47,7 @@
         android:layout_marginVertical="10dp"/>
 
     <EditText
+        android:id="@+id/detail_place"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
@@ -56,17 +58,18 @@
         android:layout_marginVertical="10dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/time_setting"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_marginTop="10dp"
+        android:layout_height="42dp"
+        android:background="@drawable/edittext_style">
 
         <TextView
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:background="@drawable/linerac"
             android:fontFamily="@font/notosanskr_bold"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
-            android:layout_marginStart="10dp"
             android:text="시간을 설정하세요"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -88,6 +91,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/orange_btn"
