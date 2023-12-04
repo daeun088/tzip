@@ -67,10 +67,7 @@ public class FriendList extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentFriendListBinding.inflate(inflater, container, false);
 
-
         retrieveFriendIds();
-
-
 
         binding.addFriendBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -100,7 +97,7 @@ public class FriendList extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // 오류 처리
+                    //에러처리
                 });
     }
 
@@ -125,10 +122,21 @@ public class FriendList extends Fragment {
         }
     }
     private void setRecyclerView(List<String> friendNames) {
-        binding.friendNum.setText("친구 " + friendNames.size());
-        binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.friendList.setAdapter(new MyAdapter(friendNames));
-        binding.friendList.addItemDecoration(new MyItemDecoration());
+        if (friendNames.isEmpty()) {
+            // 친구가 없을 때
+            binding.friendNum.setText("친구 0");
+            binding.friendList.setVisibility(View.GONE);
+            binding.noFriends.setVisibility(View.VISIBLE);
+        } else {
+            // 친구가 있을 때
+            binding.friendNum.setText("친구 " + friendNames.size());
+            binding.friendList.setVisibility(View.VISIBLE);
+            binding.noFriends.setVisibility(View.GONE);
+
+            binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext()));
+            binding.friendList.setAdapter(new MyAdapter(friendNames));
+            binding.friendList.addItemDecoration(new MyItemDecoration());
+        }
     }
 
 

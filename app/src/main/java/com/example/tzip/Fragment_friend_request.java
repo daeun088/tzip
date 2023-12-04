@@ -109,8 +109,8 @@ public class Fragment_friend_request extends Fragment {
                                         // 업데이트가 성공한 경우
                                         Toast.makeText(getContext(), "친구 추가 완료", Toast.LENGTH_SHORT).show();
                                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                        Fragment_mypage fragmentMypage = new Fragment_mypage();
-                                        transaction.replace(R.id.containers, fragmentMypage);
+                                        FriendList friendList = new FriendList();
+                                        transaction.replace(R.id.containers, friendList);
                                         transaction.commit();
                                     } else {
                                         // 업데이트가 실패한 경우
