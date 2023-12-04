@@ -55,6 +55,7 @@ public class Fragment_mypage extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForEmergencyMessage(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.mypage;
         }
     }
 
@@ -62,6 +63,7 @@ public class Fragment_mypage extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForFriendList(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.mypage;
         }
     }
 

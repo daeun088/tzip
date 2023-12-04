@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class schedule_plan_tab extends FragmentActivity {
+public class schedule_plan_tab_ extends FragmentActivity {
 
     TabLayout tabs;
 
@@ -15,7 +15,7 @@ public class schedule_plan_tab extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_plan_tab);
+        setContentView(R.layout.activity_nevigation_bar_test_code);
 
         fragment_schedule_plan = new Fragment_schedule_plan();
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment_schedule_plan).commit();

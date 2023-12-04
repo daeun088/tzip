@@ -41,6 +41,7 @@ public class RecordAdd extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForRecordWriting(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.Record_add;
         }
     }
 
