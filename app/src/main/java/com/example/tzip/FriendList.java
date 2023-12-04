@@ -22,6 +22,9 @@ import android.view.ViewGroup;
 import com.example.tzip.databinding.FragmentFriendListBinding;
 import com.example.tzip.databinding.FragmentFriendRequestBinding;
 import com.example.tzip.databinding.ItemFriendListBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,8 @@ import java.util.List;
 public class FriendList extends Fragment {
 
     FragmentFriendListBinding binding;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseFirestore friendDB = FirebaseFirestore.getInstance();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -55,22 +60,17 @@ public class FriendList extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+//TODO: friend collection → my uid document → friend Id 갖고 옴
+//TODO: friend Id를 갖고 user collection에 접근 → 각 friend Id document로 field 갖고오기 → name, profile pic 띄우기
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFriendListBinding.inflate(inflater, container, false);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add("Item=" + i);
-        }
 
-        binding.friendNum.setText("친구 "+list.size());
+        retrieveFriendIds();
 
-        binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.friendList.setAdapter(new FriendList.MyAdapter(list));
-        binding.friendList.addItemDecoration(new FriendList.MyItemDecoration());
+
 
         binding.addFriendBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -84,7 +84,55 @@ public class FriendList extends Fragment {
         return binding.getRoot();
     }
 
-    private class MyViewHolder extends RecyclerView.ViewHolder {
+    private void retrieveFriendIds() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Firestore에서 friendIds 가져오기
+        db.collection("friends").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> friendIds = (List<String>) documentSnapshot.get("friendIds");
+                        if (friendIds != null) {
+                            // friendIds를 사용하여 사용자 정보 조회
+                            retrieveUserInformation(friendIds);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // 오류 처리
+                });
+    }
+
+    private void retrieveUserInformation(List<String> friendIds) {
+        List<String> friendNames = new ArrayList<>();
+
+        // friendIds에 해당하는 사용자 정보를 조회하고 friendNames에 추가
+        for (String friendId : friendIds) {
+            FirebaseFirestore.getInstance().collection("user").document(friendId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String friendName = documentSnapshot.getString("nickname");
+                            friendNames.add(friendName);
+
+                            // friendNames가 완성되면 RecyclerView에 설정
+                            setRecyclerView(friendNames);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // 오류 처리
+                    });
+        }
+    }
+    private void setRecyclerView(List<String> friendNames) {
+        binding.friendNum.setText("친구 " + friendNames.size());
+        binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.friendList.setAdapter(new MyAdapter(friendNames));
+        binding.friendList.addItemDecoration(new MyItemDecoration());
+    }
+
+
+    private static class MyViewHolder extends RecyclerView.ViewHolder {
         private ItemFriendListBinding binding;
 
         private MyViewHolder(ItemFriendListBinding binding) {
@@ -93,32 +141,33 @@ public class FriendList extends Fragment {
         }
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<FriendList.MyViewHolder> {
-        private List<String> list;
+    private static class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+        private List<String> friendNames;
 
-        private MyAdapter(List<String> list) {
-            this.list = list;
+        private MyAdapter(List<String> friendNames) {
+            this.friendNames = friendNames;
         }
+
         @NonNull
         @Override
-        public FriendList.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemFriendListBinding binding = ItemFriendListBinding.inflate(LayoutInflater.from(parent.getContext()) ,parent, false);
-            return new FriendList.MyViewHolder(binding);
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ItemFriendListBinding binding = ItemFriendListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new MyViewHolder(binding);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull FriendList.MyViewHolder holder, int position) {
-            String text = list.get(position);
-            holder.binding.friendName.setText(text);
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            String friendName = friendNames.get(position);
+            holder.binding.friendName.setText(friendName);
         }
 
         @Override
         public int getItemCount() {
-            return list.size();
+            return friendNames.size();
         }
     }
 
-    private class MyItemDecoration extends RecyclerView.ItemDecoration {
+    private static class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             int index = parent.getChildAdapterPosition(view) + 1;
@@ -127,20 +176,6 @@ public class FriendList extends Fragment {
                 outRect.set(20, 20, 20, 60);
             else
                 outRect.set(20, 20, 20, 20);
-        }
-
-        @Override
-        public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            Drawable dr = ResourcesCompat.getDrawable(getResources(), R.drawable.setting, null);
-
-            int width = parent.getWidth();
-            int height = parent.getHeight();
-            int drWidth = dr.getIntrinsicWidth();
-            int drHeight = dr.getIntrinsicHeight();
-            int left = width / 2 - drWidth / 2;
-            int top = height / 2 - drHeight / 2;
-
-            c.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.setting), left, top, null);
         }
     }
 }
