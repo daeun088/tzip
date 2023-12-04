@@ -77,14 +77,14 @@ public class RecordWriting extends Fragment {
             binding.tripPlace.setText("여행장소 - " + place);
         }//add에서 입력된 데이터 불러오기
 
-        binding.recordMainImageBtn.setOnClickListener( v -> {
+        binding.recordMainImageBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, PICK_IMAGE_REQUEST);
             // Get a default Storage bucket
         });
 
-        binding.galleryBtn.setOnClickListener( v -> {
+        binding.galleryBtn.setOnClickListener(v -> {
             //갤러리에서 사진 받아오면 현재 입력 중인 여행 블럭에 사진 추가한 후
             //밑에 다시 입력할 수 있는 뷰 띄우기
         });
@@ -92,7 +92,7 @@ public class RecordWriting extends Fragment {
         // 바텀시트 띄우기 여기서부터 <민>
         dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
 
-        binding.addScheduleBtn.setOnClickListener( v -> {
+        binding.addScheduleBtn.setOnClickListener(v -> {
             View contentView = RecordWriting.this.getLayoutInflater().inflate(R.layout.fregment_record_write_inner, null);
             dialog.setContentView(contentView);
 
@@ -107,7 +107,6 @@ public class RecordWriting extends Fragment {
     }
 
     private void attachListenerToContentView(View contentView) {
-
     } // 이너페이지 안에 있는 애들 리스너 달아주기 <민>
 
     @Override
