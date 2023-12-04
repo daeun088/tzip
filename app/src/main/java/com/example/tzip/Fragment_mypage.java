@@ -58,6 +58,13 @@ public class Fragment_mypage extends Fragment {
         }
     }
 
+    private void callFriendListMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForFriendList(); // 액티비티의 메서드 호출
+        }
+    }
+
     public static Fragment_mypage newInstance(String param1, String param2) {
         Fragment_mypage fragment = new Fragment_mypage();
         Bundle args = new Bundle();
@@ -99,6 +106,7 @@ public class Fragment_mypage extends Fragment {
 
         binding.moveFriendList.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callFriendListMethod();
             FriendList friendList = new FriendList();
             transaction.replace(R.id.containers, friendList);
             transaction.commit();

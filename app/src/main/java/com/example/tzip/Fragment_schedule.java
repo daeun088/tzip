@@ -81,7 +81,7 @@ public class Fragment_schedule extends Fragment {
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
 
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 2; i++) {
             list.add("Item=" + i);
         }
 
@@ -142,16 +142,7 @@ public class Fragment_schedule extends Fragment {
 
         @Override
         public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            Drawable dr = ResourcesCompat.getDrawable(getResources(), R.drawable.setting, null);
 
-            int width = parent.getWidth();
-            int height = parent.getHeight();
-            int drWidth = dr.getIntrinsicWidth();
-            int drHeight = dr.getIntrinsicHeight();
-            int left = width / 2 - drWidth / 2;
-            int top = height / 2 - drHeight / 2;
-
-            c.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.setting), left, top, null);
         }
     }
 }

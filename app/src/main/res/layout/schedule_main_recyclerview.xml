@@ -4,18 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/schedule_default_block" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="17dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/schedule_plan_block"
         android:id="@+id/schedule_block">
 
@@ -79,6 +72,15 @@
 
 
     </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/schedule_default_block" />
+
 
 
 </LinearLayout>
