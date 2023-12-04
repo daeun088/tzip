@@ -45,6 +45,10 @@
             android:name=".nevigation_bar"
             android:exported="false" />
         <activity
+            android:name=".Fragment_community"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".nevigation_bar_test_code"
             android:exported="false" />
         <activity
