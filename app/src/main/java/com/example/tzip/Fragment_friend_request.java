@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -76,6 +78,10 @@ public class Fragment_friend_request extends Fragment {
 
             String myId = auth.getCurrentUser().getUid();
 
+            if (friendId.isEmpty()) {
+                Toast.makeText(getContext(), "친구 아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             // friendId와 현재 사용자의 UID 비교
             if (friendId.equals(myId)) {
                 // friendId와 현재 사용자의 UID가 같은 경우
@@ -94,18 +100,21 @@ public class Fragment_friend_request extends Fragment {
                         String currentUserId = auth.getCurrentUser().getUid();
                         DocumentReference friendRef = db.collection("friends").document(currentUserId);
 
-                        // 해당 document의 필드로 friendId 추가
+                        // friendIds 필드가 이미 있는 경우에는 FieldValue.arrayUnion을 사용하여 값을 추가
                         friendRef.set(new HashMap<String, Object>() {{
-                                    put("friendIds", Collections.singletonList(friendId));
-                                }})
+                                    put("friendIds", FieldValue.arrayUnion(friendId));
+                                }}, SetOptions.merge())
                                 .addOnCompleteListener(updateTask -> {
                                     if (updateTask.isSuccessful()) {
                                         // 업데이트가 성공한 경우
                                         Toast.makeText(getContext(), "친구 추가 완료", Toast.LENGTH_SHORT).show();
-                                        // 여기서 마이페이지로 이동하는 코드를 추가
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        Fragment_mypage fragmentMypage = new Fragment_mypage();
+                                        transaction.replace(R.id.containers, fragmentMypage);
+                                        transaction.commit();
                                     } else {
                                         // 업데이트가 실패한 경우
-                                        Toast.makeText(getContext(), "친구 추가 실패 : "+updateTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "친구 추가 실패 : " + updateTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else {
@@ -117,7 +126,6 @@ public class Fragment_friend_request extends Fragment {
                 }
             });
         });
-
 
         return binding.getRoot();
     }
