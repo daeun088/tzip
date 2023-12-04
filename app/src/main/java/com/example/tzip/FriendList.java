@@ -40,6 +40,13 @@ public class FriendList extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private void callFriendRequestMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForFriendRequest(); // 액티비티의 메서드 호출
+        }
+    }
+
     public FriendList() {
         // Required empty public constructor
     }
@@ -71,6 +78,7 @@ public class FriendList extends Fragment {
 
         binding.addFriendBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callFriendRequestMethod();
             Fragment_friend_request fragmentFriendRequest = new Fragment_friend_request();
             transaction.replace(R.id.containers, fragmentFriendRequest);
             transaction.commit();

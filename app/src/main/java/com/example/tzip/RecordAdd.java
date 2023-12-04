@@ -37,6 +37,12 @@ public class RecordAdd extends Fragment {
     FragmentRecordAddBinding binding;
     Calendar calendar;
 
+    private void callAddRecordWritingMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForRecordWriting(); // 액티비티의 메서드 호출
+        }
+    }
 
     public RecordAdd() {
         // Required empty public constructor
@@ -135,8 +141,10 @@ public class RecordAdd extends Fragment {
         bundle.putString(FirebaseId.place, binding.tripPlace.getText().toString());
         recordWriting.setArguments(bundle);
 
+        callAddRecordWritingMethod();
         transaction.replace(R.id.containers, recordWriting);
         transaction.commit();
+
     }
 
 }

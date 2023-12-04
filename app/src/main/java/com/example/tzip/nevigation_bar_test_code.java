@@ -126,7 +126,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     // 커뮤니티 프래그먼트에 대한 상단바 설정
     protected void setToolbarForCommunity() {
-        setToolbarContent("커뮤", false);
+        setToolbarContent("여행 일정 공유", false);
         addButtonToToolbar("알림");
     }
 
@@ -170,6 +170,19 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         setToolbarContent("긴급메시지", true);
         addButtonToToolbar("버튼 없애기");
         addButtonToToolbar("하단 바 없애기");
+    }
+    protected void setToolbarForRecordWriting(){
+        setToolbarContent("글쓰기", true);
+        addButtonToToolbar("등록");
+        addButtonToToolbar("하단 바 없애기");
+    }
+    protected void setToolbarForFriendList(){
+        setToolbarContent("친구 목록", true);
+        addButtonToToolbar("알림");
+    }
+    protected void setToolbarForFriendRequest(){
+        setToolbarContent("친구 추가", true);
+        addButtonToToolbar("알림");
     }
 
 
