@@ -165,7 +165,6 @@ public class RecordWriting extends Fragment {
             Log.e("Firestore", "UID or document name is null");
         }
     }
-ㅇ
 
 
 
