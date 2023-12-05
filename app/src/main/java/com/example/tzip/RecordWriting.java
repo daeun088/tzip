@@ -11,7 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.example.tzip.databinding.FregmentRecordWriteInnerBinding;
+import com.example.tzip.databinding.ItemWritingOfPlaceBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,8 +38,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +51,9 @@ public class RecordWriting extends Fragment {
     FragmentRecordWritingBinding binding;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE_REQUEST = 1;
+    final String[] lastestDocumentName = new String[1];
+    private List<RecordItem> recordItems = new ArrayList<>();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
@@ -78,6 +88,7 @@ public class RecordWriting extends Fragment {
             binding.tripPlace.setText("여행장소 - " + place);
         }
 
+        //main image 띄우기
         binding.recordMainImageBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
@@ -88,6 +99,12 @@ public class RecordWriting extends Fragment {
             //갤러리에서 사진 받아오면 현재 입력 중인 여행 블럭에 사진 추가한 후
             //밑에 다시 입력할 수 있는 뷰 띄우기
         });
+
+
+
+        RecordItemAdapter adapter = new RecordItemAdapter(recordItems);
+        binding.dayItem.setAdapter(adapter);
+        binding.dayItem.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // 바텀시트 띄우기 여기서부터 <민>
         dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
@@ -102,6 +119,116 @@ public class RecordWriting extends Fragment {
 
         return binding.getRoot();
     }
+
+    private void retrievePlace() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // uid와 lastestDocumentName[0]가 null이 아닌지 확인
+        if (uid != null && lastestDocumentName[0] != null) {
+            db.collection("recordBlock").document(uid).collection(lastestDocumentName[0])
+                    .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                        if (e != null) {
+                            // 에러가 발생한 경우 처리
+                            Log.e("Firestore", "Error getting data: ", e);
+                            return;
+                        }
+
+                        // queryDocumentSnapshots가 null이 아니고 비어있지 않은 경우
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            // 데이터를 저장할 리스트 생성
+                            List<RecordItem> updatedRecordItems = new ArrayList<>();
+
+                            for (DocumentSnapshot document : queryDocumentSnapshots) {
+                                String date = document.getString(FirebaseId.date);
+                                String detailPlace = document.getId();
+                                String time = document.getString(FirebaseId.time);
+
+                                RecordItem recordItem = new RecordItem();
+                                recordItem.setDate(date);
+                                recordItem.setTime(time);
+                                recordItem.setBlockTitle(detailPlace);
+
+                                // recordItems 리스트에 데이터 추가
+                                updatedRecordItems.add(recordItem);
+                            }
+
+                            // 데이터를 갱신하고 RecyclerView 어댑터에 변경을 알림
+                            recordItems.clear();
+                            recordItems.addAll(updatedRecordItems);
+                            if (binding.dayItem.getAdapter() != null) {
+                                binding.dayItem.getAdapter().notifyDataSetChanged();
+                            }
+                        }
+                    });
+        } else {
+            // uid나 lastestDocumentName[0]이 null이라면 에러 로그 출력
+            Log.e("Firestore", "UID or document name is null");
+        }
+    }
+ㅇ
+
+
+
+    public class RecordItemAdapter extends RecyclerView.Adapter<RecordItemAdapter.ViewHolder> {
+        private List<RecordItem> recordItems;
+
+        public RecordItemAdapter(List<RecordItem> recordItems) {
+            this.recordItems = recordItems;
+            // 날짜 및 시간에 따라 정렬
+            Collections.sort(recordItems, (item1, item2) -> {
+                int dateComparison = item1.getDate().compareTo(item2.getDate());
+                if (dateComparison == 0) {
+                    // Date가 같으면 Time으로 정렬
+                    return item1.getTime().compareTo(item2.getTime());
+                }
+                return dateComparison;
+            });
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ItemWritingOfPlaceBinding binding = ItemWritingOfPlaceBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
+        }
+
+        // ... 기존 코드 유지
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            RecordItem recordItem = recordItems.get(position);
+
+            holder.binding.date.setText(recordItem.getDate());
+            holder.binding.blockTitle.setText(recordItem.getBlockTitle());
+            holder.binding.blockTime.setText(recordItem.getTime());
+            // 나머지 속성도 설정
+
+            // 이미지 로딩 및 클릭 이벤트 처리
+            // ...
+
+            // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
+            // 첫 번째 아이템의 경우에만 날짜를 표시하도록 설정
+            if (position == 0 || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
+                holder.binding.date.setVisibility(View.VISIBLE);
+            } else {
+                holder.binding.date.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return recordItems.size();
+        }
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ItemWritingOfPlaceBinding binding;
+
+            public ViewHolder(ItemWritingOfPlaceBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+        }
+    }
+
+
 
     private void attachListenerToContentView(View contentView) {
         FregmentRecordWriteInnerBinding binding = FregmentRecordWriteInnerBinding.bind(contentView);
@@ -149,9 +276,8 @@ public class RecordWriting extends Fragment {
             String date = binding.date.getText().toString();
             String detailPlace = binding.detailPlace.getText().toString();
             String time = binding.timeText.getText().toString();
+            retrievePlace();
 
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            final String[] lastestDocumentName = new String[1];
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference recordCollection = db.collection("record").document(uid).collection("records");
