@@ -8,7 +8,7 @@
     app:behavior_hideable="true"
     app:behavior_peekHeight="20dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:background="#FFFFFF">
+    android:background="@drawable/writing_bottom_layout">
 
     <TextView
         android:layout_width="match_parent"
@@ -31,6 +31,7 @@
         android:textSize="20sp" />
 
     <EditText
+        android:id="@+id/community_inner_title"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
@@ -73,12 +74,14 @@
                 android:layout_marginEnd="10dp"/>
 
             <ImageButton
+                android:id="@+id/community_inner_minus1"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginHorizontal="10dp"
                 android:src="@drawable/community_inner_minus" />
 
             <TextView
+                android:id="@+id/community_inner_presentpeople"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosanskr_bold"
@@ -88,6 +91,7 @@
                 android:textSize="20sp" />
 
             <ImageButton
+                android:id="@+id/community_inner_plus1"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginHorizontal="10dp"
@@ -113,12 +117,14 @@
                 android:layout_marginEnd="10dp"/>
 
             <ImageButton
+                android:id="@+id/community_inner_minus2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginHorizontal="10dp"
                 android:src="@drawable/community_inner_minus" />
 
             <TextView
+                android:id="@+id/community_inner_allpeople"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosanskr_bold"
@@ -128,6 +134,7 @@
                 android:textSize="20sp" />
 
             <ImageButton
+                android:id="@+id/community_inner_plus2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginHorizontal="10dp"
@@ -149,6 +156,7 @@
         android:layout_marginVertical="5dp"/>
 
     <EditText
+        android:id="@+id/community_inner_kakao_link"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
@@ -169,6 +177,7 @@
         android:layout_marginVertical="5dp"/>
 
     <EditText
+        android:id="@+id/community_inner_more_explain"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
@@ -179,6 +188,7 @@
         android:layout_marginVertical="5dp"/>
 
     <Button
+        android:id="@+id/community_inner_invite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/orange_btn"
