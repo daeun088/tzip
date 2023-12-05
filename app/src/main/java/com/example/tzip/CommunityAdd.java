@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,11 +39,18 @@ import io.reactivex.rxjava3.annotations.NonNull;
 
 public class CommunityAdd extends Fragment {
     FregmentCommunityAddBinding binding;
+    ActivityCommunityInnerpageBinding binding2;
 
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
 
     private FirebaseFirestore communityDB = FirebaseFirestore.getInstance();
 
+    private void callAddCommunityStoryMethod() {
+        if(getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setTollbarForCommunityStory();
+        }
+    }
 
 
     public static CommunityAdd newInstance() {
@@ -148,51 +156,52 @@ public class CommunityAdd extends Fragment {
     private int allPeople = 1;
 
     private void attachListenerToContentView(View contentView) {
-        ActivityCommunityInnerpageBinding binding = ActivityCommunityInnerpageBinding.bind(contentView);
 
-        binding.communityInnerAllpeople.setText("1");
-        binding.communityInnerPresentpeople.setText("1");
+        binding2 = ActivityCommunityInnerpageBinding.bind(contentView);
+
+        binding2.communityInnerAllpeople.setText("1");
+        binding2.communityInnerPresentpeople.setText("1");
 
 
-        binding.communityInnerMinus1.setOnClickListener(v -> {
+        binding2.communityInnerMinus1.setOnClickListener(v -> {
             if (prePeople == 1) {
                 Toast.makeText(getContext(), "최소 인원입니다.", Toast.LENGTH_SHORT).show();
             } else {
                 prePeople++;
-                binding.communityInnerPresentpeople.setText(String.valueOf(prePeople));
+                binding2.communityInnerPresentpeople.setText(String.valueOf(prePeople));
             }
         });
-        binding.communityInnerMinus2.setOnClickListener(v -> {
+        binding2.communityInnerMinus2.setOnClickListener(v -> {
             if (allPeople == prePeople) {
                 Toast.makeText(getContext(), "최소 인원입니다.", Toast.LENGTH_SHORT).show();
             } else {
                 allPeople--;
-                binding.communityInnerAllpeople.setText(String.valueOf(allPeople));
+                binding2.communityInnerAllpeople.setText(String.valueOf(allPeople));
             }
         });
-        binding.communityInnerPlus1.setOnClickListener(v -> {
+        binding2.communityInnerPlus1.setOnClickListener(v -> {
             if (prePeople == allPeople) {
                 Toast.makeText(getContext(), "최대 인원입니다.", Toast.LENGTH_SHORT).show();
             } else {
                 prePeople++;
-                binding.communityInnerPresentpeople.setText(String.valueOf(prePeople));
+                binding2.communityInnerPresentpeople.setText(String.valueOf(prePeople));
             }
         });
-        binding.communityInnerPlus2.setOnClickListener(v -> {
+        binding2.communityInnerPlus2.setOnClickListener(v -> {
             if (allPeople == 99) {
                 Toast.makeText(getContext(), "최대 인원입니다.", Toast.LENGTH_SHORT).show();
             } else {
                 allPeople++;
-                binding.communityInnerAllpeople.setText(String.valueOf(allPeople));
+                binding2.communityInnerAllpeople.setText(String.valueOf(allPeople));
             }
         });
 
-        binding.communityInnerInvite.setOnClickListener(v -> {
-            String title = binding.communityInnerTitle.getText().toString();
-            String prePeople = binding.communityInnerPresentpeople.getText().toString();
-            String allPeople = binding.communityInnerAllpeople.getText().toString();
-            String kakaoLink = binding.communityInnerKakaoLink.getText().toString();
-            String moreExp = binding.communityInnerMoreExplain.getText().toString();
+        binding2.communityInnerInvite.setOnClickListener(v -> {
+            String title = binding2.communityInnerTitle.getText().toString();
+            String prePeople = binding2.communityInnerPresentpeople.getText().toString();
+            String allPeople = binding2.communityInnerAllpeople.getText().toString();
+            String kakaoLink = binding2.communityInnerKakaoLink.getText().toString();
+            String moreExp = binding2.communityInnerMoreExplain.getText().toString();
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -224,9 +233,9 @@ public class CommunityAdd extends Fragment {
                                 communityDocMap.put(FirebaseId.kakaoLink, kakaoLink);
                                 communityDocMap.put(FirebaseId.moreExplain, moreExp);
 
-                                if(TextUtils.isEmpty(title) || TextUtils.isEmpty(kakaoLink) || TextUtils.isEmpty(moreExp)) {
+                                if (TextUtils.isEmpty(title) || TextUtils.isEmpty(kakaoLink) || TextUtils.isEmpty(moreExp)) {
                                     communityDocument.delete();
-                                    Log.d("firebase","입력하지 않아 삭제되었습니다.");
+                                    Log.d("firebase", "입력하지 않아 삭제되었습니다.");
                                     dialog.dismiss();
                                 } else {
 
@@ -236,6 +245,7 @@ public class CommunityAdd extends Fragment {
                                                 // 성공
                                                 Toast.makeText(getContext(), "minininnimini", Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
+                                                updateUI();
                                             })
                                             .addOnFailureListener(e -> {
                                                 Log.e("Firestore", "Error updating document", e);
@@ -252,7 +262,26 @@ public class CommunityAdd extends Fragment {
                     });
 
         });
+    }
 
+    private void updateUI() {
+         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+         Fragment_community_story fragmentCommunityStory = new Fragment_community_story();
+
+         Bundle bundle = new Bundle();
+         bundle.putString(FirebaseId.place, binding.communityAddPlace.getText().toString());
+         bundle.putString(FirebaseId.date, binding.communityAddDate.getText().toString());
+         bundle.putString(FirebaseId.time, binding.communityAddTime.getText().toString());
+         bundle.putString(FirebaseId.title, binding2.communityInnerTitle.getText().toString());
+         bundle.putString(FirebaseId.peopleCurrent, binding2.communityInnerPresentpeople.getText().toString());
+         bundle.putString(FirebaseId.peopleAll, binding2.communityInnerAllpeople.getText().toString());
+         bundle.putString(FirebaseId.kakaoLink, binding2.communityInnerKakaoLink.getText().toString());
+         bundle.putString(FirebaseId.moreExplain, binding2.communityInnerMoreExplain.getText().toString());
+         fragmentCommunityStory.setArguments(bundle);
+
+         callAddCommunityStoryMethod();
+         transaction.replace(R.id.containers, fragmentCommunityStory);
+         transaction.commit();
 
     }
 }
