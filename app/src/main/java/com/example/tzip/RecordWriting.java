@@ -30,6 +30,7 @@ import com.example.tzip.databinding.ItemWritingOfPlaceBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -38,9 +39,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -156,7 +159,7 @@ public class RecordWriting extends Fragment {
                             recordItems.clear();
                             recordItems.addAll(updatedRecordItems);
                             if (binding.dayItem.getAdapter() != null) {
-                                binding.dayItem.getAdapter().notifyDataSetChanged();
+                                ((RecordItemAdapter) binding.dayItem.getAdapter()).setRecordItems(recordItems);
                             }
                         }
                     });
@@ -168,6 +171,7 @@ public class RecordWriting extends Fragment {
 
 
 
+
     public class RecordItemAdapter extends RecyclerView.Adapter<RecordItemAdapter.ViewHolder> {
         private List<RecordItem> recordItems;
 
@@ -175,14 +179,17 @@ public class RecordWriting extends Fragment {
             this.recordItems = recordItems;
             // 날짜 및 시간에 따라 정렬
             Collections.sort(recordItems, (item1, item2) -> {
-                int dateComparison = item1.getDate().compareTo(item2.getDate());
-                if (dateComparison == 0) {
-                    // Date가 같으면 Time으로 정렬
-                    return item1.getTime().compareTo(item2.getTime());
+                Date date1 = item1.getDateTimeObject();
+                Date date2 = item2.getDateTimeObject();
+
+                if (date1 != null && date2 != null) {
+                    return date1.compareTo(date2);
+                } else {
+                    return 0;
                 }
-                return dateComparison;
             });
         }
+
 
         @NonNull
         @Override
@@ -192,6 +199,11 @@ public class RecordWriting extends Fragment {
         }
 
         // ... 기존 코드 유지
+        public void setRecordItems(List<RecordItem> recordItems) {
+            this.recordItems = recordItems;
+            notifyDataSetChanged(); // Notify the adapter about the data set change
+        }
+
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             RecordItem recordItem = recordItems.get(position);
@@ -199,6 +211,9 @@ public class RecordWriting extends Fragment {
             holder.binding.date.setText(recordItem.getDate());
             holder.binding.blockTitle.setText(recordItem.getBlockTitle());
             holder.binding.blockTime.setText(recordItem.getTime());
+            holder.binding.imageBtn.setOnClickListener( v -> {
+                //이미지뷰에 띄우기
+            });
             // 나머지 속성도 설정
 
             // 이미지 로딩 및 클릭 이벤트 처리
@@ -275,8 +290,6 @@ public class RecordWriting extends Fragment {
             String date = binding.date.getText().toString();
             String detailPlace = binding.detailPlace.getText().toString();
             String time = binding.timeText.getText().toString();
-            retrievePlace();
-
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference recordCollection = db.collection("record").document(uid).collection("records");
@@ -305,8 +318,8 @@ public class RecordWriting extends Fragment {
 
                         recordBlockCollection.document(detailPlace).set(recordBlockMap)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(getContext(), "gr", Toast.LENGTH_SHORT).show();
-                                    //TODO : 바텀시트 닫기
+                                    retrievePlace();
+                                    dialog.dismiss();
                                 })
                                 .addOnFailureListener(e -> {
                                     // 추가 실패 시 처리
@@ -339,12 +352,8 @@ public class RecordWriting extends Fragment {
     }
 
     private void uploadImageToFirebaseStorage(Bitmap bitmap) {
-        // Get a default Storage bucket
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        // Points to the root reference
         StorageReference storageRef = storage.getReference();
-
-        // Create a reference for a new image
         StorageReference mountainImagesRef = storageRef.child(getPath("jpg"));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -353,14 +362,58 @@ public class RecordWriting extends Fragment {
 
         UploadTask uploadTask = mountainImagesRef.putBytes(data);
         uploadTask.addOnFailureListener(exception -> {
-            // Handle unsuccessful uploads
             Log.d("daeun", "이미지뷰의 이미지 업로드 실패", exception);
         }).addOnSuccessListener(taskSnapshot -> {
-            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            // ...
             Log.d("daeun", "이미지뷰의 이미지 업로드 성공");
+            mountainImagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Firestore 문서 업데이트
+                updateFirestoreDocumentWithImageUrl(uri.toString());
+            }).addOnFailureListener(exception -> {
+                // 다운로드 URL 가져오기 실패 시 처리
+                Log.e("daeun", "이미지의 다운로드 URL을 가져오지 못했습니다.", exception);
+            });
         });
     }
+
+    private void updateFirestoreDocumentWithImageUrl(String imageUrl) {
+        // Firestore 문서 업데이트
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference recordCollection = db
+                .collection("record")
+                .document(uid)
+                .collection("records");
+
+        Map<String, Object> recordMap = new HashMap<>();
+        recordMap.put(FirebaseId.contentImage, imageUrl); // contentImage 필드에 이미지 URL 추가
+
+        // 문서를 가져오기 위한 쿼리
+        Query query = recordCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
+
+        query.get().addOnSuccessListener(querySnapshot -> {
+            if (!querySnapshot.isEmpty()) {
+                // 문서가 존재하는 경우
+                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                lastestDocumentName[0] = document.getId();
+
+                // 이미지 URL을 포함하여 Firestore 문서 업데이트
+                recordCollection.document(lastestDocumentName[0]).update(recordMap)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            // 업데이트 실패 시 처리
+                            Log.e("daeun", "Firestore 문서 업데이트 실패", e);
+                        });
+            } else {
+                // 문서가 없는 경우 새로운 문서를 생성하거나 처리할 작업 수행
+                // 여기에 필요한 로직 추가
+            }
+        }).addOnFailureListener(e -> {
+            // 쿼리 실패 시 처리
+            Log.e("daeun", "Firestore 쿼리 실패", e);
+        });
+    }
+
 
 
     public String getTitle(){

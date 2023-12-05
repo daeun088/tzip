@@ -46,6 +46,9 @@ public class MyTripRecord extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMyTripRecordBinding.inflate(inflater, container, false);
+
+        //retrieverRecords();
+
         binding.recordAddBtn.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             RecordAdd recordadd = new RecordAdd();
