@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import com.example.tzip.databinding.FragmentCommunityBinding;
 import com.example.tzip.databinding.FragmentMypageBinding;
 import com.example.tzip.databinding.ItemCommunityInnerBinding;
-import com.example.tzip.databinding.MypageFriendRecyclerviewBinding;
 
 import java.util.ArrayList;
 import java.util.List;

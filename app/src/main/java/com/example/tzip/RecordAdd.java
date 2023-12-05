@@ -83,13 +83,12 @@ public class RecordAdd extends Fragment {
                     .collection("records");
 
             Map<String, Object> recordMap = new HashMap<>();
-            recordMap.put(FirebaseId.recordTitle, "null");
+            recordMap.put(FirebaseId.title, "null");
             recordMap.put(FirebaseId.place, place);
             recordMap.put(FirebaseId.date, date);
             recordMap.put(FirebaseId.friend, friend);
             recordMap.put(FirebaseId.contentImage, "null");
             recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
-            recordMap.put("recordBlock", "null");
 
             // 서브컬렉션 'records'에 새로운 문서 추가
             recordsCollection.add(recordMap)

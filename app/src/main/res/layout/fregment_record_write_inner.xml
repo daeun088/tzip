@@ -21,6 +21,7 @@
         android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/schedule_block_list"
         android:layout_width="match_parent"
         android:layout_height="90dp"/>
 
@@ -35,15 +36,18 @@
         android:textColor="#000000"
         android:textSize="20sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/edittext_style"
         android:fontFamily="@font/notosanskr_bold"
         android:hint="날짜를 입력하세요"
+
+        android:gravity=""
         android:includeFontPadding="false"
         android:textColor="#000000"
+        android:textSize="18sp"
         android:layout_marginVertical="10dp"/>
 
     <EditText
@@ -65,12 +69,13 @@
         android:background="@drawable/edittext_style">
 
         <TextView
+            android:id="@+id/time_text"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/notosanskr_bold"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
-            android:text="시간을 설정하세요"
+            android:hint="시간을 설정하세요"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/orange_btn"
-        android:text="모집하기"
+        android:text="추가하기"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/notosanskr_bold"
         android:includeFontPadding="false"

@@ -34,9 +34,10 @@
                 android:shadowDx="7.0"
                 android:shadowDy="7.0"
                 android:shadowRadius="7.0"
-                android:text="제목을 입력하세요."
+                android:hint="제목을 입력하세요."
                 android:layout_centerVertical="true"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
 
             <ImageButton
                 android:id="@+id/record_main_image_btn"
