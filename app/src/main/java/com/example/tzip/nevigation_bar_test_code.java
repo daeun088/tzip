@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.tabs.TabLayout;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,6 +24,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,8 +44,16 @@ import org.w3c.dom.Text;
 
 import android.app.Activity;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 public class nevigation_bar_test_code extends AppCompatActivity {
 
+    TabLayout tabs;
+
+    RelativeLayout schedule_block;
 
     private Toolbar toolbar;
     Fragment_community fragmentCommunity;
@@ -51,6 +62,24 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     Fragment_home fragmentHome;
     Fragment_mypage fragmentMypage;
     Fragment_notification fragmentNotification;
+
+    Fragment_schedule_plan fragmentSchedulePlan;
+
+    Fragment_schedule_plan_write fragmentSchedulePlanWrite;
+
+    FriendTripRecord friendTripRecord;
+
+    MyTripRecord myTripRecord;
+
+    RecordAdd recordAdd;
+
+    RecordLoad recordLoad;
+
+    RecordWriting recordWriting;
+
+    Fragment_friend_request fragmentFriendRequest;
+
+    FriendList friendList;
 
     TextView toolbar_title;
     ImageButton toolbar_button;
@@ -72,7 +101,15 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         fragmentHome = new Fragment_home();
         fragmentMypage = new Fragment_mypage();
         fragmentNotification = new Fragment_notification();
-
+        fragmentSchedulePlan = new Fragment_schedule_plan();
+        fragmentSchedulePlanWrite = new Fragment_schedule_plan_write();
+        friendTripRecord = new FriendTripRecord();
+        myTripRecord = new MyTripRecord();
+        recordAdd = new RecordAdd();
+        recordLoad = new RecordLoad();
+        recordWriting = new RecordWriting();
+        fragmentFriendRequest = new Fragment_friend_request();
+        friendList = new FriendList();
 
         toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +120,8 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
         BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
         navigationBarView.setSelectedItemId(R.id.Home);
+
+
 
         // 프래그먼트 초기화 및 화면 설정
         initFragments();
@@ -116,6 +155,42 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                 return false;
             }
         });
+
+        View fragment_schedule_plan_tab_ = getLayoutInflater().inflate(R.layout.fragment_schedule_plan_tab_, null);
+        tabs = fragment_schedule_plan_tab_.findViewById(R.id.tab_layout);
+
+        tabs.addTab(tabs.newTab().setText("친구")); //setText는 임시로 해둔것, 이후에 tab만들 때 달력하고 연동해서 선택한 날짜로 setText하면 될듯
+        tabs.addTab(tabs.newTab().setText("채팅"));
+        tabs.addTab(tabs.newTab().setText("더보기"));
+
+        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                Fragment selected = null;
+                if(position == 0)
+                    selected = fragmentSchedulePlan;
+                else if(position == 1)
+                    selected = fragmentSchedulePlan;
+                else if(position == 2)
+                    selected = fragmentSchedulePlan; //여행 기간이 설정되면 그 일수만큼 position과 fragment가 추가되도록 하면 될듯
+                else
+                    selected = fragmentSchedulePlan;
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
     }
 
     // 홈 프래그먼트에 대한 상단바 설정
@@ -184,7 +259,14 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         setToolbarContent("친구 추가", true);
         addButtonToToolbar("알림");
     }
-
+    protected void setToolbarForSchedulePlan(){
+        setToolbarContent("일정", true);
+        addButtonToToolbar("알림");
+    }
+    protected void setToolbarForSchedulePlanWrite(){
+        setToolbarContent("상세 일정", true);
+        addButtonToToolbar("알림");
+    }
 
     @Override
     public void onBackPressed() {//밑줄 상관 x
@@ -213,39 +295,66 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     }
 
-    private void handleSomeMenuItemClick() {
+    protected void handleSomeMenuItemClick() {
         // 원하는 동작 수행
         // 예: 네비게이션 바 변경
         NevigationBarChange(post_id);
     }
 
-    protected void NevigationBarChange(int post_id) {
+    protected void NevigationBarChange(int post_id_) {
         // 네비게이션 바 변경에 대한 로직 작성
-        if (post_id == R.id.Home) {
+        if (post_id_ == R.id.Home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
             BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
             navigationBarView.setVisibility(View.VISIBLE);//하단바의 visibility 바꿔주기
             setToolbarForHome();
-        } else if (post_id == R.id.community) {
+        } else if (post_id_ == R.id.community) {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentCommunity).commit();
             BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
             navigationBarView.setVisibility(View.VISIBLE);
             setToolbarForCommunity();
-        } else if (post_id == R.id.review) {
+        } else if (post_id_ == R.id.review) {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentRecord).commit();
             BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
             navigationBarView.setVisibility(View.VISIBLE);
             setToolbarForRecord();
-        } else if (post_id == R.id.schedule) {
+        } else if (post_id_ == R.id.schedule) {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedule).commit();
             BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
             navigationBarView.setVisibility(View.VISIBLE);
             setToolbarForSchedule();
-        } else if (post_id == R.id.mypage) {
+        } else if (post_id_ == R.id.mypage) {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentMypage).commit();
             BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
             navigationBarView.setVisibility(View.VISIBLE);
             setToolbarForMypage();
+        }else if (post_id_ == R.id.Schedule_plan) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedulePlan).commit();
+            setToolbarForSchedulePlan();
+            post_id = R.id.schedule;
+        } else if (post_id_ == R.id.Schedule_plan_write) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentSchedulePlanWrite).commit();
+            setToolbarForSchedulePlanWrite();
+            post_id = R.id.Schedule_plan;
+        } else if (post_id_ == R.id.Record_add) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, recordAdd).commit();
+            setToolbarForAddRecord();
+            post_id = R.id.review;
+        } else if (post_id_ == R.id.My_trip_record) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, myTripRecord).commit();
+            setToolbarForMyTripRecord();
+            post_id = R.id.review;
+        } else if (post_id_ == R.id.Friend_trip_record) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendTripRecord).commit();
+            setToolbarForFriendTripRecord();
+            post_id = R.id.review;
+        } else if (post_id_ == R.id.Friend_request) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentFriendRequest).commit();
+            setToolbarForFriendRequest();
+        } else if (post_id_ == R.id.Friend_list) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendList).commit();
+            setToolbarForFriendList();
+            post_id = R.id.mypage;
         }
     }
 

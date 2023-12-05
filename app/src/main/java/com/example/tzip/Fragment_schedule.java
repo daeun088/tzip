@@ -10,15 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.tzip.databinding.FragmentScheduleBinding;
 import com.example.tzip.databinding.ScheduleMainRecyclerviewBinding;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,17 @@ public class Fragment_schedule extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    Fragment_schedule_plan fragmentSchedulePlan;
+
     FragmentScheduleBinding binding;
+
+    private void callSchedulePlanMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForSchedulePlan(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.schedule;
+        }
+    }
 
     public Fragment_schedule() {
         // Required empty public constructor
@@ -99,6 +112,16 @@ public class Fragment_schedule extends Fragment {
         private MyViewHolder(ScheduleMainRecyclerviewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.scheduleBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 클릭 이벤트 처리
+                    callSchedulePlanMethod();
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentSchedulePlan = new Fragment_schedule_plan();
+                    transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
+                }
+            });
         }
     }
 

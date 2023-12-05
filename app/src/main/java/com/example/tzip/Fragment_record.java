@@ -38,12 +38,14 @@ public class Fragment_record extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForAddRecord(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.review;
         }
     }
     private void callMyTripRecordMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForMyTripRecord(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.review;
         }
     }
 
@@ -51,6 +53,7 @@ public class Fragment_record extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForFriendTripRecord(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.review;
         }
     }
 

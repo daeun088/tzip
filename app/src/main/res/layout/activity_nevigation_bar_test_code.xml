@@ -11,8 +11,8 @@
         android:id="@+id/containers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_below="@+id/custom_toolbar"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/tab_layout"
         android:layout_above="@+id/bottom_navigationview">
 
     </FrameLayout>
@@ -63,6 +63,47 @@
         app:menu="@menu/bottom_menu"
         android:backgroundTint="@color/bottom_nevigation_bar_color_selector"
         app:itemTextColor="@color/bottom_nevigation_bar_color_selector"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.002"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/nevigation_bar_edge"
+        app:tabIndicatorColor="@color/orange"
+        android:layout_below="@+id/custom_toolbar"
+        android:visibility="gone"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/home_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="월\n13일" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/user_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="화\n14일" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/setting_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수\n15일" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 
 </RelativeLayout>
