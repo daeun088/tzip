@@ -104,10 +104,10 @@ public class Fragment_schedule_plan extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // 클릭 이벤트 처리
-                    callSchedulePlanWriteMethod();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragmentSchedulePlanWrite = new Fragment_schedule_plan_write();
                     transaction.replace(R.id.containers, fragmentSchedulePlanWrite).commit();
+                    callSchedulePlanWriteMethod();
                 }
             });
         }
