@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
@@ -52,6 +54,8 @@ import androidx.viewpager.widget.ViewPager;
 public class nevigation_bar_test_code extends AppCompatActivity {
 
     TabLayout tabs;
+
+    ImageView logoImageView;
 
     RelativeLayout schedule_block;
 
@@ -120,7 +124,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
         BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
         navigationBarView.setSelectedItemId(R.id.Home);
-
 
 
         // 프래그먼트 초기화 및 화면 설정
@@ -195,8 +198,9 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     // 홈 프래그먼트에 대한 상단바 설정
     protected void setToolbarForHome() {
-        setToolbarContent("홈", false);
+        setToolbarContent("", false);
         addButtonToToolbar("알림");
+        addButtonToToolbar("로고");
     }
 
     // 커뮤니티 프래그먼트에 대한 상단바 설정
@@ -377,6 +381,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
         // 툴바에 버튼 추가
         protected void addButtonToToolbar (String toolbar_identifier){
+            ImageView existingLogoImageView = findViewById(R.id.logoImageVIew);
+            if (existingLogoImageView != null) {
+                toolbar.removeView(existingLogoImageView); // 기존 ImageView 삭제
+            }
             if (toolbar_identifier.equals("알림")) { //상단바에 알림 버튼이 필요한 경우
                 toolbar_button.setImageResource(R.drawable.ic_alert);
                 toolbar_button.setTag("알림");
@@ -390,6 +398,16 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                 navigationBarView.setVisibility(View.GONE);
             } else if (toolbar_identifier.equals("버튼 없애기")) {
                 toolbar_button.setVisibility(View.GONE);
+            } else if (toolbar_identifier.equals("로고")) {
+                toolbar_button.setVisibility(View.VISIBLE);
+                logoImageView = new ImageView(this);
+                logoImageView.setId(R.id.logoImageVIew);
+                logoImageView.setImageResource(R.drawable.logo);
+                Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                layoutParams.gravity = Gravity.START;
+                toolbar.addView(logoImageView, layoutParams);
             }
 
             toolbar_button.setOnClickListener(view -> {
