@@ -267,6 +267,11 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         setToolbarContent("상세 일정", true);
         addButtonToToolbar("알림");
     }
+    protected void setToolbarForCommunityAdd(){
+        setToolbarContent("일정 참여자 구하기",true);
+        addButtonToToolbar("알림");
+        addButtonToToolbar("하단 바 없애기");
+    }
 
     @Override
     public void onBackPressed() {//밑줄 상관 x

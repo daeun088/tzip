@@ -1,28 +1,49 @@
 package com.example.tzip;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.example.tzip.databinding.ActivityCommunityInnerpageBinding;
 import com.example.tzip.databinding.FregmentCommunityAddBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import io.reactivex.rxjava3.annotations.NonNull;
 
 public class CommunityAdd extends Fragment {
-
-    private FirestoreRecyclerAdapter adapter;
-
     FregmentCommunityAddBinding binding;
+
+    private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
 
     private FirebaseFirestore communityDB = FirebaseFirestore.getInstance();
 
-    Calendar calendar;
+
 
     public static CommunityAdd newInstance() {
         CommunityAdd fragment = new CommunityAdd();
@@ -40,6 +61,198 @@ public class CommunityAdd extends Fragment {
                              Bundle savedInstanceState) {
         binding = FregmentCommunityAddBinding.inflate(inflater, container, false);
 
+        binding.communityAddDateBtn.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dateDialog = new DatePickerDialog(getContext(),
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            String formattedDate = String.format(Locale.getDefault(), "%d년 %d월 %d일", year, month + 1, dayOfMonth);
+                            binding.communityAddDate.setText(formattedDate);
+                        }
+                    }, year, month, day
+            );
+            dateDialog.show();
+        });
+
+        binding.communityAddTime.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+
+                            // Set the formatted time to your TextView
+                            binding.communityAddTime.setText(formattedTime);
+                        }
+                    }, hour, minute, false);
+            timePickerDialog.show();
+        });
+
+        dialog = new BottomSheetDialog(getContext());
+
+        binding.communityAddBtn.setOnClickListener(v -> {
+            String date = binding.communityAddDate.getText().toString();
+            String place = binding.communityAddPlace.getText().toString();
+            String time = binding.communityAddTime.getText().toString();
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            final String[] lastestDocumentName = new String[1];
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference communityCollection = db.collection("community").document(uid).collection("storys");
+
+            Map<String, Object> communityAddMap = new HashMap<>();
+            communityAddMap.put(FirebaseId.title, "null");
+            communityAddMap.put(FirebaseId.date, date);
+            communityAddMap.put(FirebaseId.place, place);
+            communityAddMap.put(FirebaseId.peopleCurrent, "null");
+            communityAddMap.put(FirebaseId.peopleAll, "null");
+            communityAddMap.put(FirebaseId.kakaoLink, "null");
+            communityAddMap.put(FirebaseId.moreExplain, "null");
+            communityAddMap.put(FirebaseId.time, time);
+            communityAddMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+
+            communityCollection.add(communityAddMap)
+                    .addOnSuccessListener(documentReference -> {
+                        // 성공
+                        // 바텀시트 띄우기 여기서부터 <민>
+                        View contentView = CommunityAdd.this.getLayoutInflater().inflate(R.layout.activity_community_innerpage, null);
+                        dialog.setContentView(contentView);
+                        attachListenerToContentView(contentView);
+                        dialog.show();
+                        Toast.makeText(getContext(), "우와아아앙", Toast.LENGTH_SHORT);
+                        // 여기까지 <민>
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error adding", e);
+                    });
+
+
+        });
+
+
         return binding.getRoot();
+    }
+
+    private int prePeople = 1;
+    private int allPeople = 1;
+
+    private void attachListenerToContentView(View contentView) {
+        ActivityCommunityInnerpageBinding binding = ActivityCommunityInnerpageBinding.bind(contentView);
+
+        binding.communityInnerAllpeople.setText("1");
+        binding.communityInnerPresentpeople.setText("1");
+
+
+        binding.communityInnerMinus1.setOnClickListener(v -> {
+            if (prePeople == 1) {
+                Toast.makeText(getContext(), "최소 인원입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                prePeople++;
+                binding.communityInnerPresentpeople.setText(String.valueOf(prePeople));
+            }
+        });
+        binding.communityInnerMinus2.setOnClickListener(v -> {
+            if (allPeople == prePeople) {
+                Toast.makeText(getContext(), "최소 인원입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                allPeople--;
+                binding.communityInnerAllpeople.setText(String.valueOf(allPeople));
+            }
+        });
+        binding.communityInnerPlus1.setOnClickListener(v -> {
+            if (prePeople == allPeople) {
+                Toast.makeText(getContext(), "최대 인원입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                prePeople++;
+                binding.communityInnerPresentpeople.setText(String.valueOf(prePeople));
+            }
+        });
+        binding.communityInnerPlus2.setOnClickListener(v -> {
+            if (allPeople == 99) {
+                Toast.makeText(getContext(), "최대 인원입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                allPeople++;
+                binding.communityInnerAllpeople.setText(String.valueOf(allPeople));
+            }
+        });
+
+        binding.communityInnerInvite.setOnClickListener(v -> {
+            String title = binding.communityInnerTitle.getText().toString();
+            String prePeople = binding.communityInnerPresentpeople.getText().toString();
+            String allPeople = binding.communityInnerAllpeople.getText().toString();
+            String kakaoLink = binding.communityInnerKakaoLink.getText().toString();
+            String moreExp = binding.communityInnerMoreExplain.getText().toString();
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference communityCollection = db.collection("community").document(uid).collection("storys");
+
+            //현재 communitystory의 document id 가져오기
+            communityCollection
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .limit(1)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                // 문서가 존재하는 경우
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                String lastestDocumentName = document.getId();
+
+                                DocumentReference communityDocument = db
+                                        .collection("community")
+                                        .document(uid).collection("storys")
+                                        .document(lastestDocumentName);
+
+                                Map<String, Object> communityDocMap = new HashMap<>();
+                                communityDocMap.put(FirebaseId.title, title);
+                                communityDocMap.put(FirebaseId.peopleCurrent, prePeople);
+                                communityDocMap.put(FirebaseId.peopleAll, allPeople);
+                                communityDocMap.put(FirebaseId.kakaoLink, kakaoLink);
+                                communityDocMap.put(FirebaseId.moreExplain, moreExp);
+
+                                if(TextUtils.isEmpty(title) || TextUtils.isEmpty(kakaoLink) || TextUtils.isEmpty(moreExp)) {
+                                    communityDocument.delete();
+                                    Log.d("firebase","입력하지 않아 삭제되었습니다.");
+                                    dialog.dismiss();
+                                } else {
+
+                                    communityDocument
+                                            .update(communityDocMap)
+                                            .addOnSuccessListener(documentReference -> {
+                                                // 성공
+                                                Toast.makeText(getContext(), "minininnimini", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("Firestore", "Error updating document", e);
+                                            });
+                                }
+                            } else {
+                                // 문서가 없는 경우
+                                Log.d("Firestore", "No documents found.");
+                            }
+                        } else {
+                            // 작업 실패
+                            Log.e("Firestore", "Error getting documents: ", task.getException());
+                        }
+                    });
+
+        });
+
+
     }
 }

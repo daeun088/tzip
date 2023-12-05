@@ -1,5 +1,6 @@
 package com.example.tzip;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,13 @@ public class Fragment_community extends Fragment {
     private String mParam2;
 
     FragmentCommunityBinding binding;
+
+    private void callCommunityAddMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForCommunityAdd(); // 액티비티의 메서드 호출
+        }
+    }
 
     public Fragment_community() {
         // Required empty public constructor
@@ -70,6 +79,13 @@ public class Fragment_community extends Fragment {
         binding.serchList.addItemDecoration(new MyItemDecoration());
 
 
+        binding.communityGetPeople.setOnClickListener(v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callCommunityAddMethod();
+            CommunityAdd communityAdd = new CommunityAdd();
+            transaction.replace(R.id.containers, communityAdd);
+            transaction.commit();
+        });
 
         return binding.getRoot();
     }

@@ -137,9 +137,10 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
             android:textColor="@color/black"
             android:background="@drawable/bottom_stroke"
-            android:text="새로운 여행 기록하기"/>
+            android:text="새로운 일정 참여자 구하기"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,12 +151,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="일정 장소"
+                android:layout_marginTop="20dp"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/notosanskr_bold"
                 android:includeFontPadding="false"/>
             <EditText
-                android:id="@+id/trip_place"
+                android:id="@+id/community_add_place"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:textSize="15sp"
@@ -175,14 +177,14 @@
                 <ImageButton
                     android:layout_marginLeft="20dp"
                     android:src="@drawable/calendar"
-                    android:id="@+id/trip_date_btn"
+                    android:id="@+id/community_add_date_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:background="@color/white"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/trip_date_text"
+                android:id="@+id/community_add_date"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:background="@drawable/bottom_stroke_black" />
@@ -190,12 +192,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여행 참여자"
+                android:text="여행 시간"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/notosanskr_bold"/>
             <EditText
-                android:id="@+id/trip_friend_list"
+                android:id="@+id/community_add_time"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:inputType="text"/>
@@ -206,12 +208,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="40dp">
+            android:paddingBottom="40dp"
+            android:layout_marginTop="10dp">
 
             <!-- 여기에 다른 뷰들을 추가할 수 있습니다. -->
 
             <Button
-                android:id="@+id/record_add_btn"
+                android:id="@+id/community_add_btn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

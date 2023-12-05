@@ -138,7 +138,7 @@ public class Fragment_home extends Fragment {
 
         binding.homeGoRecord.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
+            callRecordMethod();
             Fragment_record record = new Fragment_record();
             transaction.replace(R.id.containers, record);
             transaction.commit();
@@ -146,7 +146,7 @@ public class Fragment_home extends Fragment {
 
         binding.homeGoCommunity.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
+            callCommunityMethod();
             Fragment_community community = new Fragment_community();
             transaction.replace(R.id.containers, community);
             transaction.commit();
@@ -154,7 +154,7 @@ public class Fragment_home extends Fragment {
 
         binding.homeGoMypage.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
+            callMypageMethod();
             Fragment_mypage mypage = new Fragment_mypage();
             transaction.replace(R.id.containers, mypage);
             transaction.commit();
@@ -162,7 +162,7 @@ public class Fragment_home extends Fragment {
 
         binding.homeGoAlert.setOnClickListener( v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
+            callAlertMethod();
             Fragment_emergency emergency = new Fragment_emergency();
             transaction.replace(R.id.containers, emergency);
             transaction.commit();
