@@ -266,6 +266,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     protected void setToolbarForSchedulePlanWrite(){
         setToolbarContent("상세 일정", true);
         addButtonToToolbar("알림");
+        addButtonToToolbar("하단 바 없애기");
     }
 
     @Override

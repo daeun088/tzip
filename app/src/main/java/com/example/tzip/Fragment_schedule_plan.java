@@ -43,7 +43,6 @@ public class Fragment_schedule_plan extends Fragment {
 
     FragmentSchedulePlanBinding binding;
 
-
     Fragment_schedule fragmentSchedule;
     Fragment_schedule_plan_write fragmentSchedulePlanWrite;
 

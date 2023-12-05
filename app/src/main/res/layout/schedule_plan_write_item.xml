@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="새로운 텍스트 입력"
+        android:textSize="20sp"
+        android:backgroundTint="@color/light_gray"
+        android:lineSpacingExtra="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="22dp"/>
+
+</LinearLayout>

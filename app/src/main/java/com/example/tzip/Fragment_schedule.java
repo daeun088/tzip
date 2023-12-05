@@ -94,7 +94,7 @@ public class Fragment_schedule extends Fragment {
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
 
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             list.add("Item=" + i);
         }
 

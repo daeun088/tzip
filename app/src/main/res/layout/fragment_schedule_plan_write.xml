@@ -6,14 +6,16 @@
     android:orientation="vertical"
     >
 
-    <TextView
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="호텔"
-        android:textSize="38sp"
+        android:hint="제목을 입력해주세요"
+        android:textSize="33sp"
         android:fontFamily="@font/notosanskr_bold"
-        android:textColor="@color/black"
+        android:textColorHint="@color/light_gray"
         android:textStyle="bold"
+        android:lineSpacingExtra="20dp"
+        android:scrollHorizontally="false"
         android:paddingStart="25dp"
         android:background="@drawable/schedule_plan_write_title_edge"
         android:id="@+id/title"/>
@@ -24,25 +26,33 @@
             android:orientation="vertical"
             android:layout_below="@+id/title"
             android:weightSum="5">
-            <ScrollView
+
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:background="@drawable/schedule_plan_write_center_line">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/schedule_plan_write_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/board_write"
-                    android:layout_width="98dp"
+                    android:layout_width="56dp"
                     android:layout_height="103dp"
                     android:layout_gravity="end|bottom"
                     android:layout_marginEnd="30dp"
                     android:layout_marginBottom="30dp"
+                    app:fabSize="normal"
                     android:src="@drawable/ic_plus"
                     app:backgroundTint="#FB6E52">
 
                 </com.google.android.material.floatingactionbutton.FloatingActionButton>
-            </ScrollView>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
