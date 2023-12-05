@@ -68,7 +68,8 @@
             android:layout_marginTop="88dp"
             android:layout_marginEnd="15dp"
             android:background="@color/white"
-            android:src="@drawable/menu" />
+            android:src="@drawable/menu"
+            android:id="@+id/schedule_block_popupbtn"/>
 
 
     </RelativeLayout>

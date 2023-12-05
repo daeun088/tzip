@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.tzip.databinding.FragmentScheduleBinding;
@@ -48,6 +49,7 @@ public class Fragment_schedule extends Fragment {
     Fragment_schedule_plan fragmentSchedulePlan;
 
     FragmentScheduleBinding binding;
+
 
     private void callSchedulePlanMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
