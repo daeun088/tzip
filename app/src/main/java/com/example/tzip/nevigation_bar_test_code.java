@@ -278,6 +278,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         addButtonToToolbar("알림");
         addButtonToToolbar("하단 바 없애기");
     }
+    protected void setTollbarForCommunityStory(){
+        setToolbarContent("여행 일정 공유하기",true);
+        addButtonToToolbar("알림");
+    }
 
     @Override
     public void onBackPressed() {//밑줄 상관 x

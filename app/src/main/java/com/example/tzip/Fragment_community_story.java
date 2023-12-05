@@ -8,57 +8,56 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_schedule_plan#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.tzip.databinding.ActivityCommunityStoryInnerKakaoBinding;
+import com.example.tzip.databinding.FragmentCommunityStoryBinding;
+import com.example.tzip.databinding.FregmentCommunityAddBinding;
+
 public class Fragment_community_story extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    FragmentCommunityStoryBinding binding;
+    ActivityCommunityStoryInnerKakaoBinding binding2;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public Fragment_community_story() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_schedule_plan.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Fragment_community_story newInstance(String param1, String param2) {
         Fragment_community_story fragment = new Fragment_community_story();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_community_story, container, false);
+        binding = FragmentCommunityStoryBinding.inflate(inflater, container, false);
+        binding2 = ActivityCommunityStoryInnerKakaoBinding.inflate(inflater, container, false);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String place = bundle.getString(FirebaseId.place, "");
+            String date = bundle.getString(FirebaseId.date, "");
+            String time = bundle.getString(FirebaseId.time, "");
+            String title = bundle.getString(FirebaseId.title, "");
+            String prePeople = bundle.getString(FirebaseId.peopleCurrent, "");
+            String allPeople = bundle.getString(FirebaseId.peopleAll, "");
+            String kakaoLink = bundle.getString(FirebaseId.kakaoLink, "");
+            String moreExp = bundle.getString(FirebaseId.moreExplain, "");
+
+            binding.communityStoryPlace.setText(place);
+            binding.communityStoryDate.setText(date);
+            binding.communityStoryTime.setText(time);
+            binding.communityStoryTitle.setText(title);
+            binding.communityStoryPrepeople.setText(prePeople);
+            binding.communityStoryAllpeople.setText(allPeople);
+            binding2.communityStoryInnerKakaolink.setText(kakaoLink);
+            binding.communityStoryMoreexp.setText(moreExp);
+        }
+
+
+        return binding.getRoot();
     }
 }

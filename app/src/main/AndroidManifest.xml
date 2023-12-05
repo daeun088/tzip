@@ -25,9 +25,6 @@
             android:name=".MyTripRecord"
             android:exported="false" />
         <activity
-            android:name=".RecordMain"
-            android:exported="false" />
-        <activity
             android:name=".SignUp"
             android:exported="true" />
         <activity android:name=".Login"
@@ -38,9 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".schedule_plan_tab"
-            android:exported="false" />
         <activity
             android:name=".nevigation_bar"
             android:exported="false" />
