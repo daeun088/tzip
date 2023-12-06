@@ -10,11 +10,29 @@
         android:background="#FFFFFF"
         android:orientation="vertical">
 
-        <ImageView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/sandwich" />
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/community_story_image"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/sandwich" />
+
+            <ImageButton
+                android:id="@+id/community_story_image_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="8dp"
+                android:src="@drawable/pencil"/>
+
+        </FrameLayout>
+
+
 
 
         <LinearLayout
