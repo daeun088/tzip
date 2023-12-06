@@ -1,7 +1,12 @@
 package com.example.tzip;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -57,7 +62,28 @@ public class Fragment_community_story extends Fragment {
             binding.communityStoryMoreexp.setText(moreExp);
         }
 
+        binding.communityStoryImageBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            pickImageLauncher.launch(intent);
+        });
 
         return binding.getRoot();
     }
+
+    private final ActivityResultLauncher<Intent> pickImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            // 선택한 이미지에 대한 처리...
+                            if (data != null) {
+                                Uri selectedImageUri = data.getData();
+                                if (selectedImageUri != null) {
+                                    // 이미지 뷰에 선택한 이미지 설정
+                                    binding.communityStoryImage.setImageURI(selectedImageUri);
+                                }
+                            }
+                        }
+                    });
 }
