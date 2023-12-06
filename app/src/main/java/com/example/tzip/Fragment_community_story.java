@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.tzip.databinding.ActivityCommunityStoryInnerKakaoBinding;
 import com.example.tzip.databinding.FragmentCommunityStoryBinding;
 import com.example.tzip.databinding.FregmentCommunityAddBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Fragment_community_story extends Fragment {
 
@@ -86,4 +87,12 @@ public class Fragment_community_story extends Fragment {
                             }
                         }
                     });
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+    }
 }

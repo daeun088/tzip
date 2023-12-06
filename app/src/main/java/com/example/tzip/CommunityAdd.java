@@ -167,7 +167,7 @@ public class CommunityAdd extends Fragment {
             if (prePeople == 1) {
                 Toast.makeText(getContext(), "최소 인원입니다.", Toast.LENGTH_SHORT).show();
             } else {
-                prePeople++;
+                prePeople--;
                 binding2.communityInnerPresentpeople.setText(String.valueOf(prePeople));
             }
         });
