@@ -1,6 +1,7 @@
 package com.example.tzip;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -30,7 +31,6 @@ import com.example.tzip.databinding.ItemWritingOfPlaceBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -39,7 +39,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -48,10 +47,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RecordWriting extends Fragment {
     FragmentRecordWritingBinding binding;
+    private int selectedPosition = -1;
+    String detailPlace;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE_REQUEST = 1;
     final String[] lastestDocumentName = new String[1];
@@ -93,17 +93,11 @@ public class RecordWriting extends Fragment {
 
         //main image 띄우기
         binding.recordMainImageBtn.setOnClickListener(v -> {
+            isMainImageSelected = true;
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, PICK_IMAGE_REQUEST);
         });
-
-        binding.galleryBtn.setOnClickListener(v -> {
-            //갤러리에서 사진 받아오면 현재 입력 중인 여행 블럭에 사진 추가한 후
-            //밑에 다시 입력할 수 있는 뷰 띄우기
-        });
-
-
 
         RecordItemAdapter adapter = new RecordItemAdapter(recordItems);
         binding.dayItem.setAdapter(adapter);
@@ -125,6 +119,7 @@ public class RecordWriting extends Fragment {
 
     private void retrievePlace() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        binding.hintText.setVisibility(GONE);
 
         // uid와 lastestDocumentName[0]가 null이 아닌지 확인
         if (uid != null && lastestDocumentName[0] != null) {
@@ -143,7 +138,7 @@ public class RecordWriting extends Fragment {
 
                             for (DocumentSnapshot document : queryDocumentSnapshots) {
                                 String date = document.getString(FirebaseId.date);
-                                String detailPlace = document.getId();
+                                detailPlace = document.getId();
                                 String time = document.getString(FirebaseId.time);
 
                                 RecordItem recordItem = new RecordItem();
@@ -170,9 +165,6 @@ public class RecordWriting extends Fragment {
             Log.e("Firestore", "UID or document name is null");
         }
     }
-
-
-
 
     public class RecordItemAdapter extends RecyclerView.Adapter<RecordItemAdapter.ViewHolder> {
         private List<RecordItem> recordItems;
@@ -214,7 +206,10 @@ public class RecordWriting extends Fragment {
             holder.binding.blockTitle.setText(recordItem.getBlockTitle());
             holder.binding.blockTime.setText(recordItem.getTime());
             holder.binding.imageBtn.setOnClickListener( v -> {
-                //이미지뷰에 띄우기
+                isMainImageSelected = false;
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);//근데 얘는 띄워지는 이미지뷰가 holder.binding.blockItem임
             });
 
             // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
@@ -222,7 +217,7 @@ public class RecordWriting extends Fragment {
             if (position == 0 || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
                 holder.binding.date.setVisibility(View.VISIBLE);
             } else {
-                holder.binding.date.setVisibility(View.GONE);
+                holder.binding.date.setVisibility(GONE);
             }
         }
 
@@ -236,6 +231,12 @@ public class RecordWriting extends Fragment {
             public ViewHolder(ItemWritingOfPlaceBinding binding) {
                 super(binding.getRoot());
                 this.binding = binding;
+
+                binding.imageBtn.setOnClickListener( v -> {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                });
             }
         }
     }
@@ -332,48 +333,81 @@ public class RecordWriting extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            // 선택된 이미지를 ImageView에 설정
             Uri imageUri = data.getData();
-            binding.recordPicture.setImageURI(imageUri);
 
-            // ImageView의 Drawable이 BitmapDrawable인지 확인하고 null이 아닌 경우에만 업로드
-            Drawable drawable = binding.recordPicture.getDrawable();
-            if (drawable instanceof BitmapDrawable) {
-                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                // 선택된 이미지를 Firebase Storage에 업로드
-                uploadImageToFirebaseStorage(bitmap);
+            if (isMainImageSelected) {
+                // 메인 이미지를 설정할 때는 recordPicture에 띄움
+                binding.recordPicture.setImageURI(imageUri);
+                Drawable drawable = binding.recordPicture.getDrawable();
+                if (drawable instanceof BitmapDrawable) {
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    // 선택된 이미지를 Firebase Storage에 업로드
+                    uploadImageToFirebaseStorage(bitmap, true, null);
+                }
             } else {
-                // 다른 Drawable 타입이거나 null인 경우에 대한 처리
-                Log.e("daeun", "ImageView의 Drawable이 유효하지 않습니다.");
+                // 리사이클러뷰의 이미지를 설정할 때는 해당 ViewHolder의 blockItem에 띄움
+                RecyclerView.ViewHolder viewHolder = binding.dayItem.findViewHolderForAdapterPosition(selectedPosition);
+                if (viewHolder instanceof RecordItemAdapter.ViewHolder) {
+                    RecordItemAdapter.ViewHolder yourViewHolder = (RecordItemAdapter.ViewHolder) viewHolder;
+                    yourViewHolder.binding.blockImage.setImageURI(imageUri);
+                    String recordId = recordItems.get(selectedPosition).getBlockTitle(); // 선택된 블록의 recordId 가져오기
+                    if (recordId != null) {
+                        Bitmap bitmap = ((BitmapDrawable) yourViewHolder.binding.blockImage.getDrawable()).getBitmap();
+                        // 선택된 이미지를 Firebase Storage에 업로드, recordId를 전달하여 업데이트
+                        uploadImageToFirebaseStorage(bitmap, false, recordId);
+                    }
+                }
             }
+
         }
     }
 
-    private void uploadImageToFirebaseStorage(Bitmap bitmap) {
+    private boolean isMainImageSelected;
+
+    private void uploadImageToFirebaseStorage(Bitmap bitmap, boolean isMainImage, String recordId) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference mountainImagesRef = storageRef.child(getPath("jpg"));
+        String imagePath;
+
+        if (isMainImage) {
+            // 메인 이미지인 경우
+            imagePath = getPath("main.jpg");
+        } else {
+            // 리사이클러뷰의 이미지인 경우
+            imagePath = getPath("jpg");
+        }
+
+        if (recordId != null) {
+            // 리사이클러뷰의 이미지일 경우 recordId를 사용하여 저장 경로를 변경
+            imagePath = getPath(recordId + ".jpg");
+        }
+
+        StorageReference imageRef = storageRef.child(imagePath);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //0-100
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        UploadTask uploadTask = imageRef.putBytes(data);
         uploadTask.addOnFailureListener(exception -> {
-            Log.d("daeun", "이미지뷰의 이미지 업로드 실패", exception);
+            Log.e("daeun", "이미지 업로드 실패", exception);
         }).addOnSuccessListener(taskSnapshot -> {
-            Log.d("daeun", "이미지뷰의 이미지 업로드 성공");
-            mountainImagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                // Firestore 문서 업데이트
-                updateFirestoreDocumentWithImageUrl(uri.toString());
+            Log.d("daeun", "이미지 업로드 성공");
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                if (isMainImage) {
+                    // 메인 이미지일 경우 Firestore의 메인 이미지 업데이트
+                    updateFirestoreDocumentWithMainImageUrl(uri.toString());
+                } else {
+                    // 리사이클러뷰의 이미지일 경우 Firestore의 해당 문서 업데이트
+                    updateFirestoreDocumentWithImageUrl(uri.toString(), recordId);
+                }
             }).addOnFailureListener(exception -> {
-                // 다운로드 URL 가져오기 실패 시 처리
                 Log.e("daeun", "이미지의 다운로드 URL을 가져오지 못했습니다.", exception);
             });
         });
     }
 
-    private void updateFirestoreDocumentWithImageUrl(String imageUrl) {
+    private void updateFirestoreDocumentWithMainImageUrl(String imageUrl) {
         // Firestore 문서 업데이트
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference recordCollection = db
@@ -412,20 +446,39 @@ public class RecordWriting extends Fragment {
         });
     }
 
+    private void updateFirestoreDocumentWithImageUrl(String imageUrl, String recordId) {
+        if (detailPlace != null) {  // detailPlace가 null이 아닌 경우에만 업데이트
+            // Firestore 문서 업데이트
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference recordBlockCollection = db
+                    .collection("recordBlock")
+                    .document(uid)
+                    .collection(lastestDocumentName[0]);
 
+            Map<String, Object> recordBlockMap = new HashMap<>();
+            recordBlockMap.put(FirebaseId.contentImage, imageUrl); // contentImage 필드에 이미지 URL 추가
 
-    public String getTitle(){
-        return binding.recordTitle.getText().toString();
+            // 이미지 URL을 포함하여 Firestore 문서 업데이트
+            recordBlockCollection.document(detailPlace).set(recordBlockMap)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
+                        retrievePlace();
+                        dialog.dismiss();
+                    })
+                    .addOnFailureListener(e -> {
+                        // 업데이트 실패 시 처리
+                        Log.e("daeun", "Firestore 문서 업데이트 실패", e);
+                    });
+        } else {
+            Log.e("daeun", "detailPlace가 null입니다.");
+        }
     }
 
     private String getPath(String extension) {
         String uid = getUidOfCurrentUser();
-
         String dir = (uid != null) ? uid : "public";
-
         String fileName = (uid != null) ? (uid + "_" + System.currentTimeMillis() + "." + extension)
                 : ("anonymous" + "_" + System.currentTimeMillis() + "." + extension);
-
         return dir + "/" + fileName;
     }
 
@@ -436,5 +489,4 @@ public class RecordWriting extends Fragment {
     private String getUidOfCurrentUser() {
         return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
-
 }
