@@ -155,6 +155,8 @@ public class RecordWriting extends Fragment {
                                 updatedRecordItems.add(recordItem);
                             }
 
+                            updatedRecordItems.sort(new RecordItem.ItemSort());
+
                             // 데이터를 갱신하고 RecyclerView 어댑터에 변경을 알림
                             recordItems.clear();
                             recordItems.addAll(updatedRecordItems);
@@ -214,10 +216,6 @@ public class RecordWriting extends Fragment {
             holder.binding.imageBtn.setOnClickListener( v -> {
                 //이미지뷰에 띄우기
             });
-            // 나머지 속성도 설정
-
-            // 이미지 로딩 및 클릭 이벤트 처리
-            // ...
 
             // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
             // 첫 번째 아이템의 경우에만 날짜를 표시하도록 설정

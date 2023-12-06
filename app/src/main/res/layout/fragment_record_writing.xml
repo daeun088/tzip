@@ -124,7 +124,7 @@
             android:fontFamily="@font/notosanskr_bold"
             android:includeFontPadding="false"
             android:layout_marginRight="20dp"
-            android:text="갤러리" />
+            android:text="불러오기" />
 
         <Button
             android:id="@+id/add_schedule_btn"
@@ -134,7 +134,7 @@
             android:background="@drawable/orange_btn"
             android:fontFamily="@font/notosanskr_bold"
             android:includeFontPadding="false"
-            android:text="일정 추가" />
+            android:text="추가하기" />
     </LinearLayout>
 
 
