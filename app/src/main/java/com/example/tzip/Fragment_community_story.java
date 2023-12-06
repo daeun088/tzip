@@ -69,6 +69,11 @@ public class Fragment_community_story extends Fragment {
             pickImageLauncher.launch(intent);
         });
 
+        String uid = getUidOfCurrentUser();
+
+        // uid 주인에게 신청하기 버튼 안보이게
+
+
         return binding.getRoot();
     }
 
