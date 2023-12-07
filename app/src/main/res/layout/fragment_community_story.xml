@@ -188,6 +188,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/community_story_apply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"

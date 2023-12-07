@@ -6,7 +6,8 @@
     android:gravity="center_horizontal"
     android:orientation="horizontal"
     android:padding="20dp"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:background="@drawable/writing_bottom_layout">
 
     <TextView
         android:layout_width="wrap_content"
