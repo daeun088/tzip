@@ -206,6 +206,7 @@ public class RecordWriting extends Fragment {
             holder.binding.blockTitle.setText(recordItem.getBlockTitle());
             holder.binding.blockTime.setText(recordItem.getTime());
             holder.binding.imageBtn.setOnClickListener( v -> {
+                selectedPosition = holder.getAdapterPosition();
                 isMainImageSelected = false;
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
@@ -214,7 +215,7 @@ public class RecordWriting extends Fragment {
 
             // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
             // 첫 번째 아이템의 경우에만 날짜를 표시하도록 설정
-            if (position == 0 || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
+            if (position == 0 || recordItem.getDate() == null || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
                 holder.binding.date.setVisibility(View.VISIBLE);
             } else {
                 holder.binding.date.setVisibility(GONE);
@@ -232,11 +233,6 @@ public class RecordWriting extends Fragment {
                 super(binding.getRoot());
                 this.binding = binding;
 
-                binding.imageBtn.setOnClickListener( v -> {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, PICK_IMAGE_REQUEST);
-                });
             }
         }
     }
@@ -346,21 +342,31 @@ public class RecordWriting extends Fragment {
                 }
             } else {
                 // 리사이클러뷰의 이미지를 설정할 때는 해당 ViewHolder의 blockItem에 띄움
-                RecyclerView.ViewHolder viewHolder = binding.dayItem.findViewHolderForAdapterPosition(selectedPosition);
-                if (viewHolder instanceof RecordItemAdapter.ViewHolder) {
-                    RecordItemAdapter.ViewHolder yourViewHolder = (RecordItemAdapter.ViewHolder) viewHolder;
-                    yourViewHolder.binding.blockImage.setImageURI(imageUri);
-                    String recordId = recordItems.get(selectedPosition).getBlockTitle(); // 선택된 블록의 recordId 가져오기
-                    if (recordId != null) {
-                        Bitmap bitmap = ((BitmapDrawable) yourViewHolder.binding.blockImage.getDrawable()).getBitmap();
-                        // 선택된 이미지를 Firebase Storage에 업로드, recordId를 전달하여 업데이트
-                        uploadImageToFirebaseStorage(bitmap, false, recordId);
-                    }
-                }
-            }
+                binding.dayItem.post(() -> {
+                    RecyclerView.ViewHolder viewHolder = binding.dayItem.findViewHolderForAdapterPosition(selectedPosition);
+                    Log.d("daeun0", "Selected Position: " + selectedPosition);
+                    Log.d("daeun0", "ViewHolder: " + viewHolder);
 
+                    if (viewHolder instanceof RecordItemAdapter.ViewHolder) {
+                        RecordItemAdapter.ViewHolder yourViewHolder = (RecordItemAdapter.ViewHolder) viewHolder;
+                        yourViewHolder.binding.blockImage.setImageURI(imageUri);
+                        String recordId = recordItems.get(selectedPosition).getBlockTitle(); // 선택된 블록의 recordId 가져오기
+
+                        // Null 체크 추가
+                        if (recordId != null) {
+                            Bitmap bitmap = ((BitmapDrawable) yourViewHolder.binding.blockImage.getDrawable()).getBitmap();
+                            // 선택된 이미지를 Firebase Storage에 업로드, recordId를 전달하여 업데이트
+                            uploadImageToFirebaseStorage(bitmap, false, recordId);
+                        } else {
+                            Log.e("daeun", "getBlockTitle()이 null입니다.");
+                            // 처리할 작업 추가
+                        }
+                    }
+                });
+            }
         }
     }
+
 
     private boolean isMainImageSelected;
 

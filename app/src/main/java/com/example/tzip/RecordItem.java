@@ -1,10 +1,13 @@
 package com.example.tzip;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
@@ -42,16 +45,33 @@ public class RecordItem {
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.KOREA);
 
             try {
+                if (o1.getDate() == null || o2.getDate() == null) {
+                    // 날짜 정보가 null인 경우 예외 처리 또는 특정 로직 수행
+                    return 0;
+                }
+
                 Date date1 = dateFormat.parse(o1.getDate());
-                Date time1 = timeFormat.parse(o1.getTime());
+                Date time1 = o1.getTime() != null ? timeFormat.parse(o1.getTime()) : new Date();
 
                 Date date2 = dateFormat.parse(o2.getDate());
-                Date time2 = timeFormat.parse(o2.getTime());
+                Date time2 = o2.getTime() != null ? timeFormat.parse(o2.getTime()) : new Date();
 
-                // 날짜 비교
-                int dateComparison = date1.compareTo(date2);
+                // 날짜와 시간을 하나의 Date 객체로 합칩니다.
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.setTime(date1);
+                calendar1.set(Calendar.HOUR_OF_DAY, time1.getHours());
+                calendar1.set(Calendar.MINUTE, time1.getMinutes());
+
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.setTime(date2);
+                calendar2.set(Calendar.HOUR_OF_DAY, time2.getHours());
+                calendar2.set(Calendar.MINUTE, time2.getMinutes());
+
+                // 날짜 및 시간 비교
+                int dateComparison = calendar1.compareTo(calendar2);
+
+                // 날짜가 같은 경우 시간으로 비교
                 if (dateComparison == 0) {
-                    // 날짜가 같을 때 시간 비교
                     return time1.compareTo(time2);
                 } else {
                     return dateComparison;
@@ -62,6 +82,7 @@ public class RecordItem {
             }
         }
     }
+
 
 
     // Getter 및 Setter 메서드 추가
