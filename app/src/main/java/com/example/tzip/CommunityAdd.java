@@ -238,7 +238,6 @@ public class CommunityAdd extends Fragment {
                                     Log.d("firebase", "입력하지 않아 삭제되었습니다.");
                                     dialog.dismiss();
                                 } else {
-
                                     communityDocument
                                             .update(communityDocMap)
                                             .addOnSuccessListener(documentReference -> {
