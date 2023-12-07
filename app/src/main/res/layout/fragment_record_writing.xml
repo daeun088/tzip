@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -11,141 +11,120 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/record_picture"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@color/black"
-                android:scaleType="centerCrop">
-            </ImageView>
-
-            <EditText
-                android:id="@+id/record_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/record_picture"
-                android:fontFamily="@font/notosanskr_bold"
-                android:includeFontPadding="false"
-                android:foregroundGravity="center_horizontal"
-                android:shadowColor="#000000"
-                android:shadowDx="7.0"
-                android:shadowDy="7.0"
-                android:shadowRadius="7.0"
-                android:hint="제목을 입력하세요."
-                android:layout_centerVertical="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-
-            <ImageButton
-                android:id="@+id/record_main_image_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/record_picture"
-                android:layout_alignBottom="@id/record_picture"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/pencil" />
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bottom_stroke"
-            android:padding="14dp">
-            <TextView
-                android:id="@+id/trip_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="여행일시 - 2023.10.22~24"/>
-            <TextView
-                android:id="@+id/trip_place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="여행장소 - 강릉"
-                />
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/hint_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="일정을 추가해주세요"
-                android:layout_gravity="center"
-                android:fontFamily="@font/notosanskr_regular"
-                />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/day_item"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/record_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/black"
+                    android:scaleType="centerCrop"></ImageView>
+
+                <EditText
+                    android:id="@+id/record_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/record_picture"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/notosanskr_bold"
+                    android:foregroundGravity="center_horizontal"
+                    android:hint="제목을 입력하세요."
+                    android:includeFontPadding="false"
+                    android:shadowColor="#000000"
+                    android:shadowDx="7.0"
+                    android:shadowDy="7.0"
+                    android:shadowRadius="7.0"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <ImageButton
+                    android:id="@+id/record_main_image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/record_picture"
+                    android:layout_alignBottom="@id/record_picture"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/pencil" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_stroke"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/trip_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="여행일시 - 2023.10.22~24" />
+
+                <TextView
+                    android:id="@+id/trip_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="여행장소 - 강릉" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/hint_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:text="일정을 추가해주세요" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/day_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
+            </FrameLayout>
 
 
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="경포대 해수욕장 13:00"-->
-<!--                android:fontFamily="@font/notosanskr_regular"-->
-<!--                android:textSize="15sp"-->
-<!--                android:textColor="@color/black"/>-->
-<!--            <EditText-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="내용을 추가해주세요"-->
-<!--                android:textSize="13dp"/>-->
-
-<!--        </LinearLayout>-->
-
-    </LinearLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 
-<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/writing_bottom_layout"
         android:elevation="20dp"
-    android:gravity="center"
+        android:gravity="center"
         android:orientation="horizontal"> <!-->그림자가 너무 안 보인다 비상~~!!!!<-->
 
         <Button
             android:id="@+id/gallery_btn"
             android:layout_width="130dp"
             android:layout_height="40dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/orange_btn"
             android:fontFamily="@font/notosanskr_bold"
             android:includeFontPadding="false"
-            android:layout_marginRight="20dp"
             android:text="불러오기" />
 
         <Button
             android:id="@+id/add_schedule_btn"
             android:layout_width="130dp"
-            android:layout_marginLeft="20dp"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/orange_btn"
             android:fontFamily="@font/notosanskr_bold"
             android:includeFontPadding="false"

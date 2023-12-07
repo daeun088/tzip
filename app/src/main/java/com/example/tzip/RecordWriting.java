@@ -71,6 +71,7 @@ public class RecordWriting extends Fragment {
     public RecordWriting() {
         // Required empty public constructor
     }
+
     public static RecordWriting newInstance(String param1, String param2) {
         RecordWriting fragment = new RecordWriting();
         Bundle args = new Bundle();
@@ -129,46 +130,43 @@ public class RecordWriting extends Fragment {
     }
 
     public static boolean saveTitle(Context context) {
+        // Firebase에 저장할 코드를 추가합니다.
+        if (!TextUtils.isEmpty(title)) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference recordCollection = db
+                    .collection("record")
+                    .document(uid)
+                    .collection("records");
 
-            // Firebase에 저장할 코드를 추가합니다.
-            if (!TextUtils.isEmpty(title)) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                CollectionReference recordCollection = db
-                        .collection("record")
-                        .document(uid)
-                        .collection("records");
+            Map<String, Object> recordMap = new HashMap<>();
+            recordMap.put(FirebaseId.title, title); // record Map에 title 추가
+            // 문서를 가져오기 위한 쿼리
+            Query query = recordCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
+            query.get().addOnSuccessListener(querySnapshot -> {
+                if (!querySnapshot.isEmpty()) {
+                    // 문서가 존재하는 경우
+                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                    lastestDocumentName[0] = document.getId();
 
-                Map<String, Object> recordMap = new HashMap<>();
-                recordMap.put(FirebaseId.title, title); // record Map에 title 추가
-
-                // 문서를 가져오기 위한 쿼리
-                Query query = recordCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
-
-                query.get().addOnSuccessListener(querySnapshot -> {
-                    if (!querySnapshot.isEmpty()) {
-                        // 문서가 존재하는 경우
-                        DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                        lastestDocumentName[0] = document.getId();
-
-                        // 이미지 URL을 포함하여 Firestore 문서 업데이트
-                        recordCollection.document(lastestDocumentName[0]).update(recordMap)
-                                .addOnSuccessListener(aVoid -> {
-                                    Log.d ("daeun0", "제목 및 Firestore 업데이트 완료");
-                                })
-                                .addOnFailureListener(e -> {
-                                    // 업데이트 실패 시 처리
-                                    Log.e("daeun", "Firestore 문서 업데이트 실패", e);
-                                });
-                    }
-                }).addOnFailureListener(e -> {
-                    // 쿼리 실패 시 처리
-                    Log.e("daeun", "Firestore 쿼리 실패", e);
-                });
-                return true;
-            } else {
-                return false;
-            }
+                    // 이미지 URL을 포함하여 Firestore 문서 업데이트
+                    recordCollection.document(lastestDocumentName[0]).update(recordMap)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("daeun0", "제목 및 Firestore 업데이트 완료");
+                            })
+                            .addOnFailureListener(e -> {
+                                // 업데이트 실패 시 처리
+                                Log.e("daeun", "Firestore 문서 업데이트 실패", e);
+                            });
+                }
+            }).addOnFailureListener(e -> {
+                // 쿼리 실패 시 처리
+                Log.e("daeun", "Firestore 쿼리 실패", e);
+            });
+            return true;
+        } else {
+            return false;
         }
+    }
 
     private void retrievePlace() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -258,7 +256,7 @@ public class RecordWriting extends Fragment {
             holder.binding.date.setText(recordItem.getDate());
             holder.binding.blockTitle.setText(recordItem.getBlockTitle());
             holder.binding.blockTime.setText(recordItem.getTime());
-            holder.binding.imageBtn.setOnClickListener( v -> {
+            holder.binding.imageBtn.setOnClickListener(v -> {
                 selectedPosition = holder.getAdapterPosition();
                 isMainImageSelected = false;
                 detailPlace = recordItem.getBlockTitle();
@@ -280,6 +278,7 @@ public class RecordWriting extends Fragment {
         public int getItemCount() {
             return recordItems.size();
         }
+
         public class ViewHolder extends RecyclerView.ViewHolder {
             ItemWritingOfPlaceBinding binding;
 
