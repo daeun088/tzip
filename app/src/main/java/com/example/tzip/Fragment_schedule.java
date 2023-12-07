@@ -1,17 +1,24 @@
 package com.example.tzip;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
@@ -28,6 +35,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,7 +52,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +82,8 @@ public class Fragment_schedule extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private static final int GALLERY_REQUEST_CODE = 123;
 
     Fragment_schedule_plan fragmentSchedulePlan;
 
@@ -100,7 +113,12 @@ public class Fragment_schedule extends Fragment {
 
     String date;
 
+    String place;
+
+    String imageUrl;
+
     int num = 0;
+
 
 
     private FirebaseFirestore scheduleDB = FirebaseFirestore.getInstance();
@@ -231,7 +249,7 @@ public class Fragment_schedule extends Fragment {
             dialog.dismiss();
             title = scheduleInnerBinding.scheduleTitle.getText().toString();
             date = scheduleInnerBinding.tripPeriod.getText().toString();
-            String place = scheduleInnerBinding.schedulePlace.getText().toString();
+            place = scheduleInnerBinding.schedulePlace.getText().toString();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             // 사용자의 uid로 기록 서브컬렉션에 접근
@@ -245,6 +263,8 @@ public class Fragment_schedule extends Fragment {
             scheduleMap.put(FirebaseId.place, place);
             scheduleMap.put(FirebaseId.date, date);
             scheduleMap.put(FirebaseId.contentImage, "null");
+            scheduleMap.put(FirebaseId.imageUrl, imageUrl);
+
             scheduleMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
             String newItem = "Title: " + title + "\nDate: " + date + "\n";
 
@@ -264,9 +284,67 @@ public class Fragment_schedule extends Fragment {
                     });
 
 
+
         });
+
+        scheduleInnerBinding.scheduleBlockPic.setOnClickListener(v -> {
+            // 갤러리 열기
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, GALLERY_REQUEST_CODE);
+        });
+
+
+
+
+
         num++;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                // 선택한 이미지의 URI를 가져옴
+                Uri imageUri = data.getData();
+
+                // 이미지를 ImageView에 설정
+                scheduleInnerBinding.scheduleBlockPic.setImageURI(imageUri);
+
+                // Firestore에 이미지 업로드 및 저장 등 추가 작업 수행
+                uploadImageToFirestore(imageUri);
+            }
+        }
+    }
+
+    private void uploadImageToFirestore(Uri imageUri) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        String imageName = "schedule_image_" + System.currentTimeMillis() + ".jpg";
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("schedule_images").child(uid).child(imageName);
+// 이미지 업로드
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // 이미지 업로드 성공
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // 업로드된 이미지의 다운로드 URL 획득 성공
+                        imageUrl = uri.toString();
+
+
+                        CollectionReference schedulesCollection = scheduleDB
+                                .collection("schedule")
+                                .document(uid)
+                                .collection("schedules");
+
+                    });
+                });
+
+    }
+
+
+
 
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -299,6 +377,9 @@ public class Fragment_schedule extends Fragment {
             String titleText = extractTitle(text);
             String dateText = extractDate(text);
             ScheduleMainRecyclerviewBinding scheduleBinding = (ScheduleMainRecyclerviewBinding) holder.binding;
+
+
+
             if(itemCount > 0) {
                 if (position == itemCount + num) {
                     // 뷰 홀더에 각각 설정
@@ -312,6 +393,7 @@ public class Fragment_schedule extends Fragment {
                     scheduleBinding.scheduleTripPeriod.setText(dateText);
                     scheduleBinding.scheduleBlock.setVisibility(View.VISIBLE);
                     scheduleBinding.scheduleAdd.setVisibility(View.GONE);
+                    loadScheduleImage(scheduleBinding.scheduleBlockPic, position);
                 }
             } else {
                 if (getItemCount() == 1) {
@@ -326,8 +408,8 @@ public class Fragment_schedule extends Fragment {
                     scheduleBinding.scheduleTripPeriod.setText(dateText);
                     scheduleBinding.scheduleBlock.setVisibility(View.VISIBLE);
                     scheduleBinding.scheduleAdd.setVisibility(View.GONE);
+                    loadScheduleImage(scheduleBinding.scheduleBlockPic, position);
                 }
-
             }
         }
 
@@ -359,12 +441,6 @@ public class Fragment_schedule extends Fragment {
     private void updateUI() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentSchedulePlan = new Fragment_schedule_plan();
-
-        /*Bundle bundle = new Bundle();
-        bundle.putString(FirebaseId.date, binding.tripDateText.getText().toString());
-        bundle.putString(FirebaseId.place, binding.tripPlace.getText().toString());
-        fragmentSchedulePlan.setArguments(bundle);*/
-
         callSchedulePlanMethod();
         transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
 
@@ -414,6 +490,7 @@ public class Fragment_schedule extends Fragment {
                     List<String> itemList = new ArrayList<>();
                     itemCount = queryDocumentSnapshots.size();
                     for (QueryDocumentSnapshot loadedData : queryDocumentSnapshots) {
+
                         // 각 문서에서 필요한 데이터를 추출하여 itemList에 추가
                         String title = loadedData.getString(FirebaseId.title);
                         String place = loadedData.getString(FirebaseId.place);
@@ -428,6 +505,39 @@ public class Fragment_schedule extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     // 데이터 불러오기 실패 시의 작업
+                    Log.e("Firestore", "Error getting documents: ", e);
+                });
+    }
+
+    private void loadScheduleImage(ImageView imageView, int position) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        CollectionReference schedulesCollection = scheduleDB
+                .collection("schedule")
+                .document(uid)
+                .collection("schedules");
+
+        schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.DESCENDING)
+                .limit(position + 1)  // 데이터 검색 로직에 맞게 조정
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty() && position < queryDocumentSnapshots.size()) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(position);
+                        String imageUrl = documentSnapshot.getString(FirebaseId.imageUrl);
+
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            Glide.with(imageView.getContext())
+                                    .load(imageUrl)
+                                    .into(imageView);
+                        } else {
+                            // 이미지 URL이 없을 때 디폴트 이미지 설정
+                            Glide.with(imageView.getContext())
+                                    .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                                    .into(imageView);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // 이미지 불러오기 실패 시의 작업
                     Log.e("Firestore", "Error getting documents: ", e);
                 });
     }

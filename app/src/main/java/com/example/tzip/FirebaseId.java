@@ -20,4 +20,6 @@ public class FirebaseId {
     public static String moreExplain = "moreExplain";
     public static String peopleAll = "peopleAll";
     public static String peopleCurrent = "peopleCurrent";
+
+    public static final String imageUrl = "imageUrl";
 }

@@ -14,11 +14,12 @@
 
         <ImageView
             android:id="@+id/schedule_block_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="20dp"
-            android:src="@drawable/schedule_example_pic" />
+            android:src="@drawable/schedule_example_pic"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/schedule_block_title"
