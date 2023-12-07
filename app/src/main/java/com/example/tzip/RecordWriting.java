@@ -208,6 +208,7 @@ public class RecordWriting extends Fragment {
             holder.binding.imageBtn.setOnClickListener( v -> {
                 selectedPosition = holder.getAdapterPosition();
                 isMainImageSelected = false;
+                detailPlace = recordItem.getBlockTitle();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);//근데 얘는 띄워지는 이미지뷰가 holder.binding.blockItem임
@@ -465,7 +466,7 @@ public class RecordWriting extends Fragment {
             recordBlockMap.put(FirebaseId.contentImage, imageUrl); // contentImage 필드에 이미지 URL 추가
 
             // 이미지 URL을 포함하여 Firestore 문서 업데이트
-            recordBlockCollection.document(detailPlace).set(recordBlockMap)
+            recordBlockCollection.document(detailPlace).update(recordBlockMap)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
                         retrievePlace();

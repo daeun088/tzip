@@ -47,7 +47,8 @@
         android:textSize="13sp"
         android:textColor="@color/black"
         android:fontFamily="@font/inter"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"/>
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
