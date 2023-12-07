@@ -29,12 +29,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/schedule_title"
         android:layout_marginBottom="20dp"
         android:background="@drawable/edittext_style"
         android:fontFamily="@font/notosanskr_bold"
         android:hint="제목을 입력하세요"
         android:includeFontPadding="false"
-        android:textColorHint="#000000" />
+        android:textColorHint="@color/light_gray" />
 
     <TextView
         android:layout_width="match_parent"
@@ -49,12 +50,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/schedule_place"
         android:layout_marginBottom="20dp"
         android:background="@drawable/edittext_style"
         android:fontFamily="@font/notosanskr_bold"
         android:hint="장소를 입력하세요"
         android:includeFontPadding="false"
-        android:textColorHint="#000000" />
+        android:textColorHint="@color/light_gray" />
 
     <TextView
         android:layout_width="match_parent"
@@ -72,6 +74,7 @@
 
         <TextView
             android:layout_width="300dp"
+            android:id="@+id/trip_period"
             android:layout_height="match_parent"
             android:background="@drawable/linerac"
             android:fontFamily="@font/notosanskr_bold"
@@ -82,6 +85,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/trip_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:src="@drawable/calendar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -95,6 +108,7 @@
         android:fontFamily="@font/notosanskr_bold"
         android:includeFontPadding="false"
         android:text="여행 생성하기"
+        android:id="@+id/schedule_add_btn"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 

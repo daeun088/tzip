@@ -1,34 +1,59 @@
 package com.example.tzip;
 
+import android.app.DatePickerDialog;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.google.firebase.firestore.Query;
+
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.tzip.databinding.FragmentRecordAddBinding;
 import com.example.tzip.databinding.FragmentScheduleBinding;
+import com.example.tzip.databinding.FregmentRecordWriteInnerBinding;
+import com.example.tzip.databinding.ScheduleInnerBinding;
 import com.example.tzip.databinding.ScheduleMainRecyclerviewBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
-
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 
 /**
@@ -53,6 +78,32 @@ public class Fragment_schedule extends Fragment {
 
     ScheduleMainRecyclerviewBinding binding2;
     BottomSheetDialog dialog;
+
+    TextView tripPeriodText;
+
+    Calendar calendar;
+
+    Button schedule_add_btn;
+
+    int itemCount;
+    EditText scheduleTitleEditText;
+
+
+    EditText schedulePlaceEditText;
+
+
+    ScheduleInnerBinding scheduleInnerBinding;
+
+    View contentView;
+
+    String title;
+
+    String date;
+
+    int num = 0;
+
+
+    private FirebaseFirestore scheduleDB = FirebaseFirestore.getInstance();
 
 
     private void callSchedulePlanMethod() {
@@ -99,6 +150,12 @@ public class Fragment_schedule extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentScheduleBinding.inflate(inflater, container, false);
 
+
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+
+        loadScheduleDataFromFirestore();
+
+
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
             list.add("Item=" + i);
@@ -107,8 +164,6 @@ public class Fragment_schedule extends Fragment {
         binding.scheduleBlockList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
         binding.scheduleBlockList.setAdapter(new Fragment_schedule.MyAdapter(list));
         binding.scheduleBlockList.addItemDecoration(new Fragment_schedule.MyItemDecoration());
-
-        // Inflate the layout for this fragment
         return binding.getRoot();
     }
 
@@ -119,6 +174,7 @@ public class Fragment_schedule extends Fragment {
             super(binding.getRoot());
             dialog = new BottomSheetDialog((getContext()));
             this.binding = binding;
+
             binding.scheduleBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,16 +191,96 @@ public class Fragment_schedule extends Fragment {
                 attachListenerToContentView(contentView);
                 dialog.show();
             });
+
+
         }
     }
 
     private void attachListenerToContentView(View contentView) {
+        scheduleInnerBinding = ScheduleInnerBinding.bind(contentView);
+        scheduleInnerBinding.tripDateBtn.setOnClickListener(v -> {
+            if (isAdded()) {
+                MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+                builder.setTitleText("Data Picker");
 
+                builder.setSelection(Pair.create(MaterialDatePicker.thisMonthInUtcMilliseconds(), MaterialDatePicker.todayInUtcMilliseconds()));
+                MaterialDatePicker materialDatePicker = builder.build();
+                materialDatePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
+
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
+                    @Override
+                    public void onPositiveButtonClick(Pair<Long, Long> selection) {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+                        Date date1 = new Date();
+                        Date date2 = new Date();
+
+                        date1.setTime(selection.first);
+                        date2.setTime(selection.second);
+
+                        String dateString1 = simpleDateFormat.format(date1);
+                        String dateString2 = simpleDateFormat.format(date2);
+
+                        scheduleInnerBinding.tripPeriod.setText(dateString1 + "~" + dateString2);
+                    }
+                });
+            }
+        });
+
+
+        scheduleInnerBinding.scheduleAddBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+            title = scheduleInnerBinding.scheduleTitle.getText().toString();
+            date = scheduleInnerBinding.tripPeriod.getText().toString();
+            String place = scheduleInnerBinding.schedulePlace.getText().toString();
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            // 사용자의 uid로 기록 서브컬렉션에 접근
+            CollectionReference schedulesCollection = scheduleDB
+                    .collection("schedule")
+                    .document(uid)
+                    .collection("schedules");
+
+            Map<String, Object> scheduleMap = new HashMap<>();
+            scheduleMap.put(FirebaseId.title, title);
+            scheduleMap.put(FirebaseId.place, place);
+            scheduleMap.put(FirebaseId.date, date);
+            scheduleMap.put(FirebaseId.contentImage, "null");
+            scheduleMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+            String newItem = "Title: " + title + "\nDate: " + date + "\n";
+
+            // 어댑터에 아이템 추가
+            ((MyAdapter) binding.scheduleBlockList.getAdapter()).addItem(newItem);
+
+            // 서브컬렉션 'records'에 새로운 문서 추가
+            schedulesCollection.add(scheduleMap)
+                    .addOnSuccessListener(documentReference -> {
+                        // 성공적으로 추가되었을 때의 작업
+                        dialog.dismiss();
+                    })
+                    .addOnFailureListener(e -> {
+                        // 실패했을 때의 작업
+                        Log.e("Firestore", "Error adding schedule document", e);
+                        dialog.dismiss();
+                    });
+
+
+        });
+        num++;
     }
 
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<String> list;
+
+        public void addAllItems(List<String> newItems) {
+            list.addAll(0, newItems);
+            notifyDataSetChanged();
+        }
+
+        public void addItem(String newItem) {
+            list.add(0, newItem);
+            notifyItemInserted(0);
+        }
 
         private MyAdapter(List<String> list) {
             this.list = list;
@@ -160,7 +296,39 @@ public class Fragment_schedule extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull Fragment_schedule.MyViewHolder holder, int position) {
             String text = list.get(position);
-//            holder.binding.schedule_block_title.setText(text); //고쳐야 할 부분
+            String titleText = extractTitle(text);
+            String dateText = extractDate(text);
+            ScheduleMainRecyclerviewBinding scheduleBinding = (ScheduleMainRecyclerviewBinding) holder.binding;
+            if(itemCount > 0) {
+                if (position == itemCount + num) {
+                    // 뷰 홀더에 각각 설정
+                    scheduleBinding.scheduleBlockTitle.setText(titleText);
+                    scheduleBinding.scheduleTripPeriod.setText(dateText);
+                    scheduleBinding.scheduleBlock.setVisibility(View.GONE);
+                    scheduleBinding.scheduleAdd.setVisibility(View.VISIBLE);
+                } else {
+                    // 뷰 홀더에 각각 설정
+                    scheduleBinding.scheduleBlockTitle.setText(titleText);
+                    scheduleBinding.scheduleTripPeriod.setText(dateText);
+                    scheduleBinding.scheduleBlock.setVisibility(View.VISIBLE);
+                    scheduleBinding.scheduleAdd.setVisibility(View.GONE);
+                }
+            } else {
+                if (getItemCount() == 1) {
+                    // 뷰 홀더에 각각 설정
+                    scheduleBinding.scheduleBlockTitle.setText(titleText);
+                    scheduleBinding.scheduleTripPeriod.setText(dateText);
+                    scheduleBinding.scheduleBlock.setVisibility(View.GONE);
+                    scheduleBinding.scheduleAdd.setVisibility(View.VISIBLE);
+                } else {
+                    // 뷰 홀더에 각각 설정
+                    scheduleBinding.scheduleBlockTitle.setText(titleText);
+                    scheduleBinding.scheduleTripPeriod.setText(dateText);
+                    scheduleBinding.scheduleBlock.setVisibility(View.VISIBLE);
+                    scheduleBinding.scheduleAdd.setVisibility(View.GONE);
+                }
+
+            }
         }
 
         @Override
@@ -168,6 +336,7 @@ public class Fragment_schedule extends Fragment {
             return list.size();
         }
     }
+
 
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override
@@ -186,4 +355,81 @@ public class Fragment_schedule extends Fragment {
 
         }
     }
+
+    private void updateUI() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentSchedulePlan = new Fragment_schedule_plan();
+
+        /*Bundle bundle = new Bundle();
+        bundle.putString(FirebaseId.date, binding.tripDateText.getText().toString());
+        bundle.putString(FirebaseId.place, binding.tripPlace.getText().toString());
+        fragmentSchedulePlan.setArguments(bundle);*/
+
+        callSchedulePlanMethod();
+        transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
+
+    }
+
+    private String extractDay(String OriginalDay) {
+        String Day = OriginalDay.substring(10, 11);
+        return Day;
+    }
+
+    private String extractTitle(String text) {
+        // "Title: " 다음에 오는 문자열을 추출
+        int startIndex = text.indexOf("Title: ") + "Title: ".length();
+        int endIndex = text.indexOf("\n", startIndex);
+        if (startIndex != -1 && endIndex != -1) {
+            return text.substring(startIndex, endIndex).trim();
+        } else {
+            // 적절한 로직을 사용하여 title을 추출할 수 없는 경우 처리
+            return "Title Not Found";
+        }
+    }
+
+    // date를 추출하는 메소드
+    private String extractDate(String text) {
+        // "Date: " 다음에 오는 문자열을 추출
+        int startIndex = text.indexOf("Date: ") + "Date: ".length();
+        int endIndex = text.indexOf("\n", startIndex);
+        if (startIndex != -1 && endIndex != -1) {
+            return text.substring(startIndex, endIndex).trim();
+        } else {
+            // 적절한 로직을 사용하여 date를 추출할 수 없는 경우 처리
+            return "Date Not Found";
+        }
+    }
+
+    private void loadScheduleDataFromFirestore() {
+        num = 0;
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        CollectionReference schedulesCollection = scheduleDB
+                .collection("schedule")
+                .document(uid)
+                .collection("schedules");
+
+        schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<String> itemList = new ArrayList<>();
+                    itemCount = queryDocumentSnapshots.size();
+                    for (QueryDocumentSnapshot loadedData : queryDocumentSnapshots) {
+                        // 각 문서에서 필요한 데이터를 추출하여 itemList에 추가
+                        String title = loadedData.getString(FirebaseId.title);
+                        String place = loadedData.getString(FirebaseId.place);
+                        String date = loadedData.getString(FirebaseId.date);
+                        itemList.add("Title: " + title + "\nDate: " + date + "\n");
+                    }
+
+                    // RecyclerView 어댑터에 데이터를 설정
+                    if (binding.scheduleBlockList.getAdapter() instanceof MyAdapter) {
+                        ((MyAdapter) binding.scheduleBlockList.getAdapter()).addAllItems(itemList);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // 데이터 불러오기 실패 시의 작업
+                    Log.e("Firestore", "Error getting documents: ", e);
+                });
+    }
 }
+

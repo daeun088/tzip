@@ -160,13 +160,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                 return false;
             }
         });
+        tabs = findViewById(R.id.tab_layout);
 
-        View fragment_schedule_plan_tab_ = getLayoutInflater().inflate(R.layout.fragment_schedule_plan_tab_, null);
-        tabs = fragment_schedule_plan_tab_.findViewById(R.id.tab_layout);
+        changeTabText(0,"1" );
 
-        tabs.addTab(tabs.newTab().setText("친구")); //setText는 임시로 해둔것, 이후에 tab만들 때 달력하고 연동해서 선택한 날짜로 setText하면 될듯
-        tabs.addTab(tabs.newTab().setText("채팅"));
-        tabs.addTab(tabs.newTab().setText("더보기"));
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -196,6 +193,12 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         });
 
 
+    }
+    protected void changeTabText(int tabIndex, String newText) {
+        TabLayout.Tab tab = tabs.getTabAt(tabIndex);
+        if (tab != null) {
+            tab.setText(newText);
+        }
     }
 
     // 홈 프래그먼트에 대한 상단바 설정
