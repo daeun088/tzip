@@ -3,8 +3,10 @@ package com.example.tzip;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,11 +19,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -51,12 +57,13 @@ import java.util.Map;
 public class RecordWriting extends Fragment {
     FragmentRecordWritingBinding binding;
     private int selectedPosition = -1;
+    static String title;
     String detailPlace;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE_REQUEST = 1;
-    final String[] lastestDocumentName = new String[1];
+    static final String[] lastestDocumentName = new String[1];
     private List<RecordItem> recordItems = new ArrayList<>();
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    static String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
@@ -64,6 +71,7 @@ public class RecordWriting extends Fragment {
     public RecordWriting() {
         // Required empty public constructor
     }
+
     public static RecordWriting newInstance(String param1, String param2) {
         RecordWriting fragment = new RecordWriting();
         Bundle args = new Bundle();
@@ -107,14 +115,57 @@ public class RecordWriting extends Fragment {
         dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
 
         binding.addScheduleBtn.setOnClickListener(v -> {
+            title = binding.recordTitle.getText().toString(); //title 여기서 수정...
             View contentView = RecordWriting.this.getLayoutInflater().inflate(R.layout.fregment_record_write_inner, null);
             dialog.setContentView(contentView);
             attachListenerToContentView(contentView);
             dialog.show();
         });
+
+
         // 여기까지 <민>
 
         return binding.getRoot();
+
+    }
+
+    public static boolean saveTitle(Context context) {
+        // Firebase에 저장할 코드를 추가합니다.
+        if (!TextUtils.isEmpty(title)) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference recordCollection = db
+                    .collection("record")
+                    .document(uid)
+                    .collection("records");
+
+            Map<String, Object> recordMap = new HashMap<>();
+            recordMap.put(FirebaseId.title, title); // record Map에 title 추가
+            // 문서를 가져오기 위한 쿼리
+            Query query = recordCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
+            query.get().addOnSuccessListener(querySnapshot -> {
+                if (!querySnapshot.isEmpty()) {
+                    // 문서가 존재하는 경우
+                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                    lastestDocumentName[0] = document.getId();
+
+                    // 이미지 URL을 포함하여 Firestore 문서 업데이트
+                    recordCollection.document(lastestDocumentName[0]).update(recordMap)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("daeun0", "제목 및 Firestore 업데이트 완료");
+                            })
+                            .addOnFailureListener(e -> {
+                                // 업데이트 실패 시 처리
+                                Log.e("daeun", "Firestore 문서 업데이트 실패", e);
+                            });
+                }
+            }).addOnFailureListener(e -> {
+                // 쿼리 실패 시 처리
+                Log.e("daeun", "Firestore 쿼리 실패", e);
+            });
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void retrievePlace() {
@@ -205,8 +256,10 @@ public class RecordWriting extends Fragment {
             holder.binding.date.setText(recordItem.getDate());
             holder.binding.blockTitle.setText(recordItem.getBlockTitle());
             holder.binding.blockTime.setText(recordItem.getTime());
-            holder.binding.imageBtn.setOnClickListener( v -> {
+            holder.binding.imageBtn.setOnClickListener(v -> {
+                selectedPosition = holder.getAdapterPosition();
                 isMainImageSelected = false;
+                detailPlace = recordItem.getBlockTitle();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);//근데 얘는 띄워지는 이미지뷰가 holder.binding.blockItem임
@@ -214,7 +267,7 @@ public class RecordWriting extends Fragment {
 
             // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
             // 첫 번째 아이템의 경우에만 날짜를 표시하도록 설정
-            if (position == 0 || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
+            if (position == 0 || recordItem.getDate() == null || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
                 holder.binding.date.setVisibility(View.VISIBLE);
             } else {
                 holder.binding.date.setVisibility(GONE);
@@ -225,6 +278,7 @@ public class RecordWriting extends Fragment {
         public int getItemCount() {
             return recordItems.size();
         }
+
         public class ViewHolder extends RecyclerView.ViewHolder {
             ItemWritingOfPlaceBinding binding;
 
@@ -232,16 +286,9 @@ public class RecordWriting extends Fragment {
                 super(binding.getRoot());
                 this.binding = binding;
 
-                binding.imageBtn.setOnClickListener( v -> {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, PICK_IMAGE_REQUEST);
-                });
             }
         }
     }
-
-
 
     private void attachListenerToContentView(View contentView) {
         FregmentRecordWriteInnerBinding binding = FregmentRecordWriteInnerBinding.bind(contentView);
@@ -346,21 +393,31 @@ public class RecordWriting extends Fragment {
                 }
             } else {
                 // 리사이클러뷰의 이미지를 설정할 때는 해당 ViewHolder의 blockItem에 띄움
-                RecyclerView.ViewHolder viewHolder = binding.dayItem.findViewHolderForAdapterPosition(selectedPosition);
-                if (viewHolder instanceof RecordItemAdapter.ViewHolder) {
-                    RecordItemAdapter.ViewHolder yourViewHolder = (RecordItemAdapter.ViewHolder) viewHolder;
-                    yourViewHolder.binding.blockImage.setImageURI(imageUri);
-                    String recordId = recordItems.get(selectedPosition).getBlockTitle(); // 선택된 블록의 recordId 가져오기
-                    if (recordId != null) {
-                        Bitmap bitmap = ((BitmapDrawable) yourViewHolder.binding.blockImage.getDrawable()).getBitmap();
-                        // 선택된 이미지를 Firebase Storage에 업로드, recordId를 전달하여 업데이트
-                        uploadImageToFirebaseStorage(bitmap, false, recordId);
-                    }
-                }
-            }
+                binding.dayItem.post(() -> {
+                    RecyclerView.ViewHolder viewHolder = binding.dayItem.findViewHolderForAdapterPosition(selectedPosition);
+                    Log.d("daeun0", "Selected Position: " + selectedPosition);
+                    Log.d("daeun0", "ViewHolder: " + viewHolder);
 
+                    if (viewHolder instanceof RecordItemAdapter.ViewHolder) {
+                        RecordItemAdapter.ViewHolder yourViewHolder = (RecordItemAdapter.ViewHolder) viewHolder;
+                        yourViewHolder.binding.blockImage.setImageURI(imageUri);
+                        String recordId = recordItems.get(selectedPosition).getBlockTitle(); // 선택된 블록의 recordId 가져오기
+
+                        // Null 체크 추가
+                        if (recordId != null) {
+                            Bitmap bitmap = ((BitmapDrawable) yourViewHolder.binding.blockImage.getDrawable()).getBitmap();
+                            // 선택된 이미지를 Firebase Storage에 업로드, recordId를 전달하여 업데이트
+                            uploadImageToFirebaseStorage(bitmap, false, recordId);
+                        } else {
+                            Log.e("daeun", "getBlockTitle()이 null입니다.");
+                            // 처리할 작업 추가
+                        }
+                    }
+                });
+            }
         }
     }
+
 
     private boolean isMainImageSelected;
 
@@ -459,7 +516,7 @@ public class RecordWriting extends Fragment {
             recordBlockMap.put(FirebaseId.contentImage, imageUrl); // contentImage 필드에 이미지 URL 추가
 
             // 이미지 URL을 포함하여 Firestore 문서 업데이트
-            recordBlockCollection.document(detailPlace).set(recordBlockMap)
+            recordBlockCollection.document(detailPlace).update(recordBlockMap)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
                         retrievePlace();

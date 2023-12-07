@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
+
+import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
@@ -285,6 +287,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {//밑줄 상관 x
+        super.onBackPressed();
         if (System.currentTimeMillis() - backPressedTime < BACK_PRESS_INTERVAL) {
             // 두 번째로 뒤로가기 키를 눌렀을 때
             moveTaskToBack(true); // 태스크를 백그라운드로 이동
@@ -425,23 +428,21 @@ public class nevigation_bar_test_code extends AppCompatActivity {
             }
 
             toolbar_button.setOnClickListener(view -> {
-                //String tag = (String) toolbar.getTag();
                 String tag = (String) toolbar_button.getTag();
                 if (tag != null &&tag.equals("알림")){
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).addToBackStack(null).commit();
                     setToolbarForNotification();
                 } else if (tag != null && tag.equals("등록")) {
-                    //등록 버튼은 누르면 게시글이 등록되어야 하기 때문에 따로 구현이 필요할듯
-
-                    showToast("등록이 완료되었습니다.");
-                    //등록 후에 토스트 띄우고 홈 화면으로 가도록
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
-                    setToolbarForHome();
+                        if(RecordWriting.saveTitle(this)){
+                            showToast("등록이 완료되었습니다.");
+                            //등록 후에 토스트 띄우고 홈 화면으로 가도록
+                            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+                            setToolbarForHome();
+                        }
+                        else showToast("제목을 입력하세요");
                 }
             });
         }
-
-
 
     protected void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
