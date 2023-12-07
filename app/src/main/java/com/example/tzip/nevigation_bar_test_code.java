@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
+
+import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
@@ -431,7 +433,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).addToBackStack(null).commit();
                     setToolbarForNotification();
                 } else if (tag != null && tag.equals("등록")) {
-                    //등록 버튼은 누르면 게시글이 등록되어야 하기 때문에 따로 구현이 필요할듯
+                        RecordWriting.saveTitle(this);
 
                     showToast("등록이 완료되었습니다.");
                     //등록 후에 토스트 띄우고 홈 화면으로 가도록

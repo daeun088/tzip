@@ -3,8 +3,10 @@ package com.example.tzip;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,11 +19,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -51,12 +56,14 @@ import java.util.Map;
 public class RecordWriting extends Fragment {
     FragmentRecordWritingBinding binding;
     private int selectedPosition = -1;
+    static EditText titleView;
+    static String title;
     String detailPlace;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE_REQUEST = 1;
-    final String[] lastestDocumentName = new String[1];
+    static final String[] lastestDocumentName = new String[1];
     private List<RecordItem> recordItems = new ArrayList<>();
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    static String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
@@ -80,6 +87,7 @@ public class RecordWriting extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_record_writing, container, false);
         binding = FragmentRecordWritingBinding.inflate(inflater, container, false);
 
         //add에서 입력된 데이터 불러오기
@@ -90,6 +98,8 @@ public class RecordWriting extends Fragment {
             binding.tripDate.setText("여행일시 - " + date);
             binding.tripPlace.setText("여행장소 - " + place);
         }
+
+
 
         //main image 띄우기
         binding.recordMainImageBtn.setOnClickListener(v -> {
@@ -115,6 +125,54 @@ public class RecordWriting extends Fragment {
         // 여기까지 <민>
 
         return binding.getRoot();
+    }
+
+    public static void saveTitle(Context context) {
+        if (titleView instanceof EditText) {
+            titleView = titleView.findViewById(R.id.record_title);
+            title = titleView.getText().toString();
+
+            Log.d("daeun0", title+"dkdh");
+
+            // Firebase에 저장할 코드를 추가합니다.
+            if (!TextUtils.isEmpty(title)) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                CollectionReference recordCollection = db
+                        .collection("record")
+                        .document(uid)
+                        .collection("records");
+
+                Map<String, Object> recordMap = new HashMap<>();
+                recordMap.put(FirebaseId.title, title); // record Map에 title 추가
+
+                // 문서를 가져오기 위한 쿼리
+                Query query = recordCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
+
+                query.get().addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // 문서가 존재하는 경우
+                        DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                        lastestDocumentName[0] = document.getId();
+
+                        // 이미지 URL을 포함하여 Firestore 문서 업데이트
+                        recordCollection.document(lastestDocumentName[0]).update(recordMap)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d ("daeun0", "제목 및 Firestore 업데이트 완료");
+                                })
+                                .addOnFailureListener(e -> {
+                                    // 업데이트 실패 시 처리
+                                    Log.e("daeun", "Firestore 문서 업데이트 실패", e);
+                                });
+                    }
+                }).addOnFailureListener(e -> {
+                    // 쿼리 실패 시 처리
+                    Log.e("daeun", "Firestore 쿼리 실패", e);
+                });
+            } else {
+                // 제목이 비어있는 경우에 대한 처리
+                Toast.makeText(context, "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void retrievePlace() {
@@ -237,8 +295,6 @@ public class RecordWriting extends Fragment {
             }
         }
     }
-
-
 
     private void attachListenerToContentView(View contentView) {
         FregmentRecordWriteInnerBinding binding = FregmentRecordWriteInnerBinding.bind(contentView);
