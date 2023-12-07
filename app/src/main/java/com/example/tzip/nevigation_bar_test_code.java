@@ -428,18 +428,18 @@ public class nevigation_bar_test_code extends AppCompatActivity {
             }
 
             toolbar_button.setOnClickListener(view -> {
-                //String tag = (String) toolbar.getTag();
                 String tag = (String) toolbar_button.getTag();
                 if (tag != null &&tag.equals("알림")){
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).addToBackStack(null).commit();
                     setToolbarForNotification();
                 } else if (tag != null && tag.equals("등록")) {
-                        RecordWriting.saveTitle(this);
-
-                    showToast("등록이 완료되었습니다.");
-                    //등록 후에 토스트 띄우고 홈 화면으로 가도록
-                    getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
-                    setToolbarForHome();
+                        if(RecordWriting.saveTitle(this)){
+                            showToast("등록이 완료되었습니다.");
+                            //등록 후에 토스트 띄우고 홈 화면으로 가도록
+                            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
+                            setToolbarForHome();
+                        }
+                        else showToast("제목을 입력하세요");
                 }
             });
         }

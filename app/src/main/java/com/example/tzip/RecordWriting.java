@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -56,7 +57,6 @@ import java.util.Map;
 public class RecordWriting extends Fragment {
     FragmentRecordWritingBinding binding;
     private int selectedPosition = -1;
-    static EditText titleView;
     static String title;
     String detailPlace;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
@@ -87,7 +87,6 @@ public class RecordWriting extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_record_writing, container, false);
         binding = FragmentRecordWritingBinding.inflate(inflater, container, false);
 
         //add에서 입력된 데이터 불러오기
@@ -98,8 +97,6 @@ public class RecordWriting extends Fragment {
             binding.tripDate.setText("여행일시 - " + date);
             binding.tripPlace.setText("여행장소 - " + place);
         }
-
-
 
         //main image 띄우기
         binding.recordMainImageBtn.setOnClickListener(v -> {
@@ -117,22 +114,21 @@ public class RecordWriting extends Fragment {
         dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
 
         binding.addScheduleBtn.setOnClickListener(v -> {
+            title = binding.recordTitle.getText().toString(); //title 여기서 수정...
             View contentView = RecordWriting.this.getLayoutInflater().inflate(R.layout.fregment_record_write_inner, null);
             dialog.setContentView(contentView);
             attachListenerToContentView(contentView);
             dialog.show();
         });
+
+
         // 여기까지 <민>
 
         return binding.getRoot();
+
     }
 
-    public static void saveTitle(Context context) {
-        if (titleView instanceof EditText) {
-            titleView = titleView.findViewById(R.id.record_title);
-            title = titleView.getText().toString();
-
-            Log.d("daeun0", title+"dkdh");
+    public static boolean saveTitle(Context context) {
 
             // Firebase에 저장할 코드를 추가합니다.
             if (!TextUtils.isEmpty(title)) {
@@ -168,12 +164,11 @@ public class RecordWriting extends Fragment {
                     // 쿼리 실패 시 처리
                     Log.e("daeun", "Firestore 쿼리 실패", e);
                 });
+                return true;
             } else {
-                // 제목이 비어있는 경우에 대한 처리
-                Toast.makeText(context, "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
+                return false;
             }
         }
-    }
 
     private void retrievePlace() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
