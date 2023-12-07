@@ -287,12 +287,12 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {//밑줄 상관 x
-        super.onBackPressed();
         if (System.currentTimeMillis() - backPressedTime < BACK_PRESS_INTERVAL) {
             // 두 번째로 뒤로가기 키를 눌렀을 때
             moveTaskToBack(true); // 태스크를 백그라운드로 이동
             finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
             System.exit(0);
+            super.onBackPressed();
         } else {
             // 첫 번째로 뒤로가기 키를 눌렀을 때
             showToast("한 번 더 누르면 종료됩니다.");
@@ -436,8 +436,8 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                         if(RecordWriting.saveTitle(this)){
                             showToast("등록이 완료되었습니다.");
                             //등록 후에 토스트 띄우고 홈 화면으로 가도록
-                            getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentHome).commit();
-                            setToolbarForHome();
+                            post_id = R.id.review;
+                            NevigationBarChange(post_id);
                         }
                         else showToast("제목을 입력하세요");
                 }
