@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 
 import com.example.tzip.databinding.FragmentScheduleBinding;
 import com.example.tzip.databinding.ScheduleMainRecyclerviewBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class Fragment_schedule extends Fragment {
     Fragment_schedule_plan fragmentSchedulePlan;
 
     FragmentScheduleBinding binding;
+
+    ScheduleMainRecyclerviewBinding binding2;
+    BottomSheetDialog dialog;
 
 
     private void callSchedulePlanMethod() {
@@ -113,6 +117,7 @@ public class Fragment_schedule extends Fragment {
 
         private MyViewHolder(ScheduleMainRecyclerviewBinding binding) {
             super(binding.getRoot());
+            dialog = new BottomSheetDialog((getContext()));
             this.binding = binding;
             binding.scheduleBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,8 +129,19 @@ public class Fragment_schedule extends Fragment {
                     callSchedulePlanMethod();
                 }
             });
+            binding.scheduleAdd.setOnClickListener(v -> {
+                View contentView = Fragment_schedule.this.getLayoutInflater().inflate(R.layout.schedule_inner, null);
+                dialog.setContentView(contentView);
+                attachListenerToContentView(contentView);
+                dialog.show();
+            });
         }
     }
+
+    private void attachListenerToContentView(View contentView) {
+
+    }
+
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<String> list;

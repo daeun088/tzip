@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/writing_bottom_layout"
+    android:orientation="vertical"
+    android:padding="20dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="#00000000"
+        android:src="@drawable/plan_add_innerpage_picture" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="제목"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edittext_style"
+        android:fontFamily="@font/notosanskr_bold"
+        android:hint="제목을 입력하세요"
+        android:includeFontPadding="false"
+        android:textColorHint="#000000" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="장소"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edittext_style"
+        android:fontFamily="@font/notosanskr_bold"
+        android:hint="장소를 입력하세요"
+        android:includeFontPadding="false"
+        android:textColorHint="#000000" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="여행 기간"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/linerac"
+            android:fontFamily="@font/notosanskr_bold"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/orange_btn"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="여행 생성하기"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+
+</LinearLayout>
