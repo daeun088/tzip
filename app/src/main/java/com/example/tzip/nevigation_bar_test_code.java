@@ -287,6 +287,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {//밑줄 상관 x
+        super.onBackPressed();
         if (System.currentTimeMillis() - backPressedTime < BACK_PRESS_INTERVAL) {
             // 두 번째로 뒤로가기 키를 눌렀을 때
             moveTaskToBack(true); // 태스크를 백그라운드로 이동
