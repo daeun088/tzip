@@ -426,17 +426,12 @@ public class RecordWriting extends Fragment {
         StorageReference storageRef = storage.getReference();
         String imagePath;
 
-        if (isMainImage) {
+        if (isMainImageSelected) {
             // 메인 이미지인 경우
-            imagePath = getPath("main.jpg");
+            imagePath = getPath("main.jpg", null);
         } else {
             // 리사이클러뷰의 이미지인 경우
-            imagePath = getPath("jpg");
-        }
-
-        if (recordId != null) {
-            // 리사이클러뷰의 이미지일 경우 recordId를 사용하여 저장 경로를 변경
-            imagePath = getPath(recordId + ".jpg");
+            imagePath = getPath("jpg", recordId);
         }
 
         StorageReference imageRef = storageRef.child(imagePath);
@@ -531,13 +526,33 @@ public class RecordWriting extends Fragment {
         }
     }
 
-    private String getPath(String extension) {
+    private String getPath(String extension, String recordId) {
         String uid = getUidOfCurrentUser();
-        String dir = (uid != null) ? uid : "public";
-        String fileName = (uid != null) ? (uid + "_" + System.currentTimeMillis() + "." + extension)
+        String lastestDocumentName = getLastestDocumentName();
+        String dir;
+        Log.d("daeun", "uid: "+uid +"  DocName : " + lastestDocumentName);
+
+        if (uid != null && lastestDocumentName != null) {
+            if (isMainImageSelected) {
+                dir = "record/" + uid + "/" + lastestDocumentName + "/main/";
+            } else {
+                dir = "record/" + uid + "/" + lastestDocumentName + "/" + recordId + "/";
+            }
+        } else {
+            dir = "public/";
+        }
+
+        String fileName = (uid != null) ? (recordId + "_" + System.currentTimeMillis() + "." + extension)
                 : ("anonymous" + "_" + System.currentTimeMillis() + "." + extension);
-        return dir + "/" + fileName;
+        return dir + fileName;
     }
+
+
+    private String getLastestDocumentName() {
+        return lastestDocumentName[0];
+    }
+
+
 
     private boolean hasSignedIn() {
         return FirebaseAuth.getInstance().getCurrentUser() != null ? true : false;
