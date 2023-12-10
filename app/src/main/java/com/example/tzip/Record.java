@@ -13,13 +13,15 @@ public class Record implements Comparable<Record> {
     private String friend;
     private String documentId;
 
-    public Record(String documentId) {
-        this.documentId = documentId;
-        // 다른 필드들 초기화...
-    }
+
+    // 기존 생성자와 getter/setter 메서드는 여기에 포함됩니다.
 
     public String getDocumentId() {
         return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     @PropertyName("contentImage")

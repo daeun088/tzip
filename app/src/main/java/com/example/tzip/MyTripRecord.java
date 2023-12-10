@@ -85,7 +85,9 @@ public class MyTripRecord extends Fragment {
                         // 여기서 document는 "records" 컬렉션 안의 각 문서를 나타냅니다.
                         // 가져온 문서를 Record 객체로 변환하여 사용할 수 있습니다.
                         Record record = document.toObject(Record.class);
+                        String documentId = document.getId();
                         if (record != null) {
+                            record.setDocumentId(documentId);
                             recordList.add(record);
                         }
                         if (!recordList.isEmpty()) {
@@ -125,6 +127,7 @@ public class MyTripRecord extends Fragment {
             String recordPlace = record.getPlace();
             String recordDate = record.getDate();
             Uri recordImage = record.getContentImage();
+            String documentId = record.getDocumentId();
 
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -137,6 +140,7 @@ public class MyTripRecord extends Fragment {
             bundle.putString("place", recordPlace);
             bundle.putString("date", recordDate);
             bundle.putString("image", String.valueOf(recordImage));
+            bundle.putString("documentId", documentId);
 
             //bundle.putString("document", documentName);
 

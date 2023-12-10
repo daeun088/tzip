@@ -217,6 +217,7 @@ public class RecordWriting extends Fragment {
     }
 
 
+
     public void retrievePlace() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         binding.hintText.setVisibility(GONE);
