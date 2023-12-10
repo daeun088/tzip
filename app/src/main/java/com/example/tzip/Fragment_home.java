@@ -41,7 +41,6 @@ public class Fragment_home extends Fragment {
     ItemHomeListBinding binding2;
 
 
-
     // 리사이클러뷰 가져오기
     TextView dataPickerText;
 
@@ -128,7 +127,7 @@ public class Fragment_home extends Fragment {
 
         // 카드 밑 메뉴 버튼
 
-        binding.homeGoSchedule.setOnClickListener( v -> {
+        binding.homeGoSchedule.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callScheduleMethod();
             Fragment_schedule schedule = new Fragment_schedule();
@@ -136,7 +135,7 @@ public class Fragment_home extends Fragment {
             transaction.commit();
         });
 
-        binding.homeGoRecord.setOnClickListener( v -> {
+        binding.homeGoRecord.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callRecordMethod();
             Fragment_record record = new Fragment_record();
@@ -144,7 +143,7 @@ public class Fragment_home extends Fragment {
             transaction.commit();
         });
 
-        binding.homeGoCommunity.setOnClickListener( v -> {
+        binding.homeGoCommunity.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callCommunityMethod();
             Fragment_community community = new Fragment_community();
@@ -152,7 +151,7 @@ public class Fragment_home extends Fragment {
             transaction.commit();
         });
 
-        binding.homeGoMypage.setOnClickListener( v -> {
+        binding.homeGoMypage.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callMypageMethod();
             Fragment_mypage mypage = new Fragment_mypage();
@@ -160,7 +159,7 @@ public class Fragment_home extends Fragment {
             transaction.commit();
         });
 
-        binding.homeGoAlert.setOnClickListener( v -> {
+        binding.homeGoAlert.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callAlertMethod();
             Fragment_emergency emergency = new Fragment_emergency();
@@ -171,7 +170,7 @@ public class Fragment_home extends Fragment {
         // 카드 밑 메뉴 버튼
 
         // see all
-        binding.homeGoSeeall.setOnClickListener( v -> {
+        binding.homeGoSeeall.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callScheduleMethod();
             Fragment_community community = new Fragment_community();
