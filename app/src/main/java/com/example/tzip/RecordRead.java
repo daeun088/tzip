@@ -190,6 +190,7 @@ public class RecordRead extends Fragment {
             notifyDataSetChanged(); // Notify the adapter about the data set change
         }
 
+
         @Override
         public int getItemCount() {
             return recordItems.size();

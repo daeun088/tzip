@@ -1,5 +1,6 @@
 package com.example.tzip;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class Fragment_record extends Fragment {
     private FragmentRecordBinding binding;
+    List<Record> recentRecords;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -131,17 +133,54 @@ public class Fragment_record extends Fragment {
             RecordAdd recordadd = new RecordAdd();
             transaction.replace(R.id.containers, recordadd);
             transaction.commit();
+
         });
 
         binding.firstRecordBlock.setOnClickListener( v -> {
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            RecordRead recordRead = new RecordRead();
-            transaction.replace(R.id.containers, recordRead);
-            transaction.commit();
+            openDetailPage(recentRecords.get(0));
         });
+
+        binding.secondTripBlock.setOnClickListener( v -> {
+            openDetailPage(recentRecords.get(1));
+        });
+
 
         return binding.getRoot();
     }
+
+    private void openDetailPage(Record record) {
+        String recordTitle = record.getTitle();
+        String recordPlace = record.getPlace();
+        String recordDate = record.getDate();
+        Uri recordImage = record.getContentImage();
+        String documentId = record.getDocumentId();
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+        // 세부 정보를 표시할 프래그먼트 생성
+        RecordRead detailFragment = new RecordRead();
+
+        // 프래그먼트에 전달할 번들 생성
+        Bundle bundle = new Bundle();
+        bundle.putString("title", recordTitle);
+        bundle.putString("place", recordPlace);
+        bundle.putString("date", recordDate);
+        bundle.putString("image", String.valueOf(recordImage));
+        bundle.putString("documentId", documentId);
+
+        // 번들을 프래그먼트에 설정
+        detailFragment.setArguments(bundle);
+
+        // isAdded() 메서드를 사용하여 프래그먼트가 추가된 상태인지 확인
+        if (isAdded()) {
+            // 생성한 프래그먼트를 교체
+            transaction.replace(R.id.containers, detailFragment);
+
+            // 트랜잭션 커밋
+            transaction.commit();
+        }
+    }
+
 
     private void retrieveRecords() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -157,12 +196,13 @@ public class Fragment_record extends Fragment {
                         // 가져온 문서를 Record 객체로 변환하여 사용할 수 있습니다.
                         Record record = document.toObject(Record.class);
                         if (record != null) {
+                            record.setDocumentId(document.getId());
                             recordList.add(record);
                         }
                     }
                             // 내림차순으로 정렬
                             Collections.sort(recordList);
-                            List<Record> recentRecords = recordList.subList(0, Math.min(recordList.size(), 2));
+                            recentRecords = recordList.subList(0, Math.min(recordList.size(), 2));
 
                     if (!recentRecords.isEmpty()) {
                         binding.myRecords.setVisibility(View.VISIBLE);

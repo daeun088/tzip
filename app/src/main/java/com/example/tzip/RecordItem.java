@@ -48,7 +48,7 @@ public class RecordItem {
     public static class ItemSort implements Comparator<RecordItem> {
         @Override
         public int compare(RecordItem o1, RecordItem o2) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.KOREA);
 
             try {
