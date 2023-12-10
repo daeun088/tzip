@@ -41,12 +41,14 @@ public class Fragment_record extends Fragment {
     public Fragment_record() {
         // Required empty public constructor
     }
+
     private void callScheduleMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForSchedule(); // 액티비티의 메서드 호출
         }
     }
+
     private void callAddRecordMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
@@ -54,6 +56,7 @@ public class Fragment_record extends Fragment {
             activity.post_id = R.id.review;
         }
     }
+
     private void callMyTripRecordMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
@@ -69,9 +72,6 @@ public class Fragment_record extends Fragment {
             activity.post_id = R.id.review;
         }
     }
-
-
-
 
 
     public static Fragment_record newInstance(String param1, String param2) {
@@ -103,7 +103,8 @@ public class Fragment_record extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRecordBinding.inflate(inflater, container, false);
-        binding.friendDetailBtn.setOnClickListener( v -> {
+
+        binding.friendDetailText.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callFriendTripRecordMethod();
             FriendTripRecord friendtriprecord = new FriendTripRecord();
@@ -111,7 +112,15 @@ public class Fragment_record extends Fragment {
             transaction.commit();
         });
 
-        binding.myRecordDetailBtn.setOnClickListener( v -> {
+        binding.friendDetailBtn.setOnClickListener(v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callFriendTripRecordMethod();
+            FriendTripRecord friendtriprecord = new FriendTripRecord();
+            transaction.replace(R.id.containers, friendtriprecord);
+            transaction.commit();
+        });
+
+        binding.myRecordDetailBtn.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callMyTripRecordMethod();
             MyTripRecord mytriprecord = new MyTripRecord();
@@ -119,7 +128,7 @@ public class Fragment_record extends Fragment {
             transaction.commit();
         });
 
-        binding.myTripText.setOnClickListener( v -> {
+        binding.myTripText.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callMyTripRecordMethod();
             MyTripRecord mytriprecord = new MyTripRecord();
@@ -127,7 +136,7 @@ public class Fragment_record extends Fragment {
             transaction.commit();
         });
 
-        binding.recordAddBtn.setOnClickListener( v -> {
+        binding.recordAddBtn.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callAddRecordMethod();
             RecordAdd recordadd = new RecordAdd();
@@ -136,11 +145,11 @@ public class Fragment_record extends Fragment {
 
         });
 
-        binding.firstRecordBlock.setOnClickListener( v -> {
+        binding.firstRecordBlock.setOnClickListener(v -> {
             openDetailPage(recentRecords.get(0));
         });
 
-        binding.secondTripBlock.setOnClickListener( v -> {
+        binding.secondTripBlock.setOnClickListener(v -> {
             openDetailPage(recentRecords.get(1));
         });
 
@@ -181,7 +190,6 @@ public class Fragment_record extends Fragment {
         }
     }
 
-
     private void retrieveRecords() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -200,9 +208,9 @@ public class Fragment_record extends Fragment {
                             recordList.add(record);
                         }
                     }
-                            // 내림차순으로 정렬
-                            Collections.sort(recordList);
-                            recentRecords = recordList.subList(0, Math.min(recordList.size(), 2));
+                    // 내림차순으로 정렬
+                    Collections.sort(recordList);
+                    recentRecords = recordList.subList(0, Math.min(recordList.size(), 2));
 
                     if (!recentRecords.isEmpty()) {
                         binding.myRecords.setVisibility(View.VISIBLE);
