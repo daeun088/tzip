@@ -410,13 +410,20 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.containers, fragmentNotification).addToBackStack(null).commit();
                     setToolbarForNotification();
                 } else if (tag != null && tag.equals("등록")) {
-                        if(RecordWriting.saveTitle(this)){
+                        if(RecordWriting.saveTitle( this)==false){
+                            showToast("제목을 입력하세요.");
+                        } else if( RecordWriting.saveImage(this)==false){
+                            showToast("이미지를 설정해주세요.");
+                        }
+                        else if(RecordWriting.contentBlock(this) ==false){
+                            showToast("일정을 추가해주세요.");
+                        }
+                        else if(RecordWriting.saveTitle(this)){
                             showToast("등록이 완료되었습니다.");
                             //등록 후에 토스트 띄우고 홈 화면으로 가도록
                             post_id = R.id.review;
                             NevigationBarChange(post_id);
                         }
-                        else showToast("제목을 입력하세요");
                 }
             });
         }

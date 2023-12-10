@@ -3,6 +3,7 @@ package com.example.tzip;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,14 +57,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class RecordWriting extends Fragment {
-    FragmentRecordWritingBinding binding;
+    static FragmentRecordWritingBinding binding;
     private int selectedPosition = -1;
     static String title;
     String detailPlace;
     private FirebaseFirestore recordBlockDB = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE_REQUEST = 1;
     static final String[] lastestDocumentName = new String[1];
-    private List<RecordItem> recordItems = new ArrayList<>();
+    private static List<RecordItem> recordItems = new ArrayList<>();
     static String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
@@ -78,6 +80,14 @@ public class RecordWriting extends Fragment {
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void callHomeMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForRecordWriting(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.Home;
+        }
     }
 
     @Override
@@ -115,11 +125,33 @@ public class RecordWriting extends Fragment {
         dialog = new BottomSheetDialog(requireContext()); // requireContext 써도 되려나
 
         binding.addScheduleBtn.setOnClickListener(v -> {
-            title = binding.recordTitle.getText().toString(); //title 여기서 수정...
             View contentView = RecordWriting.this.getLayoutInflater().inflate(R.layout.fregment_record_write_inner, null);
             dialog.setContentView(contentView);
             attachListenerToContentView(contentView);
             dialog.show();
+        });
+
+        binding.dr.setOnClickListener( v -> {
+            if(saveTitle( getContext())==false){
+                Toast.makeText(getContext(), "제목을 입력하세요.", Toast.LENGTH_SHORT).show();
+            } else if( saveImage(getContext())==false){
+                Toast.makeText(getContext(), "이미지를 등록해주세요.", Toast.LENGTH_SHORT).show();
+            }
+            else if(contentBlock(getContext()) ==false){
+                Toast.makeText(getContext(), "일정을 추가해주세요.", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                adapter.saveRecordBlock();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment_home fragmentHome = new Fragment_home();
+
+                callHomeMethod();
+                transaction.replace(R.id.containers, fragmentHome);
+                transaction.commit();
+
+                Toast.makeText(getContext(), "등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+
+            }
         });
 
 
@@ -130,6 +162,7 @@ public class RecordWriting extends Fragment {
     }
 
     public static boolean saveTitle(Context context) {
+        title = binding.recordTitle.getText().toString();
         // Firebase에 저장할 코드를 추가합니다.
         if (!TextUtils.isEmpty(title)) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -168,7 +201,23 @@ public class RecordWriting extends Fragment {
         }
     }
 
-    private void retrievePlace() {
+    public static boolean saveImage(Context context){
+        if (binding.recordPicture.getDrawable() == null) return false;
+        else return true;
+    }
+
+    public static boolean contentBlock(Context context){
+        if (recordItems.size() == 0) {
+            // recordItem이 0개인 경우
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+    public void retrievePlace() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         binding.hintText.setVisibility(GONE);
 
@@ -265,6 +314,7 @@ public class RecordWriting extends Fragment {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);//근데 얘는 띄워지는 이미지뷰가 holder.binding.blockItem임
             });
 
+
             // 여기서는 RecordItem의 date가 같으면 time으로 정렬되어 있으므로
             // 첫 번째 아이템의 경우에만 날짜를 표시하도록 설정
             if (position == 0 || recordItem.getDate() == null || !recordItem.getDate().equals(recordItems.get(position - 1).getDate())) {
@@ -278,6 +328,45 @@ public class RecordWriting extends Fragment {
         public int getItemCount() {
             return recordItems.size();
         }
+
+        public void saveRecordBlock() {
+            // recordItem이 1개 이상인 경우
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference recordBlockCollection = db
+                    .collection("recordBlock")
+                    .document(uid)
+                    .collection(lastestDocumentName[0]);
+
+            for (int i = 0; i < recordItems.size(); i++) {
+                RecordItem recordItem = recordItems.get(i);
+                String detailPlace = recordItem.getBlockTitle();
+
+                // 여기서 수정: ViewHolder에서 직접 데이터를 가져올 수 없으므로, 아이템의 뷰홀더에서 데이터를 가져옴
+                View itemView = binding.dayItem.getChildAt(i);
+                if (itemView != null) {
+                    EditText editText = itemView.findViewById(R.id.content); // 예시로 EditText의 ID를 가져오도록 했습니다. 실제 사용하는 ID로 변경 필요
+                    String editTextContent = editText.getText().toString();
+
+                    // Firestore에 저장할 데이터
+                    Map<String, Object> recordBlockMap = new HashMap<>();
+                    recordBlockMap.put(FirebaseId.text, editTextContent); // text 필드에 EditText 내용 추가
+
+                    // Firestore에 저장
+                    recordBlockCollection.document(detailPlace).update(recordBlockMap)
+                            .addOnSuccessListener(aVoid -> {
+                                // 저장 성공 시 처리
+                                Log.d("daeun", "Firestore 저장 성공");
+                            })
+                            .addOnFailureListener(e -> {
+                                // 저장 실패 시 처리
+                                Log.e("daeun", "Firestore 저장 실패", e);
+                            });
+                }
+            }
+        }
+
+
+
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             ItemWritingOfPlaceBinding binding;
@@ -480,14 +569,7 @@ public class RecordWriting extends Fragment {
                 lastestDocumentName[0] = document.getId();
 
                 // 이미지 URL을 포함하여 Firestore 문서 업데이트
-                recordCollection.document(lastestDocumentName[0]).update(recordMap)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            // 업데이트 실패 시 처리
-                            Log.e("daeun", "Firestore 문서 업데이트 실패", e);
-                        });
+                recordCollection.document(lastestDocumentName[0]).update(recordMap);
             } else {
                 // 문서가 없는 경우 새로운 문서를 생성하거나 처리할 작업 수행
                 // 여기에 필요한 로직 추가

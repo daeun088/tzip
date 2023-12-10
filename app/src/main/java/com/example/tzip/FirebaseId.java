@@ -22,4 +22,5 @@ public class FirebaseId {
     public static String peopleCurrent = "peopleCurrent";
 
     public static final String imageUrl = "imageUrl";
+    public static String text = "text";
 }

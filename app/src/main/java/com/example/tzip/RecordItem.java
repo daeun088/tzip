@@ -16,14 +16,16 @@ public class RecordItem {
     private String date;
     private String time;
     private String blockTitle;
+    private String text;
 
     public RecordItem() {
         // 기본 생성자
     }
 
-    public RecordItem(String date, String time, String blockTitle) {
+    public RecordItem(String date, String time, String text, String blockTitle) {
         this.date = date;
         this.time = time;
+        this.text = text;
         this.blockTitle = blockTitle;
     }
 
@@ -101,6 +103,9 @@ public class RecordItem {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public void setText(String text) {this.text = text;}
+    public String getText() {return text;}
 
     public String getBlockTitle() {
         return blockTitle;
