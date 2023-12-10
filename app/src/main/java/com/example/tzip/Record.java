@@ -11,6 +11,16 @@ public class Record implements Comparable<Record> {
     private String place;
     private String date;
     private String friend;
+    private String documentId;
+
+    public Record(String documentId) {
+        this.documentId = documentId;
+        // 다른 필드들 초기화...
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
 
     @PropertyName("contentImage")
     private String contentImage;

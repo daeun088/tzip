@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2023/12/05"
+        android:fontFamily="@font/notosanskr_bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
+        <TextView
+            android:id="@+id/block_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="경포대 해수욕장"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"/>
+        <TextView
+            android:id="@+id/block_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13:00"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="내용을 입력하세요."
+        android:background="@null"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/inter"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/block_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+
+
+</LinearLayout>

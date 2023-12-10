@@ -1,5 +1,6 @@
 package com.example.tzip;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -120,20 +121,33 @@ public class MyTripRecord extends Fragment {
     }
 
     private void openDetailPage(Record record) {
-        // 선택된 레코드의 title 가져오기
-        String recordTitle = record.getTitle();
+            String recordTitle = record.getTitle();
+            String recordPlace = record.getPlace();
+            String recordDate = record.getDate();
+            Uri recordImage = record.getContentImage();
 
-        // 새로운 페이지를 열기 위한 FragmentTransaction 시작
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-        // 세부 정보를 표시할 프래그먼트 생성 및 인자 전달
-        RecordRead detailFragment = RecordRead.newInstance(recordTitle);
+            // 세부 정보를 표시할 프래그먼트 생성
+            RecordRead detailFragment = new RecordRead();
 
-        // 생성한 프래그먼트를 교체
-        transaction.replace(R.id.containers, detailFragment);
+            // 프래그먼트에 전달할 번들 생성
+            Bundle bundle = new Bundle();
+            bundle.putString("title", recordTitle);
+            bundle.putString("place", recordPlace);
+            bundle.putString("date", recordDate);
+            bundle.putString("image", String.valueOf(recordImage));
 
-        // 트랜잭션 커밋
-        transaction.commit();
+            //bundle.putString("document", documentName);
+
+            // 번들을 프래그먼트에 설정
+            detailFragment.setArguments(bundle);
+
+            // 생성한 프래그먼트를 교체
+            transaction.replace(R.id.containers, detailFragment);
+
+            // 트랜잭션 커밋
+            transaction.commit();
     }
 }
 
