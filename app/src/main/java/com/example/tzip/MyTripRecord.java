@@ -62,7 +62,7 @@ public class MyTripRecord extends Fragment {
 
         retrieveRecords();
 
-        binding.recordAddBtn.setOnClickListener( v -> {
+        binding.recordAddBtn.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             RecordAdd recordadd = new RecordAdd();
             transaction.replace(R.id.containers, recordadd);
@@ -91,79 +91,118 @@ public class MyTripRecord extends Fragment {
                             setRecyclerView(recordList);
                             // 내림차순으로 정렬
                             Collections.sort(recordList);
-                        }
-                        else {
+                        } else {
                             binding.recordSize.setText("0개");
                         }
                     }
                 })
                 .addOnFailureListener(e -> {
-                                // 에러 처리
-                                Log.e("RetrieveRecords", "Error fetching records", e);
-                            });
-                        }
+                    // 에러 처리
+                    Log.e("RetrieveRecords", "Error fetching records", e);
+                });
+    }
 
     private void setRecyclerView(List<Record> recordList) {
-        if(recordList.isEmpty()) {
+        if (recordList.isEmpty()) {
             binding.recordSize.setText("0개");
         } else {
-            binding.recordSize.setText(recordList.size()+"개");
+            binding.recordSize.setText(recordList.size() + "개");
             binding.noRecord.setVisibility(View.GONE);
 
             binding.recordList.setLayoutManager(new LinearLayoutManager(requireContext()));
-            binding.recordList.setAdapter(new RecordAdapter(recordList));
+            binding.recordList.setAdapter(new RecordAdapter(recordList, new RecordAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Record record) {
+                    openDetailPage(record);
+                }
+            }));
         }
     }
 
-    private static class RecordHolder extends RecyclerView.ViewHolder {
+    private void openDetailPage(Record record) {
+        // 선택된 레코드의 title 가져오기
+        String recordTitle = record.getTitle();
+
+        // 새로운 페이지를 열기 위한 FragmentTransaction 시작
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+        // 세부 정보를 표시할 프래그먼트 생성 및 인자 전달
+        RecordRead detailFragment = RecordRead.newInstance(recordTitle);
+
+        // 생성한 프래그먼트를 교체
+        transaction.replace(R.id.containers, detailFragment);
+
+        // 트랜잭션 커밋
+        transaction.commit();
+    }
+}
+
+class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordHolder> {
+    private List<Record> recordList;
+    private OnItemClickListener itemClickListener;
+
+    public RecordAdapter(List<Record> recordList, OnItemClickListener listener) {
+        this.recordList = recordList;
+        this.itemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Record record);
+    }
+
+    public List<Record> getRecordList() {
+        return recordList;
+    }
+
+    @NonNull
+    @Override
+    public RecordHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemRecordListBinding binding = ItemRecordListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new RecordHolder(binding);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
+        Record record = recordList.get(position);
+
+        Glide.with(holder.itemView.getContext())
+                .load(record.getContentImage())
+                .skipMemoryCache(true)
+                .into(holder.binding.feedPicture);
+
+        holder.binding.feedPicture.setImageURI(record.getContentImage());
+        holder.binding.title.setText(record.getTitle());
+        holder.binding.place.setText(record.getPlace());
+        holder.binding.date.setText(record.getDate());
+    }
+
+    @Override
+    public int getItemCount() {
+        return recordList.size();
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull RecordHolder holder) {
+        super.onViewRecycled(holder);
+        Glide.with(holder.itemView.getContext()).clear(holder.binding.feedPicture);
+    }
+
+    class RecordHolder extends RecyclerView.ViewHolder {
         private ItemRecordListBinding binding;
+
         private RecordHolder(ItemRecordListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.recordBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 클릭 이벤트 처리
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(recordList.get(getAdapterPosition()));
+                    }
+                }
+            });
         }
     }
-
-    private static class RecordAdapter extends RecyclerView.Adapter<RecordHolder> {
-        private List<Record> recordList;
-        private RecordAdapter(List<Record> recordList) {this.recordList = recordList;}
-        @NonNull
-        @Override
-        public RecordHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemRecordListBinding binding = ItemRecordListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new RecordHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
-            Record record = recordList.get(position);
-
-            Glide.with(holder.itemView.getContext())
-                    .load(record.getContentImage())
-                    .skipMemoryCache(true)// getContentImage()가 유효한 URL 또는 URI를 반환한다고 가정합니다.
-                    .into(holder.binding.feedPicture);
-
-            holder.binding.feedPicture.setImageURI(record.getContentImage());
-            holder.binding.title.setText(record.getTitle());
-            holder.binding.place.setText(record.getPlace());
-            holder.binding.date.setText(record.getDate());
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return recordList.size();
-        }
-
-        @Override
-        public void onViewRecycled(@NonNull RecordHolder holder) {
-            super.onViewRecycled(holder);
-
-            // Glide로 이미지를 로딩할 때 사용된 자원을 해제
-            Glide.with(holder.itemView.getContext()).clear(holder.binding.feedPicture);
-        }
-
-
-    }
-
 }
-

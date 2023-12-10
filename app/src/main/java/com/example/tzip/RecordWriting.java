@@ -426,40 +426,47 @@ public class RecordWriting extends Fragment {
             String detailPlace = binding.detailPlace.getText().toString();
             String time = binding.timeText.getText().toString();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference recordCollection = db.collection("record").document(uid).collection("records");
+            if(TextUtils.isEmpty(date)||TextUtils.isEmpty(detailPlace)||TextUtils.isEmpty(time)){
+                Toast.makeText(getContext(), "입력을 완료해주세요.", Toast.LENGTH_SHORT).show();
+            }
 
-            //현재 records의 document Id 가져오기
-            recordCollection
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                    .limit(1)
-                    .get()
-                    .addOnSuccessListener(querySnapshot -> {
-                        if (!querySnapshot.isEmpty()) {
-                            // 문서가 존재하는 경우
-                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                            lastestDocumentName[0] = document.getId();
-                        }
-                        //recordBlock → UID → ***(위랑 동일) → recordBlockTitle(==place) : date, time, content, image
-                        // 생성 시 처음엔 title, date, time만 존재
-                        CollectionReference recordBlockCollection = recordBlockDB
-                                .collection("recordBlock")
-                                .document(uid)
-                                .collection(lastestDocumentName[0]);
+            else {
 
-                        Map<String, Object> recordBlockMap = new HashMap<>();
-                        recordBlockMap.put(FirebaseId.date, date);
-                        recordBlockMap.put(FirebaseId.time, time);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                CollectionReference recordCollection = db.collection("record").document(uid).collection("records");
 
-                        recordBlockCollection.document(detailPlace).set(recordBlockMap)
-                                .addOnSuccessListener(aVoid -> {
-                                    retrievePlace();
-                                    dialog.dismiss();
-                                })
-                                .addOnFailureListener(e -> {
-                                    // 추가 실패 시 처리
-                                });
-                    });
+                //현재 records의 document Id 가져오기
+                recordCollection
+                        .orderBy("timestamp", Query.Direction.DESCENDING)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(querySnapshot -> {
+                            if (!querySnapshot.isEmpty()) {
+                                // 문서가 존재하는 경우
+                                DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                                lastestDocumentName[0] = document.getId();
+                            }
+                            //recordBlock → UID → ***(위랑 동일) → recordBlockTitle(==place) : date, time, content, image
+                            // 생성 시 처음엔 title, date, time만 존재
+                            CollectionReference recordBlockCollection = recordBlockDB
+                                    .collection("recordBlock")
+                                    .document(uid)
+                                    .collection(lastestDocumentName[0]);
+
+                            Map<String, Object> recordBlockMap = new HashMap<>();
+                            recordBlockMap.put(FirebaseId.date, date);
+                            recordBlockMap.put(FirebaseId.time, time);
+
+                            recordBlockCollection.document(detailPlace).set(recordBlockMap)
+                                    .addOnSuccessListener(aVoid -> {
+                                        retrievePlace();
+                                        dialog.dismiss();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // 추가 실패 시 처리
+                                    });
+                        });
+            }
         });
     }
     // 이너페이지 안에 있는 애들 리스너 달아주기 <민>
@@ -595,7 +602,6 @@ public class RecordWriting extends Fragment {
             // 이미지 URL을 포함하여 Firestore 문서 업데이트
             recordBlockCollection.document(detailPlace).update(recordBlockMap)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(getContext(), "이미지 업로드 및 Firestore 업데이트 완료", Toast.LENGTH_SHORT).show();
                         retrievePlace();
                         dialog.dismiss();
                     })
