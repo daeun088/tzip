@@ -31,21 +31,7 @@
             android:layout_margin="28dp" />
 
         <!-- 기다리는 여행 텍스트와 개수 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/inter"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:text="기록을\n기다리는\n여행"/>
-        <TextView
-            android:id="@+id/waiting_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2개"
-            android:layout_gravity="center"
-            android:layout_margin="28dp" />
+
     </LinearLayout>
 
     <!-- 기록이 없을 때 표시되는 메시지 -->

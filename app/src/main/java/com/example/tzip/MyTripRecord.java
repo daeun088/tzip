@@ -92,6 +92,9 @@ public class MyTripRecord extends Fragment {
                             // 내림차순으로 정렬
                             Collections.sort(recordList);
                         }
+                        else {
+                            binding.recordSize.setText("0개");
+                        }
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -135,7 +138,8 @@ public class MyTripRecord extends Fragment {
             Record record = recordList.get(position);
 
             Glide.with(holder.itemView.getContext())
-                    .load(record.getContentImage()) // getContentImage()가 유효한 URL 또는 URI를 반환한다고 가정합니다.
+                    .load(record.getContentImage())
+                    .skipMemoryCache(true)// getContentImage()가 유효한 URL 또는 URI를 반환한다고 가정합니다.
                     .into(holder.binding.feedPicture);
 
             holder.binding.feedPicture.setImageURI(record.getContentImage());

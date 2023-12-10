@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tzip.databinding.FragmentRecordAddBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -77,41 +79,50 @@ public class RecordAdd extends Fragment {
             String friend = binding.tripFriendList.getText().toString();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            // 사용자의 uid로 기록 서브컬렉션에 접근
+            if (TextUtils.isEmpty(place)) {
+                Toast.makeText(getContext(), "여행 장소를 설정해주세요", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(date)) {
+                Toast.makeText(getContext(), "여행 날짜를 설정해주세요", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(friend)) {
+                Toast.makeText(getContext(), "여행 참여자를 입력해주세요", Toast.LENGTH_SHORT).show();
+            } else {
+
             CollectionReference recordsCollection = recordDB
-                    .collection("record")
-                    .document(uid)
-                    .collection("records");
+                        .collection("record")
+                        .document(uid)
+                        .collection("records");
 
-            Map<String, Object> recordMap = new HashMap<>();
-            recordMap.put(FirebaseId.title, "null");
-            recordMap.put(FirebaseId.place, place);
-            recordMap.put(FirebaseId.date, date);
-            recordMap.put(FirebaseId.friend, friend);
-            recordMap.put(FirebaseId.contentImage, "null");
-            recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+                Map<String, Object> recordMap = new HashMap<>();
+                recordMap.put(FirebaseId.title, "null");
+                recordMap.put(FirebaseId.place, place);
+                recordMap.put(FirebaseId.date, date);
+                recordMap.put(FirebaseId.friend, friend);
+                recordMap.put(FirebaseId.contentImage, "null");
+                recordMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
 
-            // 서브컬렉션 'records'에 새로운 문서 추가
-            recordsCollection.add(recordMap)
-                    .addOnSuccessListener(documentReference -> {
-                        // 성공적으로 추가되었을 때의 작업
-                        updateUI();
-                    })
-                    .addOnFailureListener(e -> {
-                        // 실패했을 때의 작업
-                        Log.e("Firestore", "Error adding record document", e);
-                    });
+                // 서브컬렉션 'records'에 새로운 문서 추가
+                recordsCollection.add(recordMap)
+                        .addOnSuccessListener(documentReference -> {
+                            // 성공적으로 추가되었을 때의 작업
+                            updateUI();
+                        })
+                        .addOnFailureListener(e -> {
+                            // 실패했을 때의 작업
+                            Log.e("Firestore", "Error adding record document", e);
+                        });
+            }
+
         });
 
 
-        binding.tripDateBtn.setOnClickListener(v -> {
+        binding.tripDateText.setOnClickListener(v -> {
             if (isAdded()) {
                 MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-                builder.setTitleText("Data Picker");
+                builder.setTitleText("여행 날짜를 선택해주세요");
 
                 builder.setSelection(Pair.create(MaterialDatePicker.thisMonthInUtcMilliseconds(), MaterialDatePicker.todayInUtcMilliseconds()));
                 MaterialDatePicker materialDatePicker = builder.build();
-                materialDatePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER");
+                materialDatePicker.show(requireActivity().getSupportFragmentManager(), "여행 날짜 설정");
 
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
                     @Override

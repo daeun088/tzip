@@ -4,54 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.Fragment;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
+
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.tzip.databinding.FragmentRecordWritingBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Toast;
-
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.view.Gravity;
-import android.widget.LinearLayout.LayoutParams;
-
-import org.w3c.dom.Text;
-
-import android.app.Activity;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 public class nevigation_bar_test_code extends AppCompatActivity {
 
@@ -79,7 +53,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     RecordAdd recordAdd;
 
-    RecordLoad recordLoad;
+    RecordRead recordRead;
 
     RecordWriting recordWriting;
 
@@ -112,7 +86,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         friendTripRecord = new FriendTripRecord();
         myTripRecord = new MyTripRecord();
         recordAdd = new RecordAdd();
-        recordLoad = new RecordLoad();
+        recordRead = new RecordRead();
         recordWriting = new RecordWriting();
         fragmentFriendRequest = new Fragment_friend_request();
         friendList = new FriendList();
