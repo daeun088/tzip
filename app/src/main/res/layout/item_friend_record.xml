@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/record_block"
+    android:background="@drawable/bottom_stroke"
+    android:paddingVertical="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:contentDescription="프로필"
+            android:orientation="horizontal"
+            android:id="@+id/profil_block">
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/profilepic"
+                android:clipToOutline="true" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/profilePic"
+                android:text="김민"
+                android:textSize="17sp"
+                android:layout_marginTop="7dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/feed_picture"
+            android:layout_width="300dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/record_feed_layout"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/testimage"
+            android:layout_below="@id/profil_block"
+            />
+
+        <TextView
+            android:id="@+id/record_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/feed_picture"
+            android:layout_below="@id/feed_picture"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter"
+            android:text="가을 바다 구경"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/location_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/feed_picture"
+            android:layout_below="@id/record_title"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/location_pin" />
+
+        <TextView
+            android:id="@+id/place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/location_pin"
+            android:layout_below="@id/record_title"
+            android:fontFamily="@font/inter"
+            android:text="강릉, 속초" />
+
+    <TextView
+        android:layout_alignBaseline="@id/place"
+android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/feed_picture"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/inter"
+        android:text="2023.10.22~10.24" />
+
+</RelativeLayout>
