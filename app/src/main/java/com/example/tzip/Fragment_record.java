@@ -334,6 +334,7 @@ public class Fragment_record extends Fragment {
 
     private void updateFriendRecordsUI() {
         if (!friendRecentRecords.isEmpty()) {
+            binding.firstFriendProfile.setVisibility(View.VISIBLE);
             binding.firstFriendBlock.setVisibility(View.VISIBLE);
             binding.noFriendRecord.setVisibility(View.GONE);
             Glide.with(binding.friendRecordPicture)
@@ -346,6 +347,7 @@ public class Fragment_record extends Fragment {
             binding.friendName.setText(friendRecentRecords.get(0).getFriendName());
 
             if (friendRecentRecords.size() >= 2) {
+                binding.secondFriendProfile.setVisibility(View.VISIBLE);
                 binding.secondFriendBlock.setVisibility(View.VISIBLE);
                 Glide.with(binding.friendRecordPicture2)
                         .load(friendRecentRecords.get(1).getContentImage())
