@@ -232,7 +232,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
     protected void setToolbarForRecordWriting(){
         setToolbarContent("글쓰기", true);
-        addButtonToToolbar("등록");
         addButtonToToolbar("하단 바 없애기");
     }
     protected void setToolbarForFriendList(){

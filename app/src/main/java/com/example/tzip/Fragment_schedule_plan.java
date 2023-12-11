@@ -169,6 +169,7 @@ public class Fragment_schedule_plan extends Fragment {
                     fragmentSchedulePlanWrite = new Fragment_schedule_plan_write();
                     transaction.replace(R.id.containers, fragmentSchedulePlanWrite).commit();
                     callSchedulePlanWriteMethod();
+                    fragmentSchedulePlanWrite.loadScheduleFromFirebase();
                 }
             });
             binding.schedulePlanAdd.setOnClickListener(v -> {
