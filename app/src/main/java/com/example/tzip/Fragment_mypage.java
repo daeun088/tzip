@@ -194,7 +194,6 @@ public class Fragment_mypage extends Fragment {
 
             binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
             binding.friendList.setAdapter(new Fragment_mypage.MyAdapter(friendNames));
-            binding.friendList.addItemDecoration(new Fragment_mypage.MyItemDecoration());
         }
     }
 
@@ -234,15 +233,6 @@ public class Fragment_mypage extends Fragment {
         }
     }
 
-    private static class MyItemDecoration extends RecyclerView.ItemDecoration {
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            int index = parent.getChildAdapterPosition(view) + 1;
 
-            if (index % 3 == 0)
-                outRect.set(20, 20, 20, 60);
-            else
-                outRect.set(20, 20, 20, 20);
-        }
-    }
+
 }
