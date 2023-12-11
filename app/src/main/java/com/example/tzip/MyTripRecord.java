@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMyTripRecordBinding;
 import com.example.tzip.databinding.ItemRecordListBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -91,6 +92,9 @@ public class MyTripRecord extends Fragment {
                             // 내림차순으로 정렬
                             Collections.sort(recordList);
                         }
+                        else {
+                            binding.recordSize.setText("0개");
+                        }
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -133,6 +137,11 @@ public class MyTripRecord extends Fragment {
         public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
             Record record = recordList.get(position);
 
+            Glide.with(holder.itemView.getContext())
+                    .load(record.getContentImage())
+                    .skipMemoryCache(true)// getContentImage()가 유효한 URL 또는 URI를 반환한다고 가정합니다.
+                    .into(holder.binding.feedPicture);
+
             holder.binding.feedPicture.setImageURI(record.getContentImage());
             holder.binding.title.setText(record.getTitle());
             holder.binding.place.setText(record.getPlace());
@@ -144,6 +153,17 @@ public class MyTripRecord extends Fragment {
         public int getItemCount() {
             return recordList.size();
         }
+
+        @Override
+        public void onViewRecycled(@NonNull RecordHolder holder) {
+            super.onViewRecycled(holder);
+
+            // Glide로 이미지를 로딩할 때 사용된 자원을 해제
+            Glide.with(holder.itemView.getContext()).clear(holder.binding.feedPicture);
+        }
+
+
     }
+
 }
 

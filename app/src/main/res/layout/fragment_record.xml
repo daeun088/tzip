@@ -199,6 +199,7 @@
             android:layout_marginTop="10dp"
             >
             <TextView
+                android:id="@+id/my_trip_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="나의 기록 보러가기"
@@ -220,21 +221,12 @@
                 />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="25dp"
-            android:text="기록을 기다리는 여행"/>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/my_records"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -242,6 +234,7 @@
                 android:visibility="invisible">
 
                 <RelativeLayout
+                    android:id="@+id/first_record_block"
                     android:layout_width="match_parent"
                     android:layout_height="115dp"
                     android:background="@drawable/trip_block_layout"
@@ -276,6 +269,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/trip_block_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/trip_block_picture"
@@ -286,6 +280,7 @@
                         android:fontFamily="@font/inter"/>
 
                     <TextView
+                        android:id="@+id/trip_block_place"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/trip_block_picture"
@@ -308,6 +303,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/second_trip_block"
                     android:layout_width="match_parent"
                     android:layout_height="115dp"
                     android:background="@drawable/trip_block_layout"
@@ -342,6 +338,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/trip_block_date_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/trip_block_picture2"
@@ -352,6 +349,7 @@
                         android:fontFamily="@font/inter"/>
 
                     <TextView
+                        android:id="@+id/trip_block_place2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/trip_block_picture2"
@@ -374,6 +372,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/no_records"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -381,7 +380,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="일정에 등록되어 있는 글이 없어요"
+                    android:text="등록되어 있는 기록이 없어요"
                     android:gravity="center"
                     android:layout_margin="50dp"
                     android:fontFamily="@font/inter"/>
