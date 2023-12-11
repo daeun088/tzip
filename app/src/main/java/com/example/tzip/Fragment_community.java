@@ -103,6 +103,9 @@ public class Fragment_community extends Fragment {
                                                         tempL[0] = document2.getString("place");
                                                         list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0]));
                                                         Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0]);
+                                                        binding.serchList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                                                        binding.serchList.setAdapter(new MyAdapter(list));
+                                                        binding.serchList.addItemDecoration(new MyItemDecoration());
                                                     }
                                                 }
                                             }
@@ -115,9 +118,9 @@ public class Fragment_community extends Fragment {
                     }
                 });
 
-        binding.serchList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        binding.serchList.setAdapter(new MyAdapter(list));
-        binding.serchList.addItemDecoration(new MyItemDecoration());
+
+
+
         return binding.getRoot();
     }
 
@@ -159,6 +162,7 @@ public class Fragment_community extends Fragment {
 
         @Override
         public int getItemCount() {
+            Log.d(TAG, "getItemCount: " + list.size());
             return list.size();
         }
     }
@@ -167,12 +171,7 @@ public class Fragment_community extends Fragment {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             int index = parent.getChildAdapterPosition(view) + 1;
-
-            if (index % 3 == 0)
-                outRect.set(20, 20, 20, 60);
-            else
-                outRect.set(20, 20, 20, 20);
-            ViewCompat.setElevation(view, 20.0f);
+            outRect.set(0,0,0,10);
         }
     }
 
