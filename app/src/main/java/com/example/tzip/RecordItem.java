@@ -1,6 +1,9 @@
 package com.example.tzip;
 
+import android.net.Uri;
 import android.util.Log;
+
+import com.google.firebase.firestore.PropertyName;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +20,8 @@ public class RecordItem {
     private String time;
     private String blockTitle;
     private String text;
+    @PropertyName("contentImage")
+    private String contentImage;
 
     public RecordItem() {
         // 기본 생성자
@@ -43,7 +48,7 @@ public class RecordItem {
     public static class ItemSort implements Comparator<RecordItem> {
         @Override
         public int compare(RecordItem o1, RecordItem o2) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.KOREA);
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.KOREA);
 
             try {
@@ -106,6 +111,20 @@ public class RecordItem {
 
     public void setText(String text) {this.text = text;}
     public String getText() {return text;}
+
+    public void setContentImage(String contentImage) {
+        this.contentImage = contentImage;
+    }
+
+    public Uri getContentImage() {
+        if (contentImage != null) {
+            return Uri.parse(contentImage);
+        } else {
+            // 또는 다른 기본값을 반환하거나 예외 처리를 수행할 수 있습니다.
+            return Uri.EMPTY; // 예시로 비어있는 Uri를 반환합니다.
+        }
+    }
+
 
     public String getBlockTitle() {
         return blockTitle;

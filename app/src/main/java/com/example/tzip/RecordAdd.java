@@ -127,17 +127,15 @@ public class RecordAdd extends Fragment {
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
                     @Override
                     public void onPositiveButtonClick(Pair<Long, Long> selection) {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
-                        Date date1 = new Date();
-                        Date date2 = new Date();
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy/MM/dd");
 
-                        date1.setTime(selection.first);
-                        date2.setTime(selection.second);
+                        Date date1 = new Date(selection.first);
+                        Date date2 = new Date(selection.second);
 
-                        String dateString1 = simpleDateFormat.format(date1);
-                        String dateString2 = simpleDateFormat.format(date2);
+                        String formattedDate1 = outputFormat.format(date1);
+                        String formattedDate2 = outputFormat.format(date2);
 
-                        dataPickerText.setText(dateString1 + "~" + dateString2);
+                        dataPickerText.setText(formattedDate1 + "~" + formattedDate2);
                     }
                 });
             }
