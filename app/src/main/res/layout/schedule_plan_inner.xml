@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical"
-    android:padding="20dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+
+    <RelativeLayout
+        android:id="@+id/schedule_block"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:background="#00000000"
-        android:src="@drawable/plan_add_innerpage_picture" />
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="18dp"
+        android:background="@drawable/schedule_plan_block">
+
+        <ImageView
+            android:id="@+id/schedule_plan_block_pic"
+            android:layout_width="300dp"
+            android:layout_height="75dp"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/schedule_plan_block_default_pic"
+            android:scaleType="centerCrop"/>
+
+
+    </RelativeLayout>
 
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -27,6 +47,7 @@
         android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/schedule_plan_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
@@ -34,7 +55,7 @@
         android:fontFamily="@font/notosanskr_bold"
         android:hint="제목을 입력하세요"
         android:includeFontPadding="false"
-        android:textColorHint="#000000" />
+        android:textColorHint="@color/light_gray" />
 
     <TextView
         android:layout_width="match_parent"
@@ -47,6 +68,7 @@
         android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/schedule_plan_place"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
@@ -54,7 +76,7 @@
         android:fontFamily="@font/notosanskr_bold"
         android:hint="장소를 입력하세요"
         android:includeFontPadding="false"
-        android:textColorHint="#000000" />
+        android:textColorHint="@color/light_gray" />
 
     <TextView
         android:layout_width="match_parent"
@@ -71,13 +93,13 @@
         android:layout_height="50dp">
 
         <TextView
+            android:id="@+id/schedule_plan_time_set"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:background="@drawable/linerac"
             android:fontFamily="@font/notosanskr_bold"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
-            android:text="시간 설정"
             android:textColor="#000000"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +107,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageButton
-            android:id="@+id/trip_date_btn"
+            android:id="@+id/schedule_plan_time"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@color/white"
@@ -96,8 +118,49 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="날짜"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="300dp"
+            android:id="@+id/schedule_plan_date_set"
+            android:layout_height="match_parent"
+            android:background="@drawable/linerac"
+            android:fontFamily="@font/notosanskr_bold"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/schedule_plan_date"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:src="@drawable/calendar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/schedule_plan_add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -108,6 +171,6 @@
         android:text="여행 생성하기"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
+    </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>

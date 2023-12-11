@@ -282,9 +282,6 @@ public class Fragment_schedule extends Fragment {
                         Log.e("Firestore", "Error adding schedule document", e);
                         dialog.dismiss();
                     });
-
-
-
         });
 
         scheduleInnerBinding.scheduleBlockPic.setOnClickListener(v -> {
@@ -332,11 +329,6 @@ public class Fragment_schedule extends Fragment {
                         // 업로드된 이미지의 다운로드 URL 획득 성공
                         imageUrl = uri.toString();
 
-
-                        CollectionReference schedulesCollection = scheduleDB
-                                .collection("schedule")
-                                .document(uid)
-                                .collection("schedules");
 
                     });
                 });
