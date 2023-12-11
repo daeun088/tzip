@@ -33,6 +33,7 @@ public class Fragment_record extends Fragment {
     private FragmentRecordBinding binding;
     List<Record> recentRecords;
     List<Record> friendRecentRecords;
+    int queryCount;
     int processedCount = 0;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -156,6 +157,13 @@ public class Fragment_record extends Fragment {
             openDetailPage(recentRecords.get(1));
         });
 
+        binding.firstFriendBlock.setOnClickListener(v -> {
+            openDetailPage(friendRecentRecords.get(0));
+        });
+        binding.secondFriendBlock.setOnClickListener(v -> {
+            openDetailPage(friendRecentRecords.get(1));
+        });
+
 
         return binding.getRoot();
     }
@@ -186,13 +194,11 @@ public class Fragment_record extends Fragment {
         detailFragment.setArguments(bundle);
 
         // isAdded() 메서드를 사용하여 프래그먼트가 추가된 상태인지 확인
-        if (isAdded()) {
             // 생성한 프래그먼트를 교체
-            transaction.replace(R.id.containers, detailFragment);
+        transaction.replace(R.id.containers, detailFragment);
 
             // 트랜잭션 커밋
-            transaction.commit();
-        }
+        transaction.commit();
     }
 
     private void retrieveRecords() {
@@ -264,9 +270,7 @@ public class Fragment_record extends Fragment {
                     if (documentSnapshot.exists()) {
                         List<String> friendIds = (List<String>) documentSnapshot.get("friendIds");
                         if (friendIds != null) {
-                            // friendIds를 사용하여 사용자 정보 조회
                             retrieveFriendRecords(friendIds);
-                            String friendName = documentSnapshot.getString("nickname");
                         }
                     }
                 })
@@ -276,8 +280,9 @@ public class Fragment_record extends Fragment {
                 });
     }
 
+    // retrieveFriendRecords 메서드 내에서 friendRecentRecords 초기화 추가
     private void retrieveFriendRecords(List<String> friendIds) {
-        processedCount = 0;
+        friendRecentRecords = new ArrayList<>();  // 초기화 추가
 
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
@@ -289,39 +294,25 @@ public class Fragment_record extends Fragment {
                             if (record != null) {
                                 record.setDocumentId(document.getId());
                                 record.setFriendId(friendId);
+                                FirebaseFirestore.getInstance().collection("user").document(friendId).get()
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            record.setFriendName(documentSnapshot.getString("nickname"));
+
+                                            queryCount++;
+
+                                            // 모든 친구의 레코드를 가져왔을 때
+                                            if (queryCount == friendIds.size()&&friendRecordList.size() >=2) {
+                                                // 레코드를 timestamp를 기준으로 정렬
+                                                Collections.sort(friendRecordList);
+                                                friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
+
+                                                // 모든 친구의 레코드를 가져온 후에 UI 업데이트
+                                                updateFriendRecordsUI();
+                                            }
+                                        });
                                 friendRecordList.add(record);
                             }
                         }
-
-                        Collections.sort(friendRecordList);
-                        friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
-
-                        if(!friendRecentRecords.isEmpty()){
-                            binding.firstFriendBlock.setVisibility(View.VISIBLE);
-                            binding.noFriendRecord.setVisibility(View.GONE);
-                            Glide.with(binding.friendRecordPicture)
-                                    .load(friendRecentRecords.get(0).getContentImage())
-                                    .skipMemoryCache(true)
-                                    .into(binding.friendRecordPicture);
-                            binding.friendRecordPicture.setImageURI(friendRecentRecords.get(0).getContentImage());
-                            binding.friendRecordTitle.setText(friendRecentRecords.get(0).getTitle());
-                            binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
-                            binding.friendName.setText(friendRecentRecords.get(0).getFriend());
-
-                            if(friendRecentRecords.size()>=2){
-                                binding.secondFriendBlock.setVisibility(View.VISIBLE);
-                                Glide.with(binding.friendRecordPicture2)
-                                        .load(friendRecentRecords.get(1).getContentImage())
-                                        .skipMemoryCache(true)
-                                        .into(binding.friendRecordPicture2);
-                                binding.friendRecordPicture2.setImageURI(friendRecentRecords.get(1).getContentImage());
-                                binding.friendRecordTitle2.setText(friendRecentRecords.get(1).getTitle());
-                                binding.friendRecordDate2.setText(friendRecentRecords.get(1).getDate());
-                                binding.friendName2.setText(friendRecentRecords.get(1).getFriend());
-                            }
-                            else binding.secondFriendBlock.setVisibility(View.INVISIBLE);
-                        }
-
                     })
                     .addOnFailureListener(e -> {
                         // 에러 처리
@@ -330,5 +321,38 @@ public class Fragment_record extends Fragment {
         }
     }
 
+    private void updateFriendRecordsUI() {
+        if (!friendRecentRecords.isEmpty()) {
+            binding.firstFriendBlock.setVisibility(View.VISIBLE);
+            binding.noFriendRecord.setVisibility(View.GONE);
+            Glide.with(binding.friendRecordPicture)
+                    .load(friendRecentRecords.get(0).getContentImage())
+                    .skipMemoryCache(true)
+                    .into(binding.friendRecordPicture);
+            binding.friendRecordPicture.setImageURI(friendRecentRecords.get(0).getContentImage());
+            binding.friendRecordTitle.setText(friendRecentRecords.get(0).getTitle());
+            binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
+            binding.friendName.setText(friendRecentRecords.get(0).getFriendName());
 
+            if (friendRecentRecords.size() >= 2) {
+                binding.secondFriendBlock.setVisibility(View.VISIBLE);
+                Glide.with(binding.friendRecordPicture2)
+                        .load(friendRecentRecords.get(1).getContentImage())
+                        .skipMemoryCache(true)
+                        .into(binding.friendRecordPicture2);
+                binding.friendRecordPicture2.setImageURI(friendRecentRecords.get(1).getContentImage());
+                binding.friendRecordTitle2.setText(friendRecentRecords.get(1).getTitle());
+                binding.friendRecordDate2.setText(friendRecentRecords.get(1).getDate());
+                binding.friendName2.setText(friendRecentRecords.get(1).getFriendName());
+            } else {
+                binding.secondFriendBlock.setVisibility(View.INVISIBLE);
+                binding.secondFriendProfile.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            binding.firstFriendProfile.setVisibility(View.INVISIBLE);
+            binding.firstFriendBlock.setVisibility(View.INVISIBLE);
+            binding.secondFriendBlock.setVisibility(View.INVISIBLE);
+            binding.secondFriendProfile.setVisibility(View.INVISIBLE);
+        }
+    }
 }

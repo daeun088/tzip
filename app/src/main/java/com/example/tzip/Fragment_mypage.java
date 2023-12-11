@@ -233,4 +233,6 @@ public class Fragment_mypage extends Fragment {
         }
     }
 
+
+
 }

@@ -58,6 +58,7 @@
             android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/first_friend_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -135,6 +136,7 @@
             android:layout_gravity="center"/>
 
         <RelativeLayout
+            android:id="@+id/second_friend_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

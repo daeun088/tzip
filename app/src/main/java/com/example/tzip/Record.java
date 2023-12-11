@@ -10,7 +10,7 @@ public class Record implements Comparable<Record> {
     private String title;
     private String place;
     private String date;
-    private String friend;
+    private String friendName;
     private String documentId;
     private String friendId;
 
@@ -61,12 +61,12 @@ public class Record implements Comparable<Record> {
         this.date = date;
     }
 
-    public String getFriend() {
-        return friend;
+    public String getFriendName() {
+        return friendName;
     }
 
-    public void setFriend(String friend) {
-        this.friend = friend;
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
     }
 
     public Uri getContentImage() {

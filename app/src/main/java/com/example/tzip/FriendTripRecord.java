@@ -80,35 +80,45 @@ public class FriendTripRecord extends Fragment {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
+                        List<Record> friendRecordList = new ArrayList<>();
                         for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                             Record record = document.toObject(Record.class);
                             String documentId = document.getId();
                             if (record != null) {
                                 record.setDocumentId(documentId);
                                 record.setFriendId(friendId);
+
+                                // Firestore에서 friendName 가져오기
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
-                                                .addOnSuccessListener(documentSnapshot -> {
-                                                    record.setFriend(documentSnapshot.getString("nickname"));
-                                                });
-                                recordList.add(record);
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            String friendName = documentSnapshot.getString("nickname");
+                                            record.setFriendName(friendName);
+
+                                            // 모든 데이터가 준비되었을 때 RecyclerView 설정
+                                            queryCount++;
+                                            if (queryCount == friendIds.size() && friendRecordList.size() >= 2) {
+                                                Collections.sort(friendRecordList);
+                                                setRecyclerView(friendRecordList);
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            // 에러 처리
+                                            Log.e("FetchRecords", "Error fetching friend name", e);
+                                            queryCount++; // 에러가 발생하더라도 queryCount를 증가시켜서 모든 쿼리가 완료되었다고 판단하도록 함
+                                            if (queryCount == friendIds.size() && friendRecordList.size() >= 2) {
+                                                Collections.sort(friendRecordList);
+                                                setRecyclerView(friendRecordList);
+                                            }
+                                        });
+
+                                friendRecordList.add(record);
                             }
-                        }
-
-                        queryCount++;
-
-                        // friendIds의 모든 친구의 레코드를 가져왔을 때 RecyclerView 설정
-                        if (queryCount == friendIds.size()) {
-                            // 레코드 리스트를 timestamp를 기준으로 정렬
-                            Collections.sort(recordList);
-                            setRecyclerView(recordList);
                         }
                     })
                     .addOnFailureListener(e -> {
                         // 에러 처리
                         Log.e("FetchRecords", "Error fetching records", e);
                         queryCount++; // 에러가 발생하더라도 queryCount를 증가시켜서 모든 쿼리가 완료되었다고 판단하도록 함
-
-                        // friendIds의 모든 친구의 레코드를 가져왔을 때 RecyclerView 설정
                         if (queryCount == friendIds.size()) {
                             // 레코드 리스트를 timestamp를 기준으로 정렬
                             Collections.sort(recordList);
@@ -118,7 +128,7 @@ public class FriendTripRecord extends Fragment {
         }
     }
 
-    private int getTotalRecordCount(List<String> friendIds) {
+        private int getTotalRecordCount(List<String> friendIds) {
 
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
@@ -214,8 +224,7 @@ class FriendRecordAdapter extends RecyclerView.Adapter<FriendRecordAdapter.Frien
         holder.binding.recordTitle.setText(record.getTitle());
         holder.binding.place.setText(record.getPlace());
         holder.binding.date.setText(record.getDate());
-        holder.binding.userName.setText(record.getFriend());
-        Log.d("daaeun", record.getDate());
+        holder.binding.userName.setText(record.getFriendName());
     }
 
     @Override
