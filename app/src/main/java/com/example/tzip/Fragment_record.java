@@ -297,21 +297,17 @@ public class Fragment_record extends Fragment {
                                 record.setFriendId(friendId);
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                                         .addOnSuccessListener(documentSnapshot -> {
-                                            record.setFriendName(documentSnapshot.getString("nickname"));
-
-                                            queryCount++;
-
-                                            // 모든 친구의 레코드를 가져왔을 때
-                                            if (queryCount == friendIds.size()&&friendRecordList.size() >=2) {
-                                                // 레코드를 timestamp를 기준으로 정렬
-                                                Collections.sort(friendRecordList);
-                                                friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
-                                                //Log.d("daeun ", friendRecentRecords.get(1).getFriendName());
-
-                                                // 모든 친구의 레코드를 가져온 후에 UI 업데이트
-                                                updateFriendRecordsUI();
-                                            }
-                                        });
+                                            String friendName = documentSnapshot.getString("nickname");
+                                            record.setFriendName(friendName);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            // 에러 처리
+                                            Log.e("FetchRecords", "Error fetching friend name", e);
+                                        })
+                                                .addOnCompleteListener(task -> {
+                                                    queryCount++;
+                                                    onRecordFetchComplete(friendRecordList, friendIds.size());
+                                                });
                                 friendRecordList.add(record);
                             }
                         }
@@ -320,6 +316,19 @@ public class Fragment_record extends Fragment {
                         // 에러 처리
                         Log.e("FetchRecords", "Error fetching records", e);
                     });
+        }
+    }
+
+    private void onRecordFetchComplete(List<Record> friendRecordList, int totalFriends) {
+        // 모든 친구의 레코드를 가져왔을 때
+        if (queryCount == totalFriends && friendRecordList.size() >= 2) {
+            // 레코드를 timestamp를 기준으로 정렬
+            Collections.sort(friendRecordList);
+            friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
+            //Log.d("daeun", friendRecentRecords.get(1).getDate());
+
+            // 모든 친구의 레코드를 가져온 후에 UI 업데이트
+            updateFriendRecordsUI();
         }
     }
 
