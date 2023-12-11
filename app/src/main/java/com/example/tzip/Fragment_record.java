@@ -344,7 +344,6 @@ public class Fragment_record extends Fragment {
             binding.friendRecordTitle.setText(friendRecentRecords.get(0).getTitle());
             binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
             binding.friendName.setText(friendRecentRecords.get(0).getFriendName());
-            Log.d("daeun", friendRecentRecords.get(0).getFriendName());
 
             if (friendRecentRecords.size() >= 2) {
                 binding.secondFriendBlock.setVisibility(View.VISIBLE);
