@@ -283,6 +283,7 @@ public class Fragment_record extends Fragment {
     // retrieveFriendRecords 메서드 내에서 friendRecentRecords 초기화 추가
     private void retrieveFriendRecords(List<String> friendIds) {
         friendRecentRecords = new ArrayList<>();  // 초기화 추가
+        queryCount = 0;
 
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
@@ -305,6 +306,7 @@ public class Fragment_record extends Fragment {
                                                 // 레코드를 timestamp를 기준으로 정렬
                                                 Collections.sort(friendRecordList);
                                                 friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
+                                                //Log.d("daeun ", friendRecentRecords.get(1).getFriendName());
 
                                                 // 모든 친구의 레코드를 가져온 후에 UI 업데이트
                                                 updateFriendRecordsUI();
@@ -333,6 +335,7 @@ public class Fragment_record extends Fragment {
             binding.friendRecordTitle.setText(friendRecentRecords.get(0).getTitle());
             binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
             binding.friendName.setText(friendRecentRecords.get(0).getFriendName());
+            Log.d("daeun", friendRecentRecords.get(0).getFriendName());
 
             if (friendRecentRecords.size() >= 2) {
                 binding.secondFriendBlock.setVisibility(View.VISIBLE);
@@ -344,6 +347,7 @@ public class Fragment_record extends Fragment {
                 binding.friendRecordTitle2.setText(friendRecentRecords.get(1).getTitle());
                 binding.friendRecordDate2.setText(friendRecentRecords.get(1).getDate());
                 binding.friendName2.setText(friendRecentRecords.get(1).getFriendName());
+
             } else {
                 binding.secondFriendBlock.setVisibility(View.INVISIBLE);
                 binding.secondFriendProfile.setVisibility(View.INVISIBLE);
