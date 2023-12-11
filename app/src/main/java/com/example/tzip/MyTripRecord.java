@@ -30,6 +30,7 @@ public class MyTripRecord extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private String mParam1;
     private String mParam2;
@@ -74,7 +75,7 @@ public class MyTripRecord extends Fragment {
 
     private void retrieveRecords() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         // "record" 컬렉션에서 특정 UID 문서의 "records" 컬렉션을 가져오기
         db.collection("record").document(currentUserId).collection("records").get()
@@ -141,7 +142,7 @@ public class MyTripRecord extends Fragment {
             bundle.putString("date", recordDate);
             bundle.putString("image", String.valueOf(recordImage));
             bundle.putString("documentId", documentId);
-
+            bundle.putString("uid",currentUserId);
             //bundle.putString("document", documentName);
 
             // 번들을 프래그먼트에 설정

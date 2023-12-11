@@ -85,6 +85,7 @@ public class FriendTripRecord extends Fragment {
                             String documentId = document.getId();
                             if (record != null) {
                                 record.setDocumentId(documentId);
+                                record.setFriendId(friendId);
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                                                 .addOnSuccessListener(documentSnapshot -> {
                                                     record.setFriend(documentSnapshot.getString("nickname"));
@@ -146,6 +147,7 @@ public class FriendTripRecord extends Fragment {
         String recordDate = record.getDate();
         Uri recordImage = record.getContentImage();
         String documentId = record.getDocumentId();
+        String uid = record.getFriendId();
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -159,6 +161,7 @@ public class FriendTripRecord extends Fragment {
         bundle.putString("date", recordDate);
         bundle.putString("image", String.valueOf(recordImage));
         bundle.putString("documentId", documentId);
+        bundle.putString("uid", uid);
 
         //bundle.putString("document", documentName);
 

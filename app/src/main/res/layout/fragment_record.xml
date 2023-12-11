@@ -52,6 +52,11 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,6 +72,7 @@
                 android:clipToOutline="true"
                 />
             <TextView
+                android:id="@+id/friend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="김민"
@@ -78,6 +84,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/first_friend_block"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:background="@drawable/friend_record_layout"
@@ -93,6 +100,7 @@
                 android:clipToOutline="true"
                 android:scaleType="centerCrop"/>
             <TextView
+                android:id="@+id/friend_record_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
@@ -106,6 +114,7 @@
                 />
 
             <TextView
+                android:id="@+id/friend_record_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/friend_record_picture"
@@ -116,6 +125,14 @@
                 android:textSize="12sp"
                 android:text="2023/10/12~10/14"/>
         </RelativeLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/no_friend_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구의 기록이 없어요."
+            android:layout_gravity="center"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -132,6 +149,7 @@
                 android:clipToOutline="true"
                 />
             <TextView
+                android:id="@+id/friend_name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="김민"
@@ -144,43 +162,47 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/second_friend_block"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:background="@drawable/friend_record_layout"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
+            android:background="@drawable/friend_record_layout"
             android:contentDescription="friend_record_block">
+
             <ImageView
                 android:id="@+id/friend_record_picture2"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/testimage"
                 android:background="@drawable/friend_record_picture"
                 android:clipToOutline="true"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="가을 바다 구경"
-                android:layout_toRightOf="@id/friend_record_picture2"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:fontFamily="@font/inter"
-                />
+                android:scaleType="centerCrop"
+                android:src="@drawable/testimage" />
 
             <TextView
+                android:id="@+id/friend_record_title2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/friend_record_picture2"
+                android:fontFamily="@font/inter"
+                android:text="가을 바다 구경"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/friend_record_date2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/friend_record_picture2"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="50dp"
+                android:layout_toRightOf="@id/friend_record_picture2"
                 android:fontFamily="@font/inter"
-                android:textSize="12sp"
-                android:text="2023/10/12~10/14"/>
+                android:text="2023/10/12~10/14"
+                android:textSize="12sp" />
         </RelativeLayout>
 
     </LinearLayout>

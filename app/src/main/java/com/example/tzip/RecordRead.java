@@ -33,7 +33,7 @@ public class RecordRead extends Fragment {
     View view;
     View ItemView;
     private static List<RecordItem> recordItems = new ArrayList<>();
-    static String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    static String uid;
 
     public RecordRead() {
         // Required empty public constructor
@@ -62,6 +62,7 @@ public class RecordRead extends Fragment {
             String date = args.getString("date", "");
             Uri image = Uri.parse(args.getString("image", ""));
             document = args.getString("documentId", "");
+            uid = args.getString("uid", "");
 
             titleTextView.setText(title);
             placeText.setText("여행일시 - " + place);

@@ -32,6 +32,8 @@ import java.util.List;
 public class Fragment_record extends Fragment {
     private FragmentRecordBinding binding;
     List<Record> recentRecords;
+    List<Record> friendRecentRecords;
+    int processedCount = 0;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -97,6 +99,7 @@ public class Fragment_record extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         retrieveRecords();
+        retrieveFriendIds();
     }
 
     @Override
@@ -163,6 +166,7 @@ public class Fragment_record extends Fragment {
         String recordDate = record.getDate();
         Uri recordImage = record.getContentImage();
         String documentId = record.getDocumentId();
+        String uid = record.getFriendId();
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -176,6 +180,7 @@ public class Fragment_record extends Fragment {
         bundle.putString("date", recordDate);
         bundle.putString("image", String.valueOf(recordImage));
         bundle.putString("documentId", documentId);
+        bundle.putString("uid", uid);
 
         // 번들을 프래그먼트에 설정
         detailFragment.setArguments(bundle);
@@ -205,6 +210,7 @@ public class Fragment_record extends Fragment {
                         Record record = document.toObject(Record.class);
                         if (record != null) {
                             record.setDocumentId(document.getId());
+                            record.setFriendId(currentUserId);
                             recordList.add(record);
                         }
                     }
@@ -224,6 +230,7 @@ public class Fragment_record extends Fragment {
                         binding.tripBlockTitle.setText(recentRecords.get(0).getTitle());
                         binding.tripBlockDate.setText(recentRecords.get(0).getDate());
                         binding.tripBlockPlace.setText(recentRecords.get(0).getPlace());
+
 
                         if (recentRecords.size() >= 2) {
                             Glide.with(binding.tripBlockPicture2)
@@ -246,4 +253,82 @@ public class Fragment_record extends Fragment {
                     Log.e("RetrieveRecords", "Error fetching records", e);
                 });
     }
+
+    private void retrieveFriendIds() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Firestore에서 friendIds 가져오기
+        db.collection("friends").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> friendIds = (List<String>) documentSnapshot.get("friendIds");
+                        if (friendIds != null) {
+                            // friendIds를 사용하여 사용자 정보 조회
+                            retrieveFriendRecords(friendIds);
+                            String friendName = documentSnapshot.getString("nickname");
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // 에러 처리
+                    Log.e("FetchFriends", "Error fetching friends", e);
+                });
+    }
+
+    private void retrieveFriendRecords(List<String> friendIds) {
+        processedCount = 0;
+
+        for (String friendId : friendIds) {
+            FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        List<Record> friendRecordList = new ArrayList<>();
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            Record record = document.toObject(Record.class);
+                            if (record != null) {
+                                record.setDocumentId(document.getId());
+                                record.setFriendId(friendId);
+                                friendRecordList.add(record);
+                            }
+                        }
+
+                        Collections.sort(friendRecordList);
+                        friendRecentRecords = friendRecordList.subList(0, Math.min(friendRecordList.size(), 2));
+
+                        if(!friendRecentRecords.isEmpty()){
+                            binding.firstFriendBlock.setVisibility(View.VISIBLE);
+                            binding.noFriendRecord.setVisibility(View.GONE);
+                            Glide.with(binding.friendRecordPicture)
+                                    .load(friendRecentRecords.get(0).getContentImage())
+                                    .skipMemoryCache(true)
+                                    .into(binding.friendRecordPicture);
+                            binding.friendRecordPicture.setImageURI(friendRecentRecords.get(0).getContentImage());
+                            binding.friendRecordTitle.setText(friendRecentRecords.get(0).getTitle());
+                            binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
+                            binding.friendName.setText(friendRecentRecords.get(0).getFriend());
+
+                            if(friendRecentRecords.size()>=2){
+                                binding.secondFriendBlock.setVisibility(View.VISIBLE);
+                                Glide.with(binding.friendRecordPicture2)
+                                        .load(friendRecentRecords.get(1).getContentImage())
+                                        .skipMemoryCache(true)
+                                        .into(binding.friendRecordPicture2);
+                                binding.friendRecordPicture2.setImageURI(friendRecentRecords.get(1).getContentImage());
+                                binding.friendRecordTitle2.setText(friendRecentRecords.get(1).getTitle());
+                                binding.friendRecordDate2.setText(friendRecentRecords.get(1).getDate());
+                                binding.friendName2.setText(friendRecentRecords.get(1).getFriend());
+                            }
+                            else binding.secondFriendBlock.setVisibility(View.INVISIBLE);
+                        }
+
+                    })
+                    .addOnFailureListener(e -> {
+                        // 에러 처리
+                        Log.e("FetchRecords", "Error fetching records", e);
+                    });
+        }
+    }
+
+
 }

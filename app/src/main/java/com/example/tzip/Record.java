@@ -12,6 +12,7 @@ public class Record implements Comparable<Record> {
     private String date;
     private String friend;
     private String documentId;
+    private String friendId;
 
 
     // 기존 생성자와 getter/setter 메서드는 여기에 포함됩니다.
@@ -71,6 +72,8 @@ public class Record implements Comparable<Record> {
     public Uri getContentImage() {
         return Uri.parse(contentImage);
     }
+    public void setFriendId(String friendId) {this.friendId = friendId;}
+    public String getFriendId() { return friendId;}
 
     public void setContentImage(String contentImage) {
         this.contentImage = contentImage;
