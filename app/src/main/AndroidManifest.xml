@@ -38,9 +38,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".nevigation_bar"
-            android:exported="false" />
-        <activity
             android:name=".Fragment_community"
             android:exported="false">
         </activity>

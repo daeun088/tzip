@@ -3,91 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <EditText
+        android:id="@+id/schedule_plan_write_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="제목을 입력해주세요"
-        android:textSize="33sp"
-        android:fontFamily="@font/notosanskr_bold"
-        android:textColorHint="@color/light_gray"
-        android:textStyle="bold"
-        android:lineSpacingExtra="20dp"
-        android:scrollHorizontally="false"
-        android:paddingStart="25dp"
         android:background="@drawable/schedule_plan_write_title_edge"
-        android:id="@+id/title"/>
+        android:fontFamily="@font/notosanskr_bold"
+        android:hint="제목을 입력해주세요"
+        android:lineSpacingExtra="20dp"
+        android:paddingStart="25dp"
+        android:scrollHorizontally="false"
+        android:textColorHint="@color/light_gray"
+        android:textSize="33sp"
+        android:textStyle="bold" />
 
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/schedule_plan_write_title"
+        android:orientation="vertical"
+        >
+
+
+
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/title"
-            android:weightSum="5">
+            >
 
-
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/schedule_plan_write_center_line">
+                android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/schedule_plan_write_recyclerView"
+                <ImageButton
+                    android:id="@+id/reg_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="8dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_pensil" />
+
+                <EditText
+                    android:id="@+id/schedule_plan_write_page"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/reg_btn"
+                    android:layout_marginHorizontal="18dp"
+                    android:backgroundTint="@color/light_gray"
+                    android:hint="입력"
+                    android:lineSpacingExtra="20dp"
+                    android:paddingHorizontal="8dp"
+                    android:scrollHorizontally="false"
+                    android:textColorHighlight="@color/orange"
+                    android:textColorHint="@color/light_gray" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/board_write"
-                    android:layout_width="56dp"
-                    android:layout_height="103dp"
-                    android:layout_gravity="end|bottom"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="30dp"
-                    app:fabSize="normal"
-                    android:src="@drawable/ic_plus"
-                    app:backgroundTint="#FB6E52">
+            </RelativeLayout>
 
-                </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        </ScrollView>
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_pensil"
-                        android:id="@+id/ic_pensil"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginStart="22dp"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="18dp"
-                        android:paddingHorizontal="8dp"
-                        android:hint="입력"
-                        android:scrollHorizontally="false"
-                        android:backgroundTint="@color/light_gray"
-                        android:textColorHighlight="@color/orange"
-                        android:textColorHint="@color/light_gray"
-                        android:lineSpacingExtra="20dp"
-                        android:layout_below="@+id/ic_pensil"/>
-
-                </RelativeLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
 
 </RelativeLayout>

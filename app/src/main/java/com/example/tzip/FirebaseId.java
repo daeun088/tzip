@@ -23,4 +23,9 @@ public class FirebaseId {
 
     public static final String imageUrl = "imageUrl";
     public static String text = "text";
+    public static String wrtiepage = "writepage";
+
+    public static String wrtietitle = "writetitle";
+
+    public static String currentDocId = "currentdocid";
 }

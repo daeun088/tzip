@@ -134,6 +134,7 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                 return false;
             }
         });
+
         tabs = findViewById(R.id.tab_layout);
 
         changeTabText(0,"1" );
@@ -231,7 +232,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     }
     protected void setToolbarForRecordWriting(){
         setToolbarContent("글쓰기", true);
-        addButtonToToolbar("등록");
         addButtonToToolbar("하단 바 없애기");
     }
     protected void setToolbarForFriendList(){
@@ -245,7 +245,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
     protected void setToolbarForSchedulePlan(){
         setToolbarContent("일정", true);
         addButtonToToolbar("알림");
-        addButtonToToolbar("탭 추가");
     }
     protected void setToolbarForSchedulePlanWrite(){
         setToolbarContent("상세 일정", true);
@@ -380,7 +379,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                 toolbar_button.setImageResource(R.drawable.ic_alert);
                 toolbar_button.setTag("알림");
                 toolbar_button.setVisibility(View.VISIBLE); //visibility visible로 바꿔주기
-                tabLayout.setVisibility(View.GONE);
             } else if (toolbar_identifier.equals("등록")) {
                 toolbar_button.setImageResource(R.drawable.ic_reg);
                 toolbar_button.setTag("등록");
@@ -400,8 +398,6 @@ public class nevigation_bar_test_code extends AppCompatActivity {
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 layoutParams.gravity = Gravity.START;
                 toolbar.addView(logoImageView, layoutParams);
-            } else if (toolbar_identifier.equals("탭 추가")) {
-                tabLayout.setVisibility(View.VISIBLE);
             }
 
             toolbar_button.setOnClickListener(view -> {

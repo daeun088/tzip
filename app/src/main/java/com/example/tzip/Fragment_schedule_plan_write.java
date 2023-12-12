@@ -4,14 +4,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class Fragment_schedule_plan_write extends Fragment {
 
@@ -22,6 +35,15 @@ public class Fragment_schedule_plan_write extends Fragment {
 
     private RecyclerView recyclerView;
     private EditTextAdapter editTextAdapter;
+
+    private EditText scheduleEditText;
+
+    private  EditText schedulePlanTitle;
+    private ImageButton regButton;
+
+
+    private FirebaseFirestore schedulePlanWriteDB = FirebaseFirestore.getInstance();
+
 
     public Fragment_schedule_plan_write() {
         // Required empty public constructor
@@ -50,22 +72,65 @@ public class Fragment_schedule_plan_write extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule_plan_write, container, false);
 
-        recyclerView = view.findViewById(R.id.schedule_plan_write_recyclerView);
-        editTextAdapter = new EditTextAdapter();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(editTextAdapter);
-
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.board_write);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        scheduleEditText = view.findViewById(R.id.schedule_plan_write_page);
+        schedulePlanTitle = view.findViewById(R.id.schedule_plan_write_title);
+        regButton = view.findViewById(R.id.reg_btn);
+        regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextAdapter.addNewItem();
+                saveDataToFirebase();
+                showToast("저장됐습니다");
             }
         });
 
+
         return view;
     }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveDataToFirebase() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String write_page = scheduleEditText.getText().toString();
+        String write_title = schedulePlanTitle.getText().toString();
+        CollectionReference schedulesCollection = schedulePlanWriteDB
+                .collection("schedulePlanWritePage")
+                .document(uid)
+                .collection("schedulePlanWritePages");
+
+        Map<String, Object> schedulePlanMap = new HashMap<>();
+        schedulePlanMap.put(FirebaseId.wrtiepage, write_page);
+        schedulePlanMap.put(FirebaseId.wrtietitle, write_title);
+        schedulePlanMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+
+        schedulesCollection.add(schedulePlanMap);
+    }
+
+    protected void loadScheduleFromFirebase() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        CollectionReference schedulesCollection = schedulePlanWriteDB
+                .collection("schedulePlanWritePage")
+                .document(uid)
+                .collection("schedulePlanWritePages");
+
+        schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.ASCENDING)
+                .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String loadedData = document.getString(FirebaseId.wrtiepage);
+                    String loadedData2 = document.getString(FirebaseId.wrtietitle);
+                    scheduleEditText.setText(loadedData);
+                    schedulePlanTitle.setText(loadedData2);
+                }
+            } else {
+                // Handle errors
+            }
+        });
+    }
+
+
 
     // 새로운 아이템을 추가하기 위한 어댑터
     private class EditTextAdapter extends RecyclerView.Adapter<EditTextAdapter.ViewHolder> {
@@ -111,5 +176,6 @@ public class Fragment_schedule_plan_write extends Fragment {
                 editText = itemView.findViewById(R.id.editText);
             }
         }
+
     }
 }

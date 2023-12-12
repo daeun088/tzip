@@ -282,9 +282,6 @@ public class Fragment_schedule extends Fragment {
                         Log.e("Firestore", "Error adding schedule document", e);
                         dialog.dismiss();
                     });
-
-
-
         });
 
         scheduleInnerBinding.scheduleBlockPic.setOnClickListener(v -> {
@@ -332,11 +329,6 @@ public class Fragment_schedule extends Fragment {
                         // 업로드된 이미지의 다운로드 URL 획득 성공
                         imageUrl = uri.toString();
 
-
-                        CollectionReference schedulesCollection = scheduleDB
-                                .collection("schedule")
-                                .document(uid)
-                                .collection("schedules");
 
                     });
                 });
@@ -524,16 +516,7 @@ public class Fragment_schedule extends Fragment {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(position);
                         String imageUrl = documentSnapshot.getString(FirebaseId.imageUrl);
 
-                        if (imageUrl != null && !imageUrl.isEmpty()) {
-                            Glide.with(imageView.getContext())
-                                    .load(imageUrl)
-                                    .into(imageView);
-                        } else {
-                            // 이미지 URL이 없을 때 디폴트 이미지 설정
-                            Glide.with(imageView.getContext())
-                                    .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
-                                    .into(imageView);
-                        }
+
                     }
                 })
                 .addOnFailureListener(e -> {
