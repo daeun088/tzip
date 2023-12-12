@@ -24,7 +24,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Fragment_community_story extends Fragment {
 
@@ -34,6 +40,8 @@ public class Fragment_community_story extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private BottomSheetDialog dialogPeople;
     private BottomSheetDialog dialogKakao;
+    String imageUrl;
+    String currentDocName;
 
 
     public Fragment_community_story() {
@@ -64,6 +72,7 @@ public class Fragment_community_story extends Fragment {
             String allPeople = bundle.getString(FirebaseId.peopleAll, "");
             String kakaoLink = bundle.getString(FirebaseId.kakaoLink, "");
             String moreExp = bundle.getString(FirebaseId.moreExplain, "");
+            currentDocName = bundle.getString(FirebaseId.currentDocId, "");
 
             binding.communityStoryPlace.setText(place);
             binding.communityStoryDate.setText(date);
@@ -167,10 +176,42 @@ public class Fragment_community_story extends Fragment {
                                 if (selectedImageUri != null) {
                                     // 이미지 뷰에 선택한 이미지 설정
                                     binding.communityStoryImage.setImageURI(selectedImageUri);
+
+                                    uploadImageToStorage(selectedImageUri);
                                 }
                             }
                         }
                     });
+
+
+    private void uploadImageToStorage(Uri imageUri) {
+        String uid = getUidOfCurrentUser();
+
+        String imageName = "community_image_" + System.currentTimeMillis() + ".jpg";
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("community_images").child(uid).child(imageName);
+// 이미지 업로드
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // 이미지 업로드 성공
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // 업로드된 이미지의 다운로드 URL 획득 성공
+                        imageUrl = uri.toString();
+                        updateImageUriToFireStore(imageUrl);
+                    });
+                });
+
+    }
+
+    private void updateImageUriToFireStore(String url) {
+        String uid = getUidOfCurrentUser();
+
+        DocumentReference dRef = db.collection("community")
+                .document(uid)
+                .collection("storys")
+                .document(currentDocName);
+
+        dRef.update("imageUrl", url);
+    }
 
     private void showToast(String toast) {
         Toast.makeText(getContext(), toast, Toast.LENGTH_SHORT).show();

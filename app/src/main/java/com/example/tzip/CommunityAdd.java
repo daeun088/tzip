@@ -45,6 +45,7 @@ public class CommunityAdd extends Fragment {
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
 
     private FirebaseFirestore communityDB = FirebaseFirestore.getInstance();
+    String currentDocName;
 
     private void callAddCommunityStoryMethod() {
         if(getActivity() instanceof nevigation_bar_test_code) {
@@ -130,6 +131,7 @@ public class CommunityAdd extends Fragment {
             communityAddMap.put(FirebaseId.moreExplain, "null");
             communityAddMap.put(FirebaseId.time, time);
             communityAddMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+            communityAddMap.put(FirebaseId.imageUrl, "null");
 
             communityCollection.add(communityAddMap)
                     .addOnSuccessListener(documentReference -> {
@@ -224,6 +226,7 @@ public class CommunityAdd extends Fragment {
                                 // 문서가 존재하는 경우
                                 DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                                 String lastestDocumentName = document.getId();
+                                currentDocName = lastestDocumentName;
 
                                 DocumentReference communityDocument = db
                                         .collection("community")
@@ -288,6 +291,7 @@ public class CommunityAdd extends Fragment {
          bundle.putString(FirebaseId.peopleAll, binding2.communityInnerAllpeople.getText().toString());
          bundle.putString(FirebaseId.kakaoLink, binding2.communityInnerKakaoLink.getText().toString());
          bundle.putString(FirebaseId.moreExplain, binding2.communityInnerMoreExplain.getText().toString());
+         bundle.putString(FirebaseId.currentDocId, currentDocName);
          fragmentCommunityStory.setArguments(bundle);
 
          callAddCommunityStoryMethod();
