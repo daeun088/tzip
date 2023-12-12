@@ -48,6 +48,7 @@ public class Fragment_emergency extends Fragment {
         // Required empty public constructor
     }
 
+
     public static Fragment_emergency newInstance(String param1, String param2) {
         Fragment_emergency fragment = new Fragment_emergency();
         Bundle args = new Bundle();
@@ -77,10 +78,6 @@ public class Fragment_emergency extends Fragment {
         binding.emergencySettingBtn.setOnClickListener( v -> {
 
             saveDataToFirebase();
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            Fragment_mypage fragmentMypage = new Fragment_mypage();
-            transaction.replace(R.id.containers, fragmentMypage);
-            transaction.commit();
             Toast.makeText(getContext(), "긴급메세지 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
         });
         return binding.getRoot();

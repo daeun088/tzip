@@ -90,6 +90,8 @@ public class Fragment_mypage extends Fragment {
         }
     }
 
+
+
     private void callFriendListMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
@@ -189,6 +191,7 @@ public class Fragment_mypage extends Fragment {
 
             retrieveFriendTokens();
             retrieveToken();
+            Toast.makeText(getContext(), "긴급메세지가 발송되었습니다.", Toast.LENGTH_SHORT).show();
         });
 
         // Inflate the layout for this fragment

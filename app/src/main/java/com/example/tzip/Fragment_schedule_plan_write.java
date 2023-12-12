@@ -79,7 +79,7 @@ public class Fragment_schedule_plan_write extends Fragment {
             @Override
             public void onClick(View v) {
                 saveDataToFirebase();
-                showToast("저장됐습니다");
+                Toast.makeText(getContext(), "내용이 저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
