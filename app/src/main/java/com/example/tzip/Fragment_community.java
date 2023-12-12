@@ -19,16 +19,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentCommunityBinding;
 import com.example.tzip.databinding.FragmentMypageBinding;
 import com.example.tzip.databinding.ItemCommunityInnerBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -72,13 +77,13 @@ public class Fragment_community extends Fragment {
             CommunityAdd communityAdd = new CommunityAdd();
             transaction.replace(R.id.containers, communityAdd);
             transaction.commit();
-
         });
 
         final String[] tempT = new String[1];
         final String[] tempP = new String[1];
         final String[] tempL = new String[1];
-        final String[] tt = new String[1];
+        final String[] tempI = new String[1];
+        final String[] tempH = new String[1];
 
         db.collection("community")
                 .get()
@@ -98,11 +103,14 @@ public class Fragment_community extends Fragment {
                                                 if (task2.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document2 : task2.getResult()) {
                                                         Log.d(TAG, document2.getId());
-                                                        tempT[0] = document2.getString("title");
-                                                        tempP[0] = document2.getString("date");
-                                                        tempL[0] = document2.getString("place");
-                                                        list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0]));
-                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0]);
+                                                        tempT[0] = document2.getString(FirebaseId.title);
+                                                        tempP[0] = document2.getString(FirebaseId.date);
+                                                        tempL[0] = document2.getString(FirebaseId.place);
+                                                        tempI[0] = document2.getString(FirebaseId.imageUrl);
+                                                        tempH[0] = document2.getString(FirebaseId.peopleAll);
+
+                                                        list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0], tempI[0], tempH[0]));
+                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.serchList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.serchList.setAdapter(new MyAdapter(list));
                                                         binding.serchList.addItemDecoration(new MyItemDecoration());
@@ -154,10 +162,27 @@ public class Fragment_community extends Fragment {
             String title = DS.getTitle();
             String period = DS.getPeriod();
             String location = DS.getLocation();
+            String img = DS.getImg();
+            String people = DS.getPeople();
 
             holder.binding.communityBlockTitle.setText(title);
             holder.binding.communityBlockPeriod.setText(period);
             holder.binding.communityBlockLocation.setText(location);
+            // 이미지 넣기
+            loadScheduleImage(holder.binding.communityBlockPic);
+            if (img != null && !img.isEmpty()) {
+                Glide.with(holder.binding.communityBlockPic.getContext())
+                        .load(img)
+                        .into(holder.binding.communityBlockPic);
+            } else {
+                // 이미지 URL이 없을 때 디폴트 이미지 설정
+                Glide.with(holder.binding.communityBlockPic.getContext())
+                        .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                        .into(holder.binding.communityBlockPic);
+            }
+            // 이미지 넣기
+            holder.binding.communityBlockParticipant.setText("인원 수 " + people + "명");
+
         }
 
         @Override
@@ -165,6 +190,9 @@ public class Fragment_community extends Fragment {
             Log.d(TAG, "getItemCount: " + list.size());
             return list.size();
         }
+    }
+    private void loadScheduleImage(ImageView imageView) {
+
     }
 
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
@@ -179,10 +207,14 @@ public class Fragment_community extends Fragment {
         String title;
         String period;
         String location;
-        private CommunityDataSet(String src_title, String src_per, String src_loc) {
+        String img;
+        String people;
+        private CommunityDataSet(String src_title, String src_per, String src_loc, String src_img, String src_peo) {
             title = src_title;
             period = src_per;
             location = src_loc;
+            img = src_img;
+            people = src_peo;
         }
 
         public String getTitle() {
@@ -195,6 +227,14 @@ public class Fragment_community extends Fragment {
 
         public String getLocation() {
             return location;
+        }
+
+        public String getImg() {
+            return img;
+        }
+
+        public String getPeople() {
+            return people;
         }
     }
 }

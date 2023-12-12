@@ -26,4 +26,6 @@ public class FirebaseId {
     public static String wrtiepage = "writepage";
 
     public static String wrtietitle = "writetitle";
+
+    public static String currentDocId = "currentdocid";
 }
