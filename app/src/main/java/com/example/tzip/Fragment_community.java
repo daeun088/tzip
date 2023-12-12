@@ -84,6 +84,7 @@ public class Fragment_community extends Fragment {
         final String[] tempL = new String[1];
         final String[] tempI = new String[1];
         final String[] tempH = new String[1];
+        final String[] tempD = new String[1];
 
         db.collection("community")
                 .get()
@@ -108,8 +109,9 @@ public class Fragment_community extends Fragment {
                                                         tempL[0] = document2.getString(FirebaseId.place);
                                                         tempI[0] = document2.getString(FirebaseId.imageUrl);
                                                         tempH[0] = document2.getString(FirebaseId.peopleAll);
+                                                        tempD[0] = document2.getId();
 
-                                                        list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0], tempI[0], tempH[0]));
+                                                        list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0], tempI[0], tempH[0], tempD[0], document.getId()));
                                                         Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.serchList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.serchList.setAdapter(new MyAdapter(list));
@@ -164,12 +166,13 @@ public class Fragment_community extends Fragment {
             String location = DS.getLocation();
             String img = DS.getImg();
             String people = DS.getPeople();
+            String docId = DS.getDocID();
+            String uid = DS.getuID();
 
             holder.binding.communityBlockTitle.setText(title);
             holder.binding.communityBlockPeriod.setText(period);
             holder.binding.communityBlockLocation.setText(location);
             // 이미지 넣기
-            loadScheduleImage(holder.binding.communityBlockPic);
             if (img != null && !img.isEmpty()) {
                 Glide.with(holder.binding.communityBlockPic.getContext())
                         .load(img)
@@ -183,6 +186,10 @@ public class Fragment_community extends Fragment {
             // 이미지 넣기
             holder.binding.communityBlockParticipant.setText("인원 수 " + people + "명");
 
+            holder.binding.communityBlock.setOnClickListener(v -> {
+                updateUI(holder.binding.communityBlock, docId, uid, img);
+            });
+
         }
 
         @Override
@@ -191,15 +198,52 @@ public class Fragment_community extends Fragment {
             return list.size();
         }
     }
-    private void loadScheduleImage(ImageView imageView) {
 
+    private void updateUI(View view, String docId, String uid, String imgUrl) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        Fragment_community_Read fragmentCommunityRead = new Fragment_community_Read();
+        DocumentReference dRef = db.collection("community")
+                .document(uid)
+                .collection("storys")
+                .document(docId);
+
+        dRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseId.place, documentSnapshot.getString(FirebaseId.place));
+                bundle.putString(FirebaseId.date, documentSnapshot.getString(FirebaseId.date));
+                bundle.putString(FirebaseId.time,  documentSnapshot.getString(FirebaseId.time));
+                bundle.putString(FirebaseId.title, documentSnapshot.getString(FirebaseId.title));
+                bundle.putString(FirebaseId.peopleCurrent, documentSnapshot.getString(FirebaseId.peopleCurrent));
+                bundle.putString(FirebaseId.peopleAll, documentSnapshot.getString(FirebaseId.peopleAll));
+                bundle.putString(FirebaseId.kakaoLink, documentSnapshot.getString(FirebaseId.kakaoLink));
+                bundle.putString(FirebaseId.moreExplain, documentSnapshot.getString(FirebaseId.moreExplain));
+                bundle.putString(FirebaseId.imageUrl, documentSnapshot.getString(FirebaseId.imageUrl));
+                fragmentCommunityRead.setArguments(bundle);
+
+                callAddCommunityStoryMethod();
+                transaction
+                        .replace(R.id.containers, fragmentCommunityRead)
+                        .commit();
+            }
+        });
+
+
+    }
+
+    private void callAddCommunityStoryMethod() {
+        if(getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setTollbarForCommunityStory();
+        }
     }
 
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             int index = parent.getChildAdapterPosition(view) + 1;
-            outRect.set(0,0,0,10);
+            outRect.set(0,0,0,5);
         }
     }
 
@@ -209,12 +253,17 @@ public class Fragment_community extends Fragment {
         String location;
         String img;
         String people;
-        private CommunityDataSet(String src_title, String src_per, String src_loc, String src_img, String src_peo) {
+        String docID;
+        String uID;
+        private CommunityDataSet(String src_title, String src_per, String src_loc, String src_img, String src_peo, String src_docid, String src_uid) {
             title = src_title;
             period = src_per;
             location = src_loc;
             img = src_img;
             people = src_peo;
+            docID = src_docid;
+            uID = src_uid;
+
         }
 
         public String getTitle() {
@@ -235,6 +284,14 @@ public class Fragment_community extends Fragment {
 
         public String getPeople() {
             return people;
+        }
+
+        public String getDocID() {
+            return docID;
+        }
+
+        public String getuID() {
+            return uID;
         }
     }
 }
