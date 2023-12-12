@@ -73,16 +73,6 @@
             android:textColor="@color/black"
             android:textSize="10sp" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/white"
-            android:src="@drawable/menu" />
-
-
         <ImageView
             android:id="@+id/schedule_plan_pic"
             android:layout_width="wrap_content"

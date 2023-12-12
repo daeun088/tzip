@@ -199,7 +199,7 @@ public class Fragment_schedule_plan extends Fragment {
             // DatePickerDialog를 표시
             datePickerDialog.show();
 
-                });
+        });
 
 
 

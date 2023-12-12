@@ -25,39 +25,15 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/schedule_plan_write_title"
         android:orientation="vertical"
-        android:weightSum="5">
+        >
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="@drawable/schedule_plan_write_center_line">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/schedule_plan_write_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/board_write"
-                android:layout_width="56dp"
-                android:layout_height="103dp"
-                android:layout_gravity="end|bottom"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="30dp"
-                android:src="@drawable/ic_plus"
-                app:backgroundTint="#FB6E52"
-                app:fabSize="normal">
-
-            </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
