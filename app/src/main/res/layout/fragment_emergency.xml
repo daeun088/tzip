@@ -150,7 +150,9 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:scrollHorizontally="false"
-                    android:lineSpacingExtra="20dp"/>
+                    android:lineSpacingExtra="20dp"
+                    android:hint="메시지를 입력해주세요."
+                    android:id="@+id/emergency_message"/>
 
             </ScrollView>
 

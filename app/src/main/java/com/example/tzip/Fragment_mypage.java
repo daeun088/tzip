@@ -1,18 +1,29 @@
 package com.example.tzip;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.tzip.databinding.FragmentMypageBinding;
@@ -26,8 +37,23 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class Fragment_mypage extends Fragment {
@@ -38,10 +64,15 @@ public class Fragment_mypage extends Fragment {
 
     String uid = currentUser.getUid();
 
+    String fcmToken;
+
+    String token;
+
     FirebaseFirestore userDB = FirebaseFirestore.getInstance();
     DocumentReference userDocRef = userDB.collection("user").document(uid);
     //Firestore에서 문서 참조
 
+    Fragment_emergency fragmentEmergency;
     FragmentMypageBinding binding;
 
     private String mParam1;
@@ -129,24 +160,63 @@ public class Fragment_mypage extends Fragment {
             Fragment_emergency fragmentEmergency = new Fragment_emergency();
             transaction.replace(R.id.containers, fragmentEmergency);
             transaction.commit();
+            fragmentEmergency.loadFromFirebase();
+        });
+
+        binding.sendBtn.setOnClickListener( v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            // 선언과 초기화
+            List<String> TokenIds = new ArrayList<>();
+
+            // Firestore에서 userToken 가져오기
+            db.collection("userToken").document(currentUserId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String userToken = documentSnapshot.getString(FirebaseId.token);
+
+                            if (userToken != null) {
+                                    sendNotification(userToken, " ", "");
+
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // 에러처리
+                    });
+
+
+            retrieveFriendTokens();
+            retrieveToken();
         });
 
         // Inflate the layout for this fragment
         return binding.getRoot();
     }
 
+    private void retrieveToken() {
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        fcmToken = preferences.getString("FCM_TOKEN", null);
+
+        if (fcmToken != null) {
+            // 토큰을 가져왔으므로 사용 가능
+            Log.d("YourFragment", "FCM Token: " + fcmToken);
+        } else {
+            // 저장된 토큰이 없는 경우
+            Log.d("YourFragment", "FCM Token not found");
+        }
+    }
     private void retrieveFriendIds() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Firestore에서 friendIds 가져오기
-        db.collection("friends").document(currentUserId).get()
+        db.collection("userToken").document(currentUserId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        List<String> friendIds = (List<String>) documentSnapshot.get("friendIds");
-                        if (friendIds != null) {
-                            // friendIds를 사용하여 사용자 정보 조회
-                            retrieveUserInformation(friendIds);
+                        List<String> TokenIds = (List<String>) documentSnapshot.get("userToken");
+                        if (TokenIds != null) {
                         }
                     }
                 })
@@ -232,7 +302,71 @@ public class Fragment_mypage extends Fragment {
             return friendNames.size();
         }
     }
+    private void sendNotification(String to, String title, String message) {
+        try {
+            // FCM 메시지 생성
+            JSONObject messageJson = new JSONObject();
+            messageJson.put("to", to);
 
+            // 알림 관련 정보 추가
+            JSONObject notificationJson = new JSONObject();
+            notificationJson.put("title", title);
+            notificationJson.put("body", message);
 
+            messageJson.put("notification", notificationJson);
+
+            // FCM 서버에 메시지 전송
+            String FCM_SERVER_URL = "https://fcm.googleapis.com/fcm/send";
+            String FCM_SERVER_KEY = "AAAA8a0-qh0:APA91bEVrJJkUDQwYJNExMN4zignRfps_FNBlJFSgOv2McIdHGlpSIfqUxyIb5Uc0TjTc9G3H70wo_zpcsOI8nHfZMx6WfkPo7_E306kXjvudr4Fpz7HpH--_hOsWe0i-ffA1V56uoqZ";
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    FCM_SERVER_URL,
+                    messageJson,
+                    response -> {
+                        // 성공적으로 메시지를 전송한 경우의 처리a
+                    },
+                    error -> {
+                        // 메시지 전송 실패 시의 처리
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    // 요청 헤더에 FCM 서버 키 추가
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=" + FCM_SERVER_KEY);
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+            // 요청을 큐에 추가
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retrieveFriendTokens() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Firestore에서 friendTokens 가져오기
+        db.collection("friends").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> friendTokens = (List<String>) documentSnapshot.get("friendTokens");
+
+                        for (String token : friendTokens) {
+                            sendNotification(token," ", "qwe");
+                        }
+
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    //에러처리
+                });
+    }
 
 }

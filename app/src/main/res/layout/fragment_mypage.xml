@@ -77,6 +77,7 @@
         android:background="@drawable/orange_btn"
         android:fontFamily="@font/notosanskr_bold"
         android:includeFontPadding="false"
+        android:id="@+id/send_btn"
         android:text="긴급메세지 발송하기" />
 
     <RelativeLayout

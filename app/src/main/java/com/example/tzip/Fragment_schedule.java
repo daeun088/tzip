@@ -430,18 +430,6 @@ public class Fragment_schedule extends Fragment {
         }
     }
 
-    private void updateUI() {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentSchedulePlan = new Fragment_schedule_plan();
-        callSchedulePlanMethod();
-        transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
-
-    }
-
-    private String extractDay(String OriginalDay) {
-        String Day = OriginalDay.substring(10, 11);
-        return Day;
-    }
 
     private String extractTitle(String text) {
         // "Title: " 다음에 오는 문자열을 추출
@@ -514,7 +502,7 @@ public class Fragment_schedule extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty() && position < queryDocumentSnapshots.size()) {
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(position);
-                        String imageUrl = documentSnapshot.getString(FirebaseId.imageUrl);
+                        imageUrl = documentSnapshot.getString(FirebaseId.imageUrl);
 
 
                     }

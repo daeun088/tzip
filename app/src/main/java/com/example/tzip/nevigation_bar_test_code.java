@@ -2,6 +2,7 @@ package com.example.tzip;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,9 +14,12 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import android.view.Gravity;
 import android.widget.ImageButton;
@@ -69,6 +73,8 @@ public class nevigation_bar_test_code extends AppCompatActivity {
 
     int post_id;
 
+    String token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,31 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         recordWriting = new RecordWriting();
         fragmentFriendRequest = new Fragment_friend_request();
         friendList = new FriendList();
+
+        Intent fcm = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
+        startService(fcm);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            // 토큰 얻어오기 성공
+                            token = task.getResult();
+
+                            // MyFirebaseMessagingService에 전달
+                            MyFirebaseMessagingService messagingService = new MyFirebaseMessagingService();
+                            messagingService.sendRegistrationToServer(token);
+                        } else {
+                            // 토큰 얻어오기 실패
+                            Exception exception = task.getException();
+                            if (exception != null) {
+                                exception.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
 
         toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
