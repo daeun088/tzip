@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -206,7 +207,10 @@ public class CommunityAdd extends Fragment {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference communityCollection = db.collection("community").document(uid).collection("storys");
+            CollectionReference communityCollection = db.collection("community")
+                    .document(uid)
+                    .collection("storys");
+
 
             //현재 communitystory의 document id 가져오기
             communityCollection
@@ -249,6 +253,14 @@ public class CommunityAdd extends Fragment {
                                             .addOnFailureListener(e -> {
                                                 Log.e("Firestore", "Error updating document", e);
                                             });
+                                    DocumentReference communityTimeStamp = db.collection("community")
+                                            .document(uid);
+
+                                    Map<String, Object> tsmp = new HashMap<>();
+                                    tsmp.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+
+                                    communityTimeStamp
+                                            .set(tsmp);
                                 }
                             } else {
                                 // 문서가 없는 경우
