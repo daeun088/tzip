@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentFriendListBinding;
 import com.example.tzip.databinding.FragmentFriendRequestBinding;
 import com.example.tzip.databinding.ItemFriendListBinding;
@@ -112,17 +113,25 @@ public class FriendList extends Fragment {
 
     private void retrieveUserInformation(List<String> friendIds) {
         List<String> friendNames = new ArrayList<>();
+        List<String> friendProfileImages = new ArrayList<>();
 
+        int friendIdCount = friendIds.size();
         // friendIds에 해당하는 사용자 정보를 조회하고 friendNames에 추가
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             String friendName = documentSnapshot.getString("nickname");
-                            friendNames.add(friendName);
 
-                            // friendNames가 완성되면 RecyclerView에 설정
-                            setRecyclerView(friendNames);
+                            // 프로필 이미지 URL 가져오기
+                            String friendProfileImage = documentSnapshot.getString("profileImage");
+
+                            friendNames.add(friendName);
+                            friendProfileImages.add(friendProfileImage);
+
+                            if (friendNames.size() == friendIdCount) {
+                                setRecyclerView(friendNames, friendProfileImages);
+                            }
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -130,7 +139,8 @@ public class FriendList extends Fragment {
                     });
         }
     }
-    private void setRecyclerView(List<String> friendNames) {
+
+    private void setRecyclerView(List<String> friendNames, List<String> friendProfileImages) {
         if (friendNames.isEmpty()) {
             // 친구가 없을 때
             binding.friendNum.setText("친구 0");
@@ -143,8 +153,7 @@ public class FriendList extends Fragment {
             binding.noFriends.setVisibility(View.GONE);
 
             binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext()));
-            binding.friendList.setAdapter(new MyAdapter(friendNames));
-            binding.friendList.addItemDecoration(new MyItemDecoration());
+            binding.friendList.setAdapter(new MyAdapter(friendNames, friendProfileImages));
         }
     }
 
@@ -160,9 +169,11 @@ public class FriendList extends Fragment {
 
     private static class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<String> friendNames;
+        private List<String> friendProfileImages;
 
-        private MyAdapter(List<String> friendNames) {
+        private MyAdapter(List<String> friendNames, List<String> friendProfileImages) {
             this.friendNames = friendNames;
+            this.friendProfileImages = friendProfileImages;
         }
 
         @NonNull
@@ -175,24 +186,28 @@ public class FriendList extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             String friendName = friendNames.get(position);
+            String friendProfileImage = friendProfileImages.get(position);
+
             holder.binding.friendName.setText(friendName);
+
+            // Glide를 사용하여 프로필 이미지 로드
+            if (friendProfileImage != null && !friendProfileImage.isEmpty()) {
+                Glide.with(holder.binding.friendProfile)
+                        .load(friendProfileImage)
+                        .skipMemoryCache(true)
+                        .into(holder.binding.friendProfile);
+            } else {
+                // 기본 이미지를 로드
+                Glide.with(holder.binding.friendProfile)
+                        .load(R.drawable.profilepic)  // 기본 이미지 리소스 ID
+                        .skipMemoryCache(true)
+                        .into(holder.binding.friendProfile);
+            }
         }
 
         @Override
         public int getItemCount() {
             return friendNames.size();
-        }
-    }
-
-    private static class MyItemDecoration extends RecyclerView.ItemDecoration {
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            int index = parent.getChildAdapterPosition(view) + 1;
-
-            if (index % 3 == 0)
-                outRect.set(20, 20, 20, 60);
-            else
-                outRect.set(20, 20, 20, 20);
         }
     }
 }

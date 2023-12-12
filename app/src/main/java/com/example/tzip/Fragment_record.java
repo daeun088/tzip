@@ -298,7 +298,10 @@ public class Fragment_record extends Fragment {
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                                         .addOnSuccessListener(documentSnapshot -> {
                                             String friendName = documentSnapshot.getString("nickname");
+                                            String friendProfileImage = documentSnapshot.getString("profileImage");
+
                                             record.setFriendName(friendName);
+                                            record.setFriendProfileImage(friendProfileImage);
                                         })
                                         .addOnFailureListener(e -> {
                                             // 에러 처리
@@ -332,6 +335,8 @@ public class Fragment_record extends Fragment {
         }
     }
 
+    // ...
+
     private void updateFriendRecordsUI() {
         if (!friendRecentRecords.isEmpty()) {
             binding.firstFriendProfile.setVisibility(View.VISIBLE);
@@ -346,6 +351,20 @@ public class Fragment_record extends Fragment {
             binding.friendRecordDate.setText(friendRecentRecords.get(0).getDate());
             binding.friendName.setText(friendRecentRecords.get(0).getFriendName());
 
+            // 추가된 부분: Glide를 사용하여 프로필 이미지 로드
+            if (friendRecentRecords.get(0).getFriendProfileImage() != null && !friendRecentRecords.get(0).getFriendProfileImage().isEmpty()) {
+                Glide.with(binding.profilePic)
+                        .load(friendRecentRecords.get(0).getFriendProfileImage())
+                        .skipMemoryCache(true)
+                        .into(binding.profilePic);
+            } else {
+                // 기본 이미지를 로드
+                Glide.with(binding.profilePic)
+                        .load(R.drawable.profilepic)  // 기본 이미지 리소스 ID
+                        .skipMemoryCache(true)
+                        .into(binding.profilePic);
+            }
+
             if (friendRecentRecords.size() >= 2) {
                 binding.secondFriendProfile.setVisibility(View.VISIBLE);
                 binding.secondFriendBlock.setVisibility(View.VISIBLE);
@@ -358,6 +377,20 @@ public class Fragment_record extends Fragment {
                 binding.friendRecordDate2.setText(friendRecentRecords.get(1).getDate());
                 binding.friendName2.setText(friendRecentRecords.get(1).getFriendName());
 
+                // 추가된 부분: Glide를 사용하여 프로필 이미지 로드
+                if (friendRecentRecords.get(1).getFriendProfileImage() != null && !friendRecentRecords.get(1).getFriendProfileImage().isEmpty()) {
+                    Glide.with(binding.profilePic2)
+                            .load(friendRecentRecords.get(1).getFriendProfileImage())
+                            .skipMemoryCache(true)
+                            .into(binding.profilePic2);
+                } else {
+                    // 기본 이미지를 로드
+                    Glide.with(binding.profilePic2)
+                            .load(R.drawable.profilepic)  // 기본 이미지 리소스 ID
+                            .skipMemoryCache(true)
+                            .into(binding.profilePic2);
+                }
+
             } else {
                 binding.secondFriendBlock.setVisibility(View.INVISIBLE);
                 binding.secondFriendProfile.setVisibility(View.INVISIBLE);
@@ -369,4 +402,5 @@ public class Fragment_record extends Fragment {
             binding.secondFriendProfile.setVisibility(View.INVISIBLE);
         }
     }
+
 }

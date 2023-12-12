@@ -17,7 +17,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/profilepic"
+                android:src="@drawable/profilepic"
+                android:background="@drawable/profile"
                 android:clipToOutline="true" />
 
             <TextView
