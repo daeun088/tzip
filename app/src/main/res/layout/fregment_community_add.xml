@@ -196,10 +196,11 @@
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/notosanskr_bold"/>
-            <EditText
+            <TextView
                 android:id="@+id/community_add_time"
                 android:layout_width="280dp"
                 android:layout_height="40dp"
+                android:background="@drawable/linerac"
                 android:inputType="text"/>
 
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.tzip.databinding.ActivityCommunityInnerpageBinding;
 import com.example.tzip.databinding.FregmentCommunityAddBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class CommunityAdd extends Fragment {
     private BottomSheetDialog dialog; // 바텀시트용 dialog 객체 <민>
 
     private FirebaseFirestore communityDB = FirebaseFirestore.getInstance();
+    String currentDocName;
 
     private void callAddCommunityStoryMethod() {
         if(getActivity() instanceof nevigation_bar_test_code) {
@@ -129,6 +132,7 @@ public class CommunityAdd extends Fragment {
             communityAddMap.put(FirebaseId.moreExplain, "null");
             communityAddMap.put(FirebaseId.time, time);
             communityAddMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+            communityAddMap.put(FirebaseId.imageUrl, "null");
 
             communityCollection.add(communityAddMap)
                     .addOnSuccessListener(documentReference -> {
@@ -202,11 +206,15 @@ public class CommunityAdd extends Fragment {
             String allPeople = binding2.communityInnerAllpeople.getText().toString();
             String kakaoLink = binding2.communityInnerKakaoLink.getText().toString();
             String moreExp = binding2.communityInnerMoreExplain.getText().toString();
+            final String[] nickname = new String[1];
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference communityCollection = db.collection("community").document(uid).collection("storys");
+            CollectionReference communityCollection = db.collection("community")
+                    .document(uid)
+                    .collection("storys");
+
 
             //현재 communitystory의 document id 가져오기
             communityCollection
@@ -220,6 +228,7 @@ public class CommunityAdd extends Fragment {
                                 // 문서가 존재하는 경우
                                 DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                                 String lastestDocumentName = document.getId();
+                                currentDocName = lastestDocumentName;
 
                                 DocumentReference communityDocument = db
                                         .collection("community")
@@ -245,10 +254,32 @@ public class CommunityAdd extends Fragment {
                                                 Toast.makeText(getContext(), "minininnimini", Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 updateUI();
+
                                             })
                                             .addOnFailureListener(e -> {
                                                 Log.e("Firestore", "Error updating document", e);
                                             });
+
+                                    DocumentReference communityTimeStamp = db.collection("community")
+                                            .document(uid);
+
+                                    db.collection("user").document(uid)
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    nickname[0] = documentSnapshot.getString(FirebaseId.nickname);
+
+                                                    Map<String, Object> tsmp = new HashMap<>();
+                                                    tsmp.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+                                                    tsmp.put(FirebaseId.nickname, nickname[0]);
+
+                                                    communityTimeStamp
+                                                            .set(tsmp);
+                                                }
+                                            });
+
+
                                 }
                             } else {
                                 // 문서가 없는 경우
@@ -276,6 +307,7 @@ public class CommunityAdd extends Fragment {
          bundle.putString(FirebaseId.peopleAll, binding2.communityInnerAllpeople.getText().toString());
          bundle.putString(FirebaseId.kakaoLink, binding2.communityInnerKakaoLink.getText().toString());
          bundle.putString(FirebaseId.moreExplain, binding2.communityInnerMoreExplain.getText().toString());
+         bundle.putString(FirebaseId.currentDocId, currentDocName);
          fragmentCommunityStory.setArguments(bundle);
 
          callAddCommunityStoryMethod();
