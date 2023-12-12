@@ -72,9 +72,9 @@ public class FriendTripRecord extends Fragment {
     }
 
     // FriendTripRecord 클래스의 retrieveRecords 메서드 내부
+    // FriendTripRecord 클래스의 retrieveRecords 메서드 내부
     private void retrieveRecords(List<String> friendIds) {
         List<Record> recordList = new ArrayList<>();
-
 
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
@@ -88,15 +88,19 @@ public class FriendTripRecord extends Fragment {
                                 record.setDocumentId(documentId);
                                 record.setFriendId(friendId);
 
-                                // Firestore에서 friendName 가져오기
+                                // Firestore에서 friendName 및 friendProfileImage 가져오기
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                                         .addOnSuccessListener(documentSnapshot -> {
                                             String friendName = documentSnapshot.getString("nickname");
+                                            String friendProfileImage = documentSnapshot.getString("profileImage");
+
                                             record.setFriendName(friendName);
+                                            record.setFriendProfileImage(friendProfileImage);
+
+                                            friendRecordList.add(record);
 
                                             // 모든 데이터가 준비되었을 때 RecyclerView 설정
-                                            queryCount++;
-                                            if (queryCount == friendIds.size() && friendRecordList.size() >= 2) {
+                                            if (friendRecordList.size() >= 2) {
                                                 Collections.sort(friendRecordList);
                                                 setRecyclerView(friendRecordList);
                                             }
@@ -104,31 +108,21 @@ public class FriendTripRecord extends Fragment {
                                         .addOnFailureListener(e -> {
                                             // 에러 처리
                                             Log.e("FetchRecords", "Error fetching friend name", e);
-                                            queryCount++; // 에러가 발생하더라도 queryCount를 증가시켜서 모든 쿼리가 완료되었다고 판단하도록 함
-                                            if (queryCount == friendIds.size() && friendRecordList.size() >= 2) {
-                                                Collections.sort(friendRecordList);
-                                                setRecyclerView(friendRecordList);
-                                            }
                                         });
-
-                                friendRecordList.add(record);
                             }
                         }
                     })
                     .addOnFailureListener(e -> {
                         // 에러 처리
                         Log.e("FetchRecords", "Error fetching records", e);
-                        queryCount++; // 에러가 발생하더라도 queryCount를 증가시켜서 모든 쿼리가 완료되었다고 판단하도록 함
-                        if (queryCount == friendIds.size()) {
-                            // 레코드 리스트를 timestamp를 기준으로 정렬
-                            Collections.sort(recordList);
-                            setRecyclerView(recordList);
-                        }
                     });
         }
     }
 
-        private int getTotalRecordCount(List<String> friendIds) {
+    // setRecyclerView 메서드 내부
+
+
+    private int getTotalRecordCount(List<String> friendIds) {
 
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("record").document(friendId).collection("records")
@@ -149,7 +143,9 @@ public class FriendTripRecord extends Fragment {
         recordAdapter = new FriendRecordAdapter(recordList, record -> openDetailPage(record));
         recordRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recordRecyclerView.setAdapter(recordAdapter);
+        recordAdapter.notifyDataSetChanged(); // 어댑터에 데이터 변경을 알림
     }
+
 
     private void openDetailPage(Record record) {
         String recordTitle = record.getTitle();
@@ -220,13 +216,26 @@ class FriendRecordAdapter extends RecyclerView.Adapter<FriendRecordAdapter.Frien
                 .skipMemoryCache(true)
                 .into(holder.binding.feedPicture);
 
+
+        if (record.getFriendProfileImage() != null && !record.getFriendProfileImage().isEmpty()) {
+            Glide.with(holder.binding.profilePic.getContext())
+                    .load(record.getFriendProfileImage())
+                    .skipMemoryCache(true)
+                    .into(holder.binding.profilePic);
+        } else {
+            Glide.with(holder.binding.profilePic.getContext())
+                    .load(R.drawable.profilepic)
+                    .skipMemoryCache(true)
+                    .into(holder.binding.profilePic);
+        }
+
+        // 나머지 데이터 설정
         holder.binding.feedPicture.setImageURI(record.getContentImage());
         holder.binding.recordTitle.setText(record.getTitle());
         holder.binding.place.setText(record.getPlace());
         holder.binding.date.setText(record.getDate());
         holder.binding.userName.setText(record.getFriendName());
     }
-
     @Override
     public int getItemCount() {
         return recordList.size();

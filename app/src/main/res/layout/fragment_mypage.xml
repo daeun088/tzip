@@ -17,7 +17,9 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/profilepic"
+            android:src="@drawable/profilepic"
+            android:background="@drawable/profile"
+            android:scaleType="centerCrop"
             android:clipToOutline="true" />
 
         <TextView
@@ -33,6 +35,7 @@
             android:textStyle="bold" />
 
         <ImageButton
+            android:id="@+id/setting_button"
             style="@style/whiteButton"
             android:layout_width="30dp"
             android:layout_height="30dp"

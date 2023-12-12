@@ -364,7 +364,12 @@ public class RecordWriting extends Fragment {
                             });
                 }
             }
+
+            // 정렬 후 어댑터에 변경 알림
+            Collections.sort(recordItems, new RecordItem.ItemSort());
+            notifyDataSetChanged();
         }
+
 
 
 
