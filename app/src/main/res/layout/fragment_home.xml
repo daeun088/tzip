@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -368,7 +368,7 @@
                     android:textSize="15sp" />
             </LinearLayout>
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_community_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

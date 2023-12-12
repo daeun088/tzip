@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,20 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentCommunityBinding;
 import com.example.tzip.databinding.FragmentHomeBinding;
 import com.example.tzip.databinding.FragmentRecordAddBinding;
 import com.example.tzip.databinding.ItemCommunityInnerBinding;
 import com.example.tzip.databinding.ItemHomeCardBinding;
 import com.example.tzip.databinding.ItemHomeListBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +47,8 @@ public class Fragment_home extends Fragment {
 
     FragmentHomeBinding binding;
     ItemHomeListBinding binding2;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "Fragment_home";
 
 
     // 리사이클러뷰 가져오기
@@ -116,14 +126,8 @@ public class Fragment_home extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add("Item=" + i);
-        }
-
-        binding.recyclerviewHomeCard.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
-        binding.recyclerviewHomeCard.setAdapter(new CardAdapter(list));
-        binding.recyclerviewHomeCard.addItemDecoration(new MyItemDecoration());
+        List<HomeDataSet> list = new ArrayList<>();
+        List<CommunityDataSet> clist = new ArrayList<>();
 
         // 카드 밑 메뉴 버튼
 
@@ -172,7 +176,7 @@ public class Fragment_home extends Fragment {
         // see all
         binding.homeGoSeeall.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            callScheduleMethod();
+            callCommunityMethod();
             Fragment_community community = new Fragment_community();
             transaction.replace(R.id.containers, community);
             transaction.commit();
@@ -180,19 +184,102 @@ public class Fragment_home extends Fragment {
 
         // see all
 
+        //카드 가지러옴
+        final String[] tempT = new String[1];
+        final String[] tempP = new String[1];
+        final String[] tempL = new String[1];
+        final String[] tempI = new String[1];
+        final String[] tempH = new String[1];
+        final String[] tempD = new String[1];
+
+        db.collection("schedule")
+                .document(getUidOfCurrentUser()).collection("schedules")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                Log.d(TAG, document2.getId());
+                                tempT[0] = document2.getString(FirebaseId.title);
+                                tempL[0] = document2.getString(FirebaseId.place);
+                                tempI[0] = document2.getString(FirebaseId.imageUrl);
+                                tempD[0] = document2.getId();
+
+                                list.add(new HomeDataSet(tempT[0], tempL[0], tempI[0]));
+                                Log.d(TAG, "title>> " + tempT[0] + " loc>> " + tempL[0] + " img>> " + tempI[0]);
+                                binding.recyclerviewHomeCard.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+                                binding.recyclerviewHomeCard.setAdapter(new CardAdapter(list));
+                                binding.recyclerviewHomeCard.addItemDecoration(new MyItemDecoration());
+                            }
+                        }
+                    }
+                });
+        //카드 가지러옴
+
+        //리스트 가지러옴
+
+        final int listNum = 4;
+
+        final String[] ctempT = new String[1];
+        final String[] ctempL = new String[1];
+        final String[] ctempI = new String[1];
+        final String[] ctempH = new String[1];
+        final String[] ctempD = new String[1];
+        final String[] ctempN = new String[1];
+
+
+
+        db.collection("community")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId());
+                                ctempN[0] = document.getString(FirebaseId.nickname);
+                                CollectionReference getBlockSrd = db.collection("community")
+                                        .document(document.getId())
+                                        .collection("storys");
+                                getBlockSrd.get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                                if (task2.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document2 : task2.getResult()) {
+                                                        Log.d(TAG, document2.getId());
+                                                        ctempT[0] = document2.getString(FirebaseId.title);
+                                                        ctempL[0] = document2.getString(FirebaseId.place);
+                                                        ctempI[0] = document2.getString(FirebaseId.imageUrl);
+                                                        tempH[0] = document2.getString(FirebaseId.peopleAll);
+                                                        tempD[0] = document2.getId();
+
+                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempI[0]));
+//                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
+                                                        binding.homeCommunityList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                                                        binding.homeCommunityList.setAdapter(new CommunityAdapter(clist));
+                                                        binding.homeCommunityList.addItemDecoration(new MyItemDecoration());
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
         return binding.getRoot();
     }
 
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            int index = parent.getChildAdapterPosition(view) + 1;
-
-            if (index % 3 == 0)
-                outRect.set(20, 20, 20, 60);
-            else
-                outRect.set(20, 20, 20, 20);
-            ViewCompat.setElevation(view, 20.0f);
+            outRect.set(0,1,0,0);
         }
     }
 
@@ -211,9 +298,9 @@ public class Fragment_home extends Fragment {
 
     // 카드 어댑터
     private class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
-        private List<String> list;
+        private List<HomeDataSet> list;
 
-        private CardAdapter(List<String> list) {
+        private CardAdapter(List<HomeDataSet> list) {
             this.list = list;
         }
 
@@ -226,8 +313,25 @@ public class Fragment_home extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-            String text = list.get(position);
-            holder.binding.homeCardItem.setText(text);
+            HomeDataSet HDS = list.get(position);
+            String title = HDS.getTitle();
+            String place = HDS.getLocation();
+            String img = HDS.getImage();
+
+            holder.binding.homeCardTitle.setText(title);
+            holder.binding.homeCardLocation.setText(place);
+            if (img != null && !img.isEmpty()) {
+                Glide.with(holder.binding.homeCardImage.getContext())
+                        .load(img)
+                        .into(holder.binding.homeCardImage);
+            } else {
+                // 이미지 URL이 없을 때 디폴트 이미지 설정
+                Glide.with(holder.binding.homeCardImage.getContext())
+                        .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                        .into(holder.binding.homeCardImage);
+            }
+
+            setOnClickListenerToItem(holder.binding.itemHomeCard);
         }
 
         @Override
@@ -237,86 +341,123 @@ public class Fragment_home extends Fragment {
     }
     // 카드 어댑터
 
+    private void setOnClickListenerToItem(View view) {
+        ItemHomeCardBinding binding1 = ItemHomeCardBinding.bind(view);
+        binding1.itemHomeCard.setOnClickListener(v -> {
+
+        });
+    }
+
+    // 리스트 뷰홀더
+    private class CommunityViewHolder extends RecyclerView.ViewHolder {
+        private ItemHomeListBinding binding;
+
+        private CommunityViewHolder(ItemHomeListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+
+    // 리스트 뷰홀더
+
     // 리스트 어댑터
-    private class ListAdapter extends BaseAdapter {
+    private class CommunityAdapter extends RecyclerView.Adapter<CommunityViewHolder> {
+        private List<CommunityDataSet> list;
 
-        List<HomeListItemData> items = null;
-        Context context;
+        private CommunityAdapter(List<CommunityDataSet> list) {
+            this.list = list;
+        }
 
-        public ListAdapter(Context context, List<HomeListItemData> items) {
-            this.items = items;
-            this.context = context;
+        @NonNull
+        @Override
+        public CommunityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ItemHomeListBinding binding = ItemHomeListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new CommunityViewHolder(binding);
         }
 
         @Override
-        public int getCount() {
-            return items.size();
+        public void onBindViewHolder(@NonNull CommunityViewHolder holder, int position) {
+            CommunityDataSet CDS = list.get(position);
+            String title = CDS.getTitle();
+            String place = CDS.getLocation();
+            String img = CDS.getImage();
+            String name = CDS.getName();
+
+            holder.binding.homeListTitle.setText(title);
+            holder.binding.homeListLocation.setText(place);
+            holder.binding.homeListName.setText(name);
         }
 
         @Override
-        public HomeListItemData getItem(int position) {
-            return items.get(position);
+        public int getItemCount() {
+            return list.size();
+        }
+    }
+    // 리스트 어댑터
+
+
+    // 카드 아이템
+    private class HomeDataSet {
+        private String image;
+        private String title;
+        private String location;
+
+        // 생성자 함수
+        public HomeDataSet(String title, String location, String image) {
+            this.image = image;
+            this.title = title;
+            this.location = location;
         }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
+        public String getImage() {
+            return image;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(context);
-                binding2 = ItemHomeListBinding.inflate(inflater, parent, false);
-                binding2.getRoot().setTag(binding2);
-            } else {
-                binding2 = (ItemHomeListBinding) convertView.getTag();
-            }
-
-            // ListView의 Item을 구성하는 뷰 세팅
-            HomeListItemData item = items.get(position);
-            binding2.homeListImage.setImageResource(item.getImage());
-            binding2.homeListName.setText(item.getName());
-            binding2.homeListTitle.setText(item.getTitle());
-            binding2.homeListLocation.setText(item.getLocation());
-
-            // 설정한 binding.getRoot()를 반환해줘야 함
-            return binding2.getRoot();
-
+        public String getTitle() {
+            return title;
         }
 
-        // 리스트 어댑터
-
-        private class HomeListItemData {
-            private int image;
-            private String name;
-            private String title;
-            private String location;
-
-            // 생성자 함수
-            public HomeListItemData(int image, String name, String title, String location) {
-                this.image = image;
-                this.name = name;
-                this.title = title;
-                this.location = location;
-            }
-
-            public int getImage() {
-                return image;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public String getTitle() {
-                return title;
-            }
-
-            public String getLocation() {
-                return location;
-            }
+        public String getLocation() {
+            return location;
         }
+    }
+
+    private class CommunityDataSet {
+        private String image;
+        private String title;
+        private String location;
+        private String name;
+
+        // 생성자 함수
+        public CommunityDataSet(String title, String name, String location, String image) {
+            this.image = image;
+            this.title = title;
+            this.location = location;
+            this.name = name;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 }
