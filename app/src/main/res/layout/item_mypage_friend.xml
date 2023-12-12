@@ -10,7 +10,8 @@
             android:id="@+id/friend_profile"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@drawable/profilepic"
+            android:src="@drawable/profilepic"
+            android:background="@drawable/profile"
             android:clipToOutline="true"
             />
         <TextView

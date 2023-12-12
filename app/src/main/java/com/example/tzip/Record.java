@@ -68,6 +68,17 @@ public class Record implements Comparable<Record> {
     public void setFriendName(String friendName) {
         this.friendName = friendName;
     }
+    private String friendProfileImage;
+
+    // 추가된 부분: 친구의 프로필 이미지 URL을 설정하는 메서드
+    public void setFriendProfileImage(String friendProfileImage) {
+        this.friendProfileImage = friendProfileImage;
+    }
+
+    // 추가된 부분: 친구의 프로필 이미지 URL을 가져오는 메서드
+    public String getFriendProfileImage() {
+        return friendProfileImage;
+    }
 
     public Uri getContentImage() {
         return Uri.parse(contentImage);

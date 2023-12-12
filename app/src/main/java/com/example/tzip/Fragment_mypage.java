@@ -1,10 +1,12 @@
 package com.example.tzip;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.FragmentMypageBinding;
-import com.example.tzip.databinding.ItemFriendListBinding;
 import com.example.tzip.databinding.ItemMypageFriendBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +27,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,12 +96,25 @@ public class Fragment_mypage extends Fragment {
 
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task< DocumentSnapshot > task) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String nickname = document.getString("nickname");
+                        String profile = document.getString("profileImage");
                         binding.userNickname.setText(nickname);
+                        if (profile != null && !profile.isEmpty()) {
+                            Glide.with(binding.profilePic)
+                                    .load(profile)
+                                    .skipMemoryCache(true)
+                                    .into(binding.profilePic);
+                        } else {
+                            // 기본 이미지를 로드
+                            Glide.with(binding.profilePic)
+                                    .load(R.drawable.profilepic)  // 기본 이미지 리소스 ID
+                                    .skipMemoryCache(true)
+                                    .into(binding.profilePic);
+                        }
 
                     }
                 }
@@ -106,7 +123,7 @@ public class Fragment_mypage extends Fragment {
 
         retrieveFriendIds();
 
-        binding.moveFriendList.setOnClickListener( v -> {
+        binding.moveFriendList.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callFriendListMethod();
             FriendList friendList = new FriendList();
@@ -114,7 +131,14 @@ public class Fragment_mypage extends Fragment {
             transaction.commit();
         });
 
-        binding.logout.setOnClickListener( v -> {
+        binding.settingButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 1);
+        });
+
+
+        binding.logout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(getContext(), "로그아웃이 완료되었습니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getActivity(), Login.class);
@@ -123,7 +147,7 @@ public class Fragment_mypage extends Fragment {
             //로그아웃 되었습니다 띄우고 login activity로 이동
         });
 
-        binding.emergencySetting.setOnClickListener( v -> {
+        binding.emergencySetting.setOnClickListener(v -> {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             callEmergecyMessageSettingMethod();
             Fragment_emergency fragmentEmergency = new Fragment_emergency();
@@ -157,19 +181,23 @@ public class Fragment_mypage extends Fragment {
 
     private void retrieveUserInformation(List<String> friendIds) {
         List<String> friendNames = new ArrayList<>();
+        List<String> friendProfileImages = new ArrayList<>(); // 친구 프로필 이미지 URL 리스트 추가
 
-        // friendIds에 해당하는 사용자 정보를 조회하고 friendNames에 추가
+        // friendIds에 해당하는 사용자 정보를 조회하고 friendNames 및 friendProfileImages에 추가
         int friendIdCount = friendIds.size();
         for (String friendId : friendIds) {
             FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             String friendName = documentSnapshot.getString("nickname");
+                            String friendProfileImage = documentSnapshot.getString("profileImage"); // 프로필 이미지 URL 가져오기
+
                             friendNames.add(friendName);
+                            friendProfileImages.add(friendProfileImage);
 
                             // 모든 사용자 정보를 조회한 경우에만 setRecyclerView 호출
                             if (friendNames.size() == friendIdCount) {
-                                setRecyclerView(friendNames);
+                                setRecyclerView(friendNames, friendProfileImages);
                             }
                         }
                     })
@@ -177,12 +205,14 @@ public class Fragment_mypage extends Fragment {
                         // 오류 처리
                         // 모든 사용자 정보를 조회한 경우에만 setRecyclerView 호출
                         if (friendNames.size() == friendIdCount) {
-                            setRecyclerView(friendNames);
+                            setRecyclerView(friendNames, friendProfileImages);
                         }
                     });
         }
     }
-            private void setRecyclerView(List<String> friendNames) {
+
+
+    private void setRecyclerView(List<String> friendNames, List<String> friendProfileImages) {
         if (friendNames.isEmpty()) {
             // 친구가 없을 때
             binding.friendList.setVisibility(View.GONE);
@@ -193,8 +223,44 @@ public class Fragment_mypage extends Fragment {
             binding.noFriends.setVisibility(View.GONE);
 
             binding.friendList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
-            binding.friendList.setAdapter(new Fragment_mypage.MyAdapter(friendNames));
+            binding.friendList.setAdapter(new Fragment_mypage.MyAdapter(friendNames, friendProfileImages));
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            // 이제 이 이미지를 Firebase Storage에 업로드하고, 다운로드 URL을 Firestore에 저장하는 작업을 수행합니다.
+            uploadImageToStorage(imageUri);
+        }
+    }
+
+    private void uploadImageToStorage(Uri imageUri) {
+        // Firebase Storage에 이미지 업로드 및 URL 가져오기
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images/" + uid);
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // 이미지 업로드 성공
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // 다운로드 URL을 Firestore에 저장
+                        String imageUrl = uri.toString();
+                        userDocRef.update("profileImage", imageUrl)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Firestore에 저장 성공
+                                    Toast.makeText(getContext(), "프로필 이미지가 업데이트되었습니다.", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Firestore에 저장 실패
+                                    Toast.makeText(getContext(), "프로필 이미지 업데이트에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                });
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    // 이미지 업로드 실패
+                    Toast.makeText(getContext(), "이미지 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                });
     }
 
 
@@ -209,21 +275,39 @@ public class Fragment_mypage extends Fragment {
 
     private static class MyAdapter extends RecyclerView.Adapter<Fragment_mypage.MyViewHolder> {
         private List<String> friendNames;
+        private List<String> friendProfileImages;
 
-        private MyAdapter(List<String> friendNames) {
+        private MyAdapter(List<String> friendNames, List<String> friendProfileImages) {
             this.friendNames = friendNames;
+            this.friendProfileImages = friendProfileImages;
         }
 
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemMypageFriendBinding binding = ItemMypageFriendBinding.inflate(LayoutInflater.from(parent.getContext()) ,parent, false);
+            ItemMypageFriendBinding binding = ItemMypageFriendBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new MyViewHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             String friendName = friendNames.get(position);
+            String friendProfileImage = friendProfileImages.get(position);
+
+            // Glide를 사용하여 이미지 로드
+            if (friendProfileImage != null && !friendProfileImage.isEmpty()) {
+                Glide.with(holder.binding.friendProfile)
+                        .load(friendProfileImage)
+                        .skipMemoryCache(true)
+                        .into(holder.binding.friendProfile);
+            } else {
+                // 기본 이미지를 로드
+                Glide.with(holder.binding.friendProfile)
+                        .load(R.drawable.profilepic)  // 기본 이미지 리소스 ID
+                        .skipMemoryCache(true)
+                        .into(holder.binding.friendProfile);
+            }
+
             holder.binding.friendName.setText(friendName);
         }
 
@@ -232,7 +316,4 @@ public class Fragment_mypage extends Fragment {
             return friendNames.size();
         }
     }
-
-
-
 }
