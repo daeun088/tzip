@@ -38,11 +38,23 @@ public class RecordItem {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm", Locale.getDefault());
             String dateTimeString = date + " " + time;
+            Log.d("daeun", dateTimeString);
             return dateFormat.parse(dateTimeString);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static int getBlockNumber() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault());
+        long currentTime = System.currentTimeMillis();
+        String dateString = dateFormat.format(new Date(currentTime));
+
+        // 여기에 필요에 따라 추가적인 로직을 적용할 수 있습니다.
+        // 예를 들어, 기존 블록 번호와 중복을 피하기 위한 처리 등을 할 수 있습니다.
+
+        return Integer.parseInt(dateString);
     }
 
     public static class ItemSort implements Comparator<RecordItem> {
@@ -79,7 +91,13 @@ public class RecordItem {
 
                 // 날짜가 같은 경우 시간으로 비교
                 if (dateComparison == 0) {
-                    return time1.compareTo(time2);
+                    int timeComparison = time1.compareTo(time2);
+                    if (timeComparison == 0) {
+                        // 시간이 같은 경우 블럭의 일련번호로 비교
+                        return Integer.compare(o1.getBlockNumber(), o2.getBlockNumber());
+                    } else {
+                        return timeComparison;
+                    }
                 } else {
                     return dateComparison;
                 }
@@ -89,6 +107,7 @@ public class RecordItem {
             }
         }
     }
+
 
 
 
