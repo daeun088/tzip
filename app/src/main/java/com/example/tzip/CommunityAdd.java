@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.tzip.databinding.ActivityCommunityInnerpageBinding;
 import com.example.tzip.databinding.FregmentCommunityAddBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -205,6 +206,7 @@ public class CommunityAdd extends Fragment {
             String allPeople = binding2.communityInnerAllpeople.getText().toString();
             String kakaoLink = binding2.communityInnerKakaoLink.getText().toString();
             String moreExp = binding2.communityInnerMoreExplain.getText().toString();
+            final String[] nickname = new String[1];
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -252,18 +254,32 @@ public class CommunityAdd extends Fragment {
                                                 Toast.makeText(getContext(), "minininnimini", Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 updateUI();
+
                                             })
                                             .addOnFailureListener(e -> {
                                                 Log.e("Firestore", "Error updating document", e);
                                             });
+
                                     DocumentReference communityTimeStamp = db.collection("community")
                                             .document(uid);
 
-                                    Map<String, Object> tsmp = new HashMap<>();
-                                    tsmp.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+                                    db.collection("user").document(uid)
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    nickname[0] = documentSnapshot.getString(FirebaseId.nickname);
 
-                                    communityTimeStamp
-                                            .set(tsmp);
+                                                    Map<String, Object> tsmp = new HashMap<>();
+                                                    tsmp.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
+                                                    tsmp.put(FirebaseId.nickname, nickname[0]);
+
+                                                    communityTimeStamp
+                                                            .set(tsmp);
+                                                }
+                                            });
+
+
                                 }
                             } else {
                                 // 문서가 없는 경우
