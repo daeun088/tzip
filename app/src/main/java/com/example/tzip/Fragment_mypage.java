@@ -92,6 +92,7 @@ public class Fragment_mypage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Glide.get(requireContext()).clearMemory();
         binding = FragmentMypageBinding.inflate(inflater, container, false);
 
         userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -234,6 +235,7 @@ public class Fragment_mypage extends Fragment {
             Uri imageUri = data.getData();
             // 이제 이 이미지를 Firebase Storage에 업로드하고, 다운로드 URL을 Firestore에 저장하는 작업을 수행합니다.
             uploadImageToStorage(imageUri);
+            binding.profilePic.setImageURI(imageUri);
         }
     }
 
