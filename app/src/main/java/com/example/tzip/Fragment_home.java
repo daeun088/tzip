@@ -29,6 +29,7 @@ import com.example.tzip.databinding.ItemCommunityInnerBinding;
 import com.example.tzip.databinding.ItemHomeCardBinding;
 import com.example.tzip.databinding.ItemHomeListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -271,6 +272,28 @@ public class Fragment_home extends Fragment {
                         }
                     }
                 });
+
+        final int[] count = {0};
+        count[0] = 0;
+
+
+        db.collection("record").document(getUidOfCurrentUser()).collection("records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            count[0] = task.getResult().size();
+                            binding.homeRecordCount.setText(Integer.toString(count[0]) + "개");
+                            binding.homeProgressbar.setIndeterminate(false);
+                            binding.homeProgressbar.setProgress(count[0]);
+
+                        }
+                    }
+                });
+
+
+
 
 
         return binding.getRoot();

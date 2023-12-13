@@ -2,15 +2,7 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 1. progress 가 증가함에 따라 늘어나는 부분 -->
-    <item
-        android:id="@android:id/progress">
-        <scale
-            android:scaleWidth="100%">
-            <shape>
-                <solid android:color="#FF6F3C"/>
-            </shape>
-        </scale>
-    </item>
+
 
     <!-- 2. progress 의 배경 지정 -->
     <item
@@ -22,5 +14,16 @@
                 android:width="150dp"
                 android:height="10dp"/>
         </shape>
+    </item>
+
+    <item
+        android:id="@android:id/progress">
+        <scale
+            android:scaleWidth="100%">
+            <shape>
+                <corners android:radius="10dp"/>
+                <solid android:color="#FF6F3C"/>
+            </shape>
+        </scale>
     </item>
 </layer-list>
