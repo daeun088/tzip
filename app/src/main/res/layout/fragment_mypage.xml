@@ -163,5 +163,41 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/my_community"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/bottom_stroke"
+        android:paddingVertical="20dp">
+
+        <ImageView
+            android:id="@+id/my_communityImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/community" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/my_communityImage"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
+            android:text="나의 커뮤니티 게시물"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/detail2" />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

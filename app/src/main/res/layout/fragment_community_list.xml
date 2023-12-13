@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FriendList">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+        <TextView
+            android:id="@+id/community_story_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 커뮤니티 글"
+            android:fontFamily="@font/notosanskr_regular"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            />
+
+        <ImageButton
+            android:id="@+id/add_friend_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_addfriend"
+            style="@style/whiteButton"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/community_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/no_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="게시글을 추가해주세요."
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            android:textColor="@color/orange" />
+    </FrameLayout>
+
+
+</LinearLayout>

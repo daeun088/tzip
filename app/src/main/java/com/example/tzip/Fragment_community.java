@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -86,8 +87,11 @@ public class Fragment_community extends Fragment {
         final String[] tempH = new String[1];
         final String[] tempD = new String[1];
 
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         db.collection("community")
                 .orderBy("timestamp")
+                .whereNotEqualTo(FieldPath.documentId(), uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -296,5 +300,13 @@ public class Fragment_community extends Fragment {
         public String getuID() {
             return uID;
         }
+    }
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 }

@@ -62,6 +62,13 @@ public class Fragment_mypage extends Fragment {
             activity.post_id = R.id.mypage;
         }
     }
+    private void callCommunityListMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForCommunityList(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.mypage;
+        }
+    }
 
     private void callFriendListMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
@@ -146,6 +153,14 @@ public class Fragment_mypage extends Fragment {
             getActivity().finish();
             startActivity(intent);
             //로그아웃 되었습니다 띄우고 login activity로 이동
+        });
+
+        binding.myCommunity.setOnClickListener(v -> {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            callCommunityListMethod();
+            CommunityList communityList = new CommunityList();
+            transaction.replace(R.id.containers, communityList);
+            transaction.commit();
         });
 
         binding.emergencySetting.setOnClickListener(v -> {
