@@ -132,6 +132,8 @@ public class Fragment_community_Read extends Fragment {
             }
         });
 
+
+
         dialogKakao = new BottomSheetDialog(getContext());
 
         bindingPeople.communityStoryInnerApply.setOnClickListener(v -> {
@@ -146,7 +148,6 @@ public class Fragment_community_Read extends Fragment {
 
     private void attachListenerToKakaoView(View contentView) {
         bindingKakao = ActivityCommunityStoryInnerKakaoBinding.bind(contentView);
-
     }
 
     private void addHyperlink(TextView textView, String linkText, final String url) {
