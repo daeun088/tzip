@@ -228,6 +228,7 @@ public class Fragment_home extends Fragment {
         final String[] ctempH = new String[1];
         final String[] ctempD = new String[1];
         final String[] ctempN = new String[1];
+        final String[] ctempP = new String[1];
 
 
 
@@ -240,6 +241,7 @@ public class Fragment_home extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId());
                                 ctempN[0] = document.getString(FirebaseId.nickname);
+                                ctempP[0] = document.getString("profileImage");
                                 CollectionReference getBlockSrd = db.collection("community")
                                         .document(document.getId())
                                         .collection("storys");
@@ -252,11 +254,10 @@ public class Fragment_home extends Fragment {
                                                         Log.d(TAG, document2.getId());
                                                         ctempT[0] = document2.getString(FirebaseId.title);
                                                         ctempL[0] = document2.getString(FirebaseId.place);
-                                                        ctempI[0] = document2.getString(FirebaseId.imageUrl);
                                                         tempH[0] = document2.getString(FirebaseId.peopleAll);
                                                         tempD[0] = document2.getId();
 
-                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempI[0]));
+                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempP[0]));
 //                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.homeCommunityList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.homeCommunityList.setAdapter(new CommunityAdapter(clist));
@@ -342,6 +343,7 @@ public class Fragment_home extends Fragment {
             String img = HDS.getImage();
 
             holder.binding.homeCardTitle.setText(title);
+            holder.binding.homeCardTitle.setSelected(true);
             holder.binding.homeCardLocation.setText(place);
             if (img != null && !img.isEmpty()) {
                 Glide.with(holder.binding.homeCardImage.getContext())
@@ -409,6 +411,16 @@ public class Fragment_home extends Fragment {
             holder.binding.homeListTitle.setText(title);
             holder.binding.homeListLocation.setText(place);
             holder.binding.homeListName.setText(name);
+            if (img != null && !img.isEmpty()) {
+                Glide.with(holder.binding.homeListImage.getContext())
+                        .load(img)
+                        .into(holder.binding.homeListImage);
+            } else {
+                // 이미지 URL이 없을 때 디폴트 이미지 설정
+                Glide.with(holder.binding.homeListImage.getContext())
+                        .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                        .into(holder.binding.homeListImage);
+            }
         }
 
         @Override

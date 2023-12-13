@@ -17,10 +17,10 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/profilepic"
             android:background="@drawable/profile"
+            android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:clipToOutline="true" />
+            android:src="@drawable/profilepic" />
 
         <TextView
             android:id="@+id/user_nickname"
@@ -73,6 +73,7 @@
 
 
     <Button
+        android:id="@+id/send_btn"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -80,7 +81,6 @@
         android:background="@drawable/orange_btn"
         android:fontFamily="@font/notosanskr_bold"
         android:includeFontPadding="false"
-        android:id="@+id/send_btn"
         android:text="긴급메세지 발송하기" />
 
     <RelativeLayout
@@ -111,20 +111,20 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/no_friends"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="친구를 추가해주세요."
             android:fontFamily="@font/notosanskr_bold"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="친구를 추가해주세요." />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friend_list"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="150dp"></androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
-
 
 
     <RelativeLayout

@@ -2,27 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     android:layout_marginHorizontal="30dp"
-    android:paddingVertical="10dp"
-    android:background="@drawable/bottom_stroke">
+    android:background="@drawable/bottom_stroke"
+    android:gravity="center_vertical"
+    android:paddingVertical="10dp">
 
-        <ImageView
-            android:id="@+id/friend_profile"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/profilepic"
-            android:background="@drawable/profile"
-            android:clipToOutline="true"
-            />
-        <TextView
-            android:id="@+id/friend_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="김민"
-            android:textSize="25dp"
-            android:fontFamily="@font/notosanskr_bold"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/black"
-            android:includeFontPadding="false"/>
+    <ImageView
+        android:id="@+id/friend_profile"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/profile"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profilepic" />
+
+    <TextView
+        android:id="@+id/friend_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/notosanskr_bold"
+        android:includeFontPadding="false"
+        android:text="김민"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
 </LinearLayout>
