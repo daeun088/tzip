@@ -42,7 +42,6 @@
         android:layout_margin="14dp"
         android:background="@drawable/edittext_style"
         android:hint="id"
-        android:inputType="textPassword"
         android:paddingLeft="15dp"
         android:textColorHint="#7e7e7e"
         android:textSize="20sp" />
@@ -54,7 +53,7 @@
         android:layout_gravity="center"
         android:background="@drawable/edittext_style"
         android:hint="pw"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:paddingStart="15dp"
         android:textColorHint="#7e7e7e"
         android:textSize="20sp" />

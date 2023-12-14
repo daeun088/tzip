@@ -85,10 +85,13 @@ public class RecordWriting extends Fragment {
     private void callHomeMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
-            activity.setToolbarForRecordWriting(); // 액티비티의 메서드 호출
+            activity.setToolbarForHome(); // 액티비티의 메서드 호출
             activity.post_id = R.id.Home;
+            activity.NevigationBarChange(activity.post_id);
         }
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

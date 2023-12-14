@@ -46,10 +46,10 @@ public class Fragment_record extends Fragment {
         // Required empty public constructor
     }
 
-    private void callScheduleMethod() {
+    private void callRecordReadMethod() {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
-            activity.setToolbarForSchedule(); // 액티비티의 메서드 호출
+            activity.setToolbarForRecordRead(); // 액티비티의 메서드 호출
         }
     }
 
@@ -200,6 +200,7 @@ public class Fragment_record extends Fragment {
 
             // 트랜잭션 커밋
         transaction.commit();
+        callRecordReadMethod();
     }
 
     private void retrieveRecords() {

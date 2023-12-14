@@ -281,6 +281,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         setToolbarContent("상세 일정", false);
         addButtonToToolbar("알림");
     }
+    protected void setToolbarForRecordRead() {
+        setToolbarContent("여행 기록", true);
+        addButtonToToolbar("알림");
+    }
     protected void setToolbarForCommunityAdd(){
         setToolbarContent("일정 참여자 구하기",true);
         addButtonToToolbar("알림");
@@ -384,6 +388,10 @@ public class nevigation_bar_test_code extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.containers, friendList).commit();
             setToolbarForFriendList();
             post_id = R.id.mypage;
+        }
+        else if (post_id_ == R.id.Record_writing) {
+            BottomNavigationView navigationBarView = findViewById(R.id.bottom_navigationview);
+            navigationBarView.setVisibility(View.VISIBLE);
         }
     }
 
