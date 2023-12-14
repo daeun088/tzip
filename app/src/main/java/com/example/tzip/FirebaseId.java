@@ -28,4 +28,7 @@ public class FirebaseId {
     public static String wrtietitle = "writetitle";
 
     public static String currentDocId = "currentdocid";
+
+    public static String EmergencyMessage = "emergencyMessage";
+    public static String token = "token";
 }

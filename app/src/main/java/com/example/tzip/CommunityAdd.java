@@ -207,6 +207,7 @@ public class CommunityAdd extends Fragment {
             String kakaoLink = binding2.communityInnerKakaoLink.getText().toString();
             String moreExp = binding2.communityInnerMoreExplain.getText().toString();
             final String[] nickname = new String[1];
+            final String[] profileImage = new String[1];
 
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -269,10 +270,13 @@ public class CommunityAdd extends Fragment {
                                                 @Override
                                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                                     nickname[0] = documentSnapshot.getString(FirebaseId.nickname);
+                                                    profileImage[0] = documentSnapshot.getString("profileImage");
+
 
                                                     Map<String, Object> tsmp = new HashMap<>();
                                                     tsmp.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
                                                     tsmp.put(FirebaseId.nickname, nickname[0]);
+                                                    tsmp.put("profileImage", profileImage[0]);
 
                                                     communityTimeStamp
                                                             .set(tsmp);

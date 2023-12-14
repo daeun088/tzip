@@ -103,6 +103,8 @@ public class Fragment_friend_request extends Fragment {
                         // friendIds 필드가 이미 있는 경우에는 FieldValue.arrayUnion을 사용하여 값을 추가
                         friendRef.set(new HashMap<String, Object>() {{
                                     put("friendIds", FieldValue.arrayUnion(friendId));
+                                    // 여기에 친구의 토큰을 저장
+                                    put("friendTokens", FieldValue.arrayUnion(document.getString("fcmToken")));
                                 }}, SetOptions.merge())
                                 .addOnCompleteListener(updateTask -> {
                                     if (updateTask.isSuccessful()) {
