@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -86,7 +87,11 @@ public class Fragment_community extends Fragment {
         final String[] tempH = new String[1];
         final String[] tempD = new String[1];
 
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         db.collection("community")
+                .whereNotEqualTo(FieldPath.documentId(), uid)
+//                .orderBy("timestamp")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -97,7 +102,9 @@ public class Fragment_community extends Fragment {
                                 CollectionReference getBlockSrd = db.collection("community")
                                         .document(document.getId())
                                         .collection("storys");
-                                getBlockSrd.get()
+                                getBlockSrd
+                                        .orderBy(FirebaseId.date)
+                                        .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
@@ -111,7 +118,7 @@ public class Fragment_community extends Fragment {
                                                         tempH[0] = document2.getString(FirebaseId.peopleAll);
                                                         tempD[0] = document2.getId();
 
-                                                        list.add(new CommunityDataSet(tempT[0], tempP[0], tempL[0], tempI[0], tempH[0], tempD[0], document.getId()));
+                                                        list.add(0, new CommunityDataSet(tempT[0], tempP[0], tempL[0], tempI[0], tempH[0], tempD[0], document.getId()));
                                                         Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.serchList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.serchList.setAdapter(new MyAdapter(list));
@@ -220,6 +227,9 @@ public class Fragment_community extends Fragment {
                 bundle.putString(FirebaseId.kakaoLink, documentSnapshot.getString(FirebaseId.kakaoLink));
                 bundle.putString(FirebaseId.moreExplain, documentSnapshot.getString(FirebaseId.moreExplain));
                 bundle.putString(FirebaseId.imageUrl, documentSnapshot.getString(FirebaseId.imageUrl));
+                bundle.putString("docId" , documentSnapshot.getId() );
+                bundle.putString("uId", dRef.getParent().getParent().getId());
+                Log.d(TAG, "onSuccess: " + dRef.getParent().getParent().getId() +" "+ documentSnapshot.getId());
                 fragmentCommunityRead.setArguments(bundle);
 
                 callAddCommunityStoryMethod();
@@ -293,5 +303,13 @@ public class Fragment_community extends Fragment {
         public String getuID() {
             return uID;
         }
+    }
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 }

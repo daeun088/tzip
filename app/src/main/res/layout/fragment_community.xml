@@ -6,33 +6,10 @@
     android:background="#FFFFFF">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="\t\t여행장소 검색"
-            android:textSize="12dp"
-            android:background="@drawable/roundrac"/>
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/search"
-            android:layout_gravity="end"
-            android:layout_margin="5dp"/>
-    </FrameLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="모든 검색 결과예요."
+        android:text="다른 사람들의 모집이에요."
         android:fontFamily="@font/notosanskr_bold"
         android:layout_marginStart="20dp"
         android:textSize="15dp"/>
@@ -59,7 +36,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/serch_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"/>
 
 
 

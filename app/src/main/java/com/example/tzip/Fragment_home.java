@@ -29,10 +29,13 @@ import com.example.tzip.databinding.ItemCommunityInnerBinding;
 import com.example.tzip.databinding.ItemHomeCardBinding;
 import com.example.tzip.databinding.ItemHomeListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,11 +47,13 @@ public class Fragment_home extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    int itemCount;
 
     FragmentHomeBinding binding;
     ItemHomeListBinding binding2;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "Fragment_home";
+
 
 
     // 리사이클러뷰 가져오기
@@ -71,6 +76,14 @@ public class Fragment_home extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForRecord(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callSchedulePlanMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForSchedulePlan(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.schedule;
         }
     }
 
@@ -109,6 +122,12 @@ public class Fragment_home extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+
+
+
+
+
+
     }
 
     @Override
@@ -227,10 +246,12 @@ public class Fragment_home extends Fragment {
         final String[] ctempH = new String[1];
         final String[] ctempD = new String[1];
         final String[] ctempN = new String[1];
+        final String[] ctempP = new String[1];
 
 
 
         db.collection("community")
+                .whereNotEqualTo(FieldPath.documentId(), getUidOfCurrentUser())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -239,10 +260,11 @@ public class Fragment_home extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId());
                                 ctempN[0] = document.getString(FirebaseId.nickname);
+                                ctempP[0] = document.getString("profileImage");
                                 CollectionReference getBlockSrd = db.collection("community")
                                         .document(document.getId())
                                         .collection("storys");
-                                getBlockSrd.get()
+                                getBlockSrd.orderBy("timestamp").get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
@@ -251,11 +273,10 @@ public class Fragment_home extends Fragment {
                                                         Log.d(TAG, document2.getId());
                                                         ctempT[0] = document2.getString(FirebaseId.title);
                                                         ctempL[0] = document2.getString(FirebaseId.place);
-                                                        ctempI[0] = document2.getString(FirebaseId.imageUrl);
                                                         tempH[0] = document2.getString(FirebaseId.peopleAll);
                                                         tempD[0] = document2.getId();
 
-                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempI[0]));
+                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempP[0]));
 //                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.homeCommunityList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.homeCommunityList.setAdapter(new CommunityAdapter(clist));
@@ -271,6 +292,27 @@ public class Fragment_home extends Fragment {
                         }
                     }
                 });
+
+        final int[] count = {0};
+
+
+        db.collection("record").document(getUidOfCurrentUser()).collection("records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            count[0] = task.getResult().size();
+                            binding.homeRecordCount.setText(Integer.toString(count[0]) + "개");
+                            binding.homeProgressbar.setIndeterminate(false);
+                            binding.homeProgressbar.setProgress(count[0]);
+
+                        }
+                    }
+                });
+
+
+
 
 
         return binding.getRoot();
@@ -291,6 +333,51 @@ public class Fragment_home extends Fragment {
         private CardViewHolder(ItemHomeCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.itemHomeCard.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    int pos = getBindingAdapterPosition();
+
+                    // 사용자의 uid로 기록 서브컬렉션에 접근
+                    CollectionReference schedulesCollection = db
+                            .collection("schedule")
+                            .document(uid)
+                            .collection("schedules");
+                    schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<String> itemList = new ArrayList<>();
+                                itemCount = queryDocumentSnapshots.size();
+                                for (QueryDocumentSnapshot loadedData : queryDocumentSnapshots) {
+
+                                    // 각 문서에서 필요한 데이터를 추출하여 itemList에 추가
+                                    String DocumentID = loadedData.getString(FirebaseId.documentId);
+                                    itemList.add(DocumentID);
+
+                                }
+
+                                // 클릭한 아이템의 인덱스(pos)와 itemList의 인덱스(index)를 비교하여 같으면 데이터 저장
+                                for (int index = 0; index < itemList.size(); index++) {
+                                    Fragment_schedule_plan fragmentSchedulePlan;
+                                    if (pos == index) {
+                                        // 클릭한 아이템의 데이터를 itemList에서 가져와 저장하는 코드
+                                        String clickedItemData = itemList.get(index);
+                                        // Bundle을 이용하여 데이터 전달
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("schedule", clickedItemData);
+                                        fragmentSchedulePlan = new Fragment_schedule_plan();
+                                        fragmentSchedulePlan.setArguments(bundle);
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
+                                        callSchedulePlanMethod();
+                                    }
+                                }
+                            });
+                    // 클릭 이벤트 처리
+
+                }
+            });
         }
     }
 
@@ -319,6 +406,7 @@ public class Fragment_home extends Fragment {
             String img = HDS.getImage();
 
             holder.binding.homeCardTitle.setText(title);
+            holder.binding.homeCardTitle.setSelected(true);
             holder.binding.homeCardLocation.setText(place);
             if (img != null && !img.isEmpty()) {
                 Glide.with(holder.binding.homeCardImage.getContext())
@@ -341,11 +429,11 @@ public class Fragment_home extends Fragment {
     }
     // 카드 어댑터
 
+
+
     private void setOnClickListenerToItem(View view) {
         ItemHomeCardBinding binding1 = ItemHomeCardBinding.bind(view);
-        binding1.itemHomeCard.setOnClickListener(v -> {
 
-        });
     }
 
     // 리스트 뷰홀더
@@ -386,6 +474,16 @@ public class Fragment_home extends Fragment {
             holder.binding.homeListTitle.setText(title);
             holder.binding.homeListLocation.setText(place);
             holder.binding.homeListName.setText(name);
+            if (img != null && !img.isEmpty()) {
+                Glide.with(holder.binding.homeListImage.getContext())
+                        .load(img)
+                        .into(holder.binding.homeListImage);
+            } else {
+                // 이미지 URL이 없을 때 디폴트 이미지 설정
+                Glide.with(holder.binding.homeListImage.getContext())
+                        .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                        .into(holder.binding.homeListImage);
+            }
         }
 
         @Override
