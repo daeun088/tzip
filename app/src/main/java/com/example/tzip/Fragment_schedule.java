@@ -121,6 +121,7 @@ public class Fragment_schedule extends Fragment {
 
 
 
+
     private FirebaseFirestore scheduleDB = FirebaseFirestore.getInstance();
 
 
@@ -171,7 +172,12 @@ public class Fragment_schedule extends Fragment {
 
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
+
+
         loadScheduleDataFromFirestore();
+
+
+
 
 
         List<String> list = new ArrayList<>();
@@ -193,16 +199,53 @@ public class Fragment_schedule extends Fragment {
             dialog = new BottomSheetDialog((getContext()));
             this.binding = binding;
 
+
             binding.scheduleBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    int pos = getBindingAdapterPosition() ;
+
+                    // 사용자의 uid로 기록 서브컬렉션에 접근
+                    CollectionReference schedulesCollection = scheduleDB
+                            .collection("schedule")
+                            .document(uid)
+                            .collection("schedules");
+                    schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<String> itemList = new ArrayList<>();
+                                itemCount = queryDocumentSnapshots.size();
+                                for (QueryDocumentSnapshot loadedData : queryDocumentSnapshots) {
+
+                                    // 각 문서에서 필요한 데이터를 추출하여 itemList에 추가
+                                    String DocumentID = loadedData.getString(FirebaseId.documentId);
+                                    itemList.add(DocumentID);
+
+                                }
+
+                                // 클릭한 아이템의 인덱스(pos)와 itemList의 인덱스(index)를 비교하여 같으면 데이터 저장
+                                for (int index = 0; index < itemList.size(); index++) {
+                                    if (pos == index) {
+                                        // 클릭한 아이템의 데이터를 itemList에서 가져와 저장하는 코드
+                                        String clickedItemData = itemList.get(index);
+                                        // Bundle을 이용하여 데이터 전달
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("schedule", clickedItemData);
+                                        fragmentSchedulePlan = new Fragment_schedule_plan();
+                                        fragmentSchedulePlan.setArguments(bundle);
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
+                                        callSchedulePlanMethod();
+                                    }
+                                }
+                            });
                     // 클릭 이벤트 처리
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentSchedulePlan = new Fragment_schedule_plan();
-                    transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
-                    callSchedulePlanMethod();
+
                 }
             });
+
+
             binding.scheduleAdd.setOnClickListener(v -> {
                 View contentView = Fragment_schedule.this.getLayoutInflater().inflate(R.layout.schedule_inner, null);
                 dialog.setContentView(contentView);
@@ -264,7 +307,6 @@ public class Fragment_schedule extends Fragment {
             scheduleMap.put(FirebaseId.date, date);
             scheduleMap.put(FirebaseId.contentImage, "null");
             scheduleMap.put(FirebaseId.imageUrl, imageUrl);
-
             scheduleMap.put(FirebaseId.timestamp, FieldValue.serverTimestamp());
             String newItem = "Title: " + title + "\nDate: " + date + "\n";
 
@@ -274,8 +316,17 @@ public class Fragment_schedule extends Fragment {
             // 서브컬렉션 'records'에 새로운 문서 추가
             schedulesCollection.add(scheduleMap)
                     .addOnSuccessListener(documentReference -> {
-                        // 성공적으로 추가되었을 때의 작업
-                        dialog.dismiss();
+                        String generatedDocumentId = documentReference.getId(); // 생성된 문서의 ID 가져오기
+
+                        // 생성된 문서의 ID를 활용하여 추가 정보를 업데이트
+                        schedulesCollection.document(generatedDocumentId)
+                                .update(FirebaseId.documentId, generatedDocumentId)
+                                .addOnSuccessListener(aVoid -> {
+                                    // 문서 업데이트가 성공한 경우
+                                    Log.d("Firestore", "Document ID updated successfully");
+
+                                    dialog.dismiss();
+                                });
                     })
                     .addOnFailureListener(e -> {
                         // 실패했을 때의 작업
@@ -342,6 +393,7 @@ public class Fragment_schedule extends Fragment {
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<String> list;
 
+
         public void addAllItems(List<String> newItems) {
             list.addAll(0, newItems);
             notifyDataSetChanged();
@@ -351,6 +403,7 @@ public class Fragment_schedule extends Fragment {
             list.add(0, newItem);
             notifyItemInserted(0);
         }
+
 
         private MyAdapter(List<String> list) {
             this.list = list;

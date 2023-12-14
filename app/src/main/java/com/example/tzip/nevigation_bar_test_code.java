@@ -278,9 +278,8 @@ public class nevigation_bar_test_code extends AppCompatActivity {
         addButtonToToolbar("알림");
     }
     protected void setToolbarForSchedulePlanWrite(){
-        setToolbarContent("상세 일정", true);
+        setToolbarContent("상세 일정", false);
         addButtonToToolbar("알림");
-        addButtonToToolbar("하단 바 없애기");
     }
     protected void setToolbarForCommunityAdd(){
         setToolbarContent("일정 참여자 구하기",true);

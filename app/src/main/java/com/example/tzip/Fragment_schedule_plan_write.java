@@ -41,6 +41,10 @@ public class Fragment_schedule_plan_write extends Fragment {
     private  EditText schedulePlanTitle;
     private ImageButton regButton;
 
+    String scheduleClickedItemData;
+
+    String schedulePlanClickedItemData;
+
 
     private FirebaseFirestore schedulePlanWriteDB = FirebaseFirestore.getInstance();
 
@@ -75,6 +79,20 @@ public class Fragment_schedule_plan_write extends Fragment {
         scheduleEditText = view.findViewById(R.id.schedule_plan_write_page);
         schedulePlanTitle = view.findViewById(R.id.schedule_plan_write_title);
         regButton = view.findViewById(R.id.reg_btn);
+
+
+
+        if (getArguments() != null) {
+            schedulePlanClickedItemData = getArguments().getString("schedule_plan");
+            // 읽어온 데이터를 이용하여 원하는 작업 수행
+        }
+
+        if (getArguments() != null) {
+            scheduleClickedItemData = getArguments().getString("schedule");
+            // 읽어온 데이터를 이용하여 원하는 작업 수행
+        }
+
+        loadScheduleFromFirebase();
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,8 +114,12 @@ public class Fragment_schedule_plan_write extends Fragment {
         String write_page = scheduleEditText.getText().toString();
         String write_title = schedulePlanTitle.getText().toString();
         CollectionReference schedulesCollection = schedulePlanWriteDB
-                .collection("schedulePlanWritePage")
+                .collection("schedule")
                 .document(uid)
+                .collection("schedules")
+                .document(scheduleClickedItemData)
+                .collection("schedulePlanBlocks")
+                .document(schedulePlanClickedItemData)
                 .collection("schedulePlanWritePages");
 
         Map<String, Object> schedulePlanMap = new HashMap<>();
@@ -111,8 +133,12 @@ public class Fragment_schedule_plan_write extends Fragment {
     protected void loadScheduleFromFirebase() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         CollectionReference schedulesCollection = schedulePlanWriteDB
-                .collection("schedulePlanWritePage")
+                .collection("schedule")
                 .document(uid)
+                .collection("schedules")
+                .document(scheduleClickedItemData)
+                .collection("schedulePlanBlocks")
+                .document(schedulePlanClickedItemData)
                 .collection("schedulePlanWritePages");
 
         schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.ASCENDING)
