@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -46,11 +47,13 @@ public class Fragment_home extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    int itemCount;
 
     FragmentHomeBinding binding;
     ItemHomeListBinding binding2;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "Fragment_home";
+
 
 
     // 리사이클러뷰 가져오기
@@ -73,6 +76,14 @@ public class Fragment_home extends Fragment {
         if (getActivity() instanceof nevigation_bar_test_code) {
             nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
             activity.setToolbarForRecord(); // 액티비티의 메서드 호출
+        }
+    }
+
+    private void callSchedulePlanMethod() {
+        if (getActivity() instanceof nevigation_bar_test_code) {
+            nevigation_bar_test_code activity = (nevigation_bar_test_code) getActivity();
+            activity.setToolbarForSchedulePlan(); // 액티비티의 메서드 호출
+            activity.post_id = R.id.schedule;
         }
     }
 
@@ -111,6 +122,12 @@ public class Fragment_home extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+
+
+
+
+
+
     }
 
     @Override
@@ -316,6 +333,51 @@ public class Fragment_home extends Fragment {
         private CardViewHolder(ItemHomeCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.itemHomeCard.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    int pos = getBindingAdapterPosition();
+
+                    // 사용자의 uid로 기록 서브컬렉션에 접근
+                    CollectionReference schedulesCollection = db
+                            .collection("schedule")
+                            .document(uid)
+                            .collection("schedules");
+                    schedulesCollection.orderBy(FirebaseId.timestamp, Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<String> itemList = new ArrayList<>();
+                                itemCount = queryDocumentSnapshots.size();
+                                for (QueryDocumentSnapshot loadedData : queryDocumentSnapshots) {
+
+                                    // 각 문서에서 필요한 데이터를 추출하여 itemList에 추가
+                                    String DocumentID = loadedData.getString(FirebaseId.documentId);
+                                    itemList.add(DocumentID);
+
+                                }
+
+                                // 클릭한 아이템의 인덱스(pos)와 itemList의 인덱스(index)를 비교하여 같으면 데이터 저장
+                                for (int index = 0; index < itemList.size(); index++) {
+                                    Fragment_schedule_plan fragmentSchedulePlan;
+                                    if (pos == index) {
+                                        // 클릭한 아이템의 데이터를 itemList에서 가져와 저장하는 코드
+                                        String clickedItemData = itemList.get(index);
+                                        // Bundle을 이용하여 데이터 전달
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("schedule", clickedItemData);
+                                        fragmentSchedulePlan = new Fragment_schedule_plan();
+                                        fragmentSchedulePlan.setArguments(bundle);
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        transaction.replace(R.id.containers, fragmentSchedulePlan).commit();
+                                        callSchedulePlanMethod();
+                                    }
+                                }
+                            });
+                    // 클릭 이벤트 처리
+
+                }
+            });
         }
     }
 
@@ -367,11 +429,11 @@ public class Fragment_home extends Fragment {
     }
     // 카드 어댑터
 
+
+
     private void setOnClickListenerToItem(View view) {
         ItemHomeCardBinding binding1 = ItemHomeCardBinding.bind(view);
-        binding1.itemHomeCard.setOnClickListener(v -> {
 
-        });
     }
 
     // 리스트 뷰홀더
