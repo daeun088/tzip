@@ -169,6 +169,7 @@ public class Fragment_mypage extends Fragment {
             Fragment_emergency fragmentEmergency = new Fragment_emergency();
             transaction.replace(R.id.containers, fragmentEmergency);
             transaction.commit();
+            fragmentEmergency.loadFromFirebase();
         });
         binding.sendBtn.setOnClickListener( v -> {
             Toast.makeText(getContext(), "긴급메세지가 발송되었습니다.", Toast.LENGTH_SHORT).show();

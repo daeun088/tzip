@@ -39,11 +39,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Fragment_emergency"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".Fragment_community"
             android:exported="false">
         </activity>
         <activity
             android:name=".nevigation_bar_test_code"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
