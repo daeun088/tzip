@@ -23,8 +23,11 @@ import com.bumptech.glide.Glide;
 import com.example.tzip.databinding.ActivityCommunityStoryInnerKakaoBinding;
 import com.example.tzip.databinding.ActivityCommunityStoryInnerPeopleBinding;
 import com.example.tzip.databinding.FragmentCommunityStoryBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,10 +39,13 @@ import java.util.List;
 public class Fragment_community_Read extends Fragment {
     private static List<RecordItem> communityItems = new ArrayList<>();
     String kakaoLink;
+    String docId;
+    String userId;
     static String uid;
     FragmentCommunityStoryBinding binding;
     private BottomSheetDialog dialogPeople;
     private BottomSheetDialog dialogKakao;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     ActivityCommunityStoryInnerKakaoBinding bindingKakao;
     ActivityCommunityStoryInnerPeopleBinding bindingPeople;
@@ -70,6 +76,8 @@ public class Fragment_community_Read extends Fragment {
             String img = bundle.getString(FirebaseId.imageUrl, "");
             Log.d(TAG, "onCreateView: " + img);
             kakaoLink = bundle.getString(FirebaseId.kakaoLink, "");
+            docId = bundle.getString("docId", "");
+            userId = bundle.getString("uId", "");
 
             binding.communityStoryPlace.setText(place);
             binding.communityStoryDate.setText(date);
@@ -140,6 +148,12 @@ public class Fragment_community_Read extends Fragment {
             dialogPeople.dismiss();
             View kakaoView = Fragment_community_Read.this.getLayoutInflater().inflate(R.layout.activity_community_story_inner_kakao, null);
             dialogKakao.setContentView(kakaoView);
+            binding.communityStoryPrepeople.setText(Integer.toString(prePeo + storyPeople));
+            DocumentReference docRf =  db.collection("community")
+                    .document(userId)
+                    .collection("storys").document(docId);
+            docRf.update(FirebaseId.peopleCurrent, Integer.toString(prePeo + storyPeople));
+
             attachListenerToKakaoView(kakaoView);
             dialogKakao.show();
             addHyperlink(bindingKakao.communityStoryInnerKakaolink, "kakaoLink", kakaoLink);
