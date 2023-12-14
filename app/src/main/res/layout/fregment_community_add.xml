@@ -9,125 +9,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:layout_marginLeft="15dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/notosanskr_bold"
-            android:textColor="@color/black"
-            android:background="@drawable/bottom_stroke"
-            android:text="기존 여행 일정 불러오기"/>
-
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/friend_record_layout"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <TextView
-                    android:id="@+id/trip_title2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/inter"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="5dp"
-                    android:text="강릉 2박 3일 여행" />
-
-                <ImageView
-                    android:id="@+id/location_icon2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/trip_title2"
-                    android:src="@drawable/location_pin" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/location_icon2"
-                    android:layout_toEndOf="@+id/location_icon2"
-                    android:text="강릉"
-                    android:layout_marginLeft="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/location_icon2"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:text="2023.10.12~10.14" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignBaseline="@id/trip_title2"
-                    android:src="@drawable/go_btn" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/friend_record_layout"
-                android:orientation="horizontal"
-                android:padding="15dp"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:id="@+id/trip_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/inter"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="5dp"
-                    android:text="강릉 2박 3일 여행" />
-
-                <ImageView
-                    android:id="@+id/location_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/trip_title"
-                    android:src="@drawable/location_pin" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/location_icon"
-                    android:layout_toEndOf="@+id/location_icon"
-                    android:text="강릉"
-                    android:layout_marginLeft="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/location_icon"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:text="2023.10.12~10.14" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignBaseline="@id/trip_title"
-                    android:src="@drawable/go_btn" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -146,27 +33,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="40dp">
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="50dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="일정 장소"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/notosanskr_bold"
                 android:includeFontPadding="false"/>
             <EditText
                 android:id="@+id/community_add_place"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:textSize="15sp"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:background="@drawable/edittext_style"
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,9 +76,10 @@
 
             <TextView
                 android:id="@+id/community_add_date"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/bottom_stroke_black" />
+                android:background="@drawable/edittext_style"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -195,13 +87,18 @@
                 android:text="여행 시간"
                 android:textSize="15sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/notosanskr_bold"/>
+                android:fontFamily="@font/notosanskr_bold"
+                android:includeFontPadding="false"
+                android:layout_marginTop="20dp"/>
             <TextView
                 android:id="@+id/community_add_time"
-                android:layout_width="280dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:background="@drawable/linerac"
-                android:inputType="text"/>
+                android:hint="터치하세요"
+                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:gravity="center_vertical"/>
 
 
         </LinearLayout>
@@ -224,7 +121,8 @@
                 android:background="@drawable/orange_btn"
                 android:text="기록하기"
                 android:includeFontPadding="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_marginTop="50dp"/>
         </RelativeLayout>
     </LinearLayout>
 
