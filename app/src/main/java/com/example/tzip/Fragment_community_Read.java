@@ -49,6 +49,7 @@ public class Fragment_community_Read extends Fragment {
 
     ActivityCommunityStoryInnerKakaoBinding bindingKakao;
     ActivityCommunityStoryInnerPeopleBinding bindingPeople;
+    boolean touched = true;
 
     public Fragment_community_Read() {
         // Required empty public constructor
@@ -104,10 +105,13 @@ public class Fragment_community_Read extends Fragment {
 
         dialogPeople = new BottomSheetDialog(getContext());
         binding.communityStoryApply.setOnClickListener(v -> {
-            View contentView = Fragment_community_Read.this.getLayoutInflater().inflate(R.layout.activity_community_story_inner_people, null);
-            dialogPeople.setContentView(contentView);
-            attachListenerToContentView(contentView);
-            dialogPeople.show();
+            if(touched) {
+                View contentView = Fragment_community_Read.this.getLayoutInflater().inflate(R.layout.activity_community_story_inner_people, null);
+                dialogPeople.setContentView(contentView);
+                attachListenerToContentView(contentView);
+                dialogPeople.show();
+            }
+
         });
         return binding.getRoot();
     }
