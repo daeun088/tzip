@@ -90,8 +90,8 @@ public class Fragment_community extends Fragment {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("community")
-                .orderBy("timestamp")
                 .whereNotEqualTo(FieldPath.documentId(), uid)
+//                .orderBy("timestamp")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -227,6 +227,9 @@ public class Fragment_community extends Fragment {
                 bundle.putString(FirebaseId.kakaoLink, documentSnapshot.getString(FirebaseId.kakaoLink));
                 bundle.putString(FirebaseId.moreExplain, documentSnapshot.getString(FirebaseId.moreExplain));
                 bundle.putString(FirebaseId.imageUrl, documentSnapshot.getString(FirebaseId.imageUrl));
+                bundle.putString("docId" , documentSnapshot.getId() );
+                bundle.putString("uId", dRef.getParent().getParent().getId());
+                Log.d(TAG, "onSuccess: " + dRef.getParent().getParent().getId() +" "+ documentSnapshot.getId());
                 fragmentCommunityRead.setArguments(bundle);
 
                 callAddCommunityStoryMethod();
