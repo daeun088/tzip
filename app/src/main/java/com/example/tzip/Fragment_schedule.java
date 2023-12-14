@@ -12,6 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
@@ -52,6 +56,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -118,8 +123,7 @@ public class Fragment_schedule extends Fragment {
     String imageUrl;
 
     int num = 0;
-
-
+    int random = 0;
 
 
     private FirebaseFirestore scheduleDB = FirebaseFirestore.getInstance();
@@ -173,9 +177,49 @@ public class Fragment_schedule extends Fragment {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
 
-
         loadScheduleDataFromFirestore();
+        List<String> rlist = new ArrayList<>();
 
+
+        scheduleDB.collection("schedule").document(getUidOfCurrentUser()).collection("schedules")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot ss : task.getResult()) {
+                            Log.d("TAG", "onComplete: " + ss.getId());
+                            rlist.add(ss.getId());
+                            Log.d("TAG", "onComplete: " + rlist.size());
+                            random++;
+                        }
+
+                        random = (int)(Math.random() * (random+1))-1;
+                        Log.d("TAG", "onComplete: ddddd" + random);
+                        if(random < 0) random = 0;
+
+
+                        DocumentReference dR = scheduleDB.collection("schedule").document(getUidOfCurrentUser()).collection("schedules").document(rlist.get(random));
+
+                        dR.get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        String hphp = documentSnapshot.getString(FirebaseId.imageUrl);
+                                        if (hphp != null && !hphp.isEmpty()) {
+                                            Glide.with(binding.scheduleBackground.getContext())
+                                                    .load(hphp)
+                                                    .into(binding.scheduleBackground);
+                                        } else {
+                                            // 이미지 URL이 없을 때 디폴트 이미지 설정
+                                            Glide.with(binding.scheduleBackground.getContext())
+                                                    .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                                                    .into(binding.scheduleBackground);
+                                        }
+                                    }
+                                });
+                    }
+
+                });
 
 
 
@@ -191,6 +235,16 @@ public class Fragment_schedule extends Fragment {
         return binding.getRoot();
     }
 
+    private void backGroundSetting() {
+//        random = (int)(Math.random() * random) + 1;
+//
+//        DocumentReference dR =  scheduleDB.collection("schedule").document(getUidOfCurrentUser()).collection("schedules").document(rlist.get(random));
+//
+//        String hello = dR.get().getResult().getString(FirebaseId.imageUrl);
+//
+//        Log.d("miniminimini", "onCreateView: " + hello);
+    }
+
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private ScheduleMainRecyclerviewBinding binding;
 
@@ -204,7 +258,7 @@ public class Fragment_schedule extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    int pos = getBindingAdapterPosition() ;
+                    int pos = getBindingAdapterPosition();
 
                     // 사용자의 uid로 기록 서브컬렉션에 접근
                     CollectionReference schedulesCollection = scheduleDB
@@ -344,9 +398,6 @@ public class Fragment_schedule extends Fragment {
         });
 
 
-
-
-
         num++;
     }
 
@@ -387,9 +438,6 @@ public class Fragment_schedule extends Fragment {
     }
 
 
-
-
-
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<String> list;
 
@@ -424,8 +472,7 @@ public class Fragment_schedule extends Fragment {
             ScheduleMainRecyclerviewBinding scheduleBinding = (ScheduleMainRecyclerviewBinding) holder.binding;
 
 
-
-            if(itemCount > 0) {
+            if (itemCount > 0) {
                 if (position == itemCount + num) {
                     // 뷰 홀더에 각각 설정
                     scheduleBinding.scheduleBlockTitle.setText(titleText);
@@ -573,6 +620,14 @@ public class Fragment_schedule extends Fragment {
                     // 이미지 불러오기 실패 시의 작업
                     Log.e("Firestore", "Error getting documents: ", e);
                 });
+    }
+
+    private boolean hasSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private String getUidOfCurrentUser() {
+        return hasSignedIn() ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 }
 

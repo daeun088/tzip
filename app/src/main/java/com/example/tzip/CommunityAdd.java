@@ -252,7 +252,7 @@ public class CommunityAdd extends Fragment {
                                             .update(communityDocMap)
                                             .addOnSuccessListener(documentReference -> {
                                                 // 성공
-                                                Toast.makeText(getContext(), "minininnimini", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getContext(), "글이 등록되었습니다", Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 updateUI();
 

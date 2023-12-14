@@ -12,7 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/schedule_default_background">
+        android:background="#FFAAAA">
+        <ImageView
+            android:id="@+id/schedule_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="match_parent"

@@ -19,8 +19,7 @@
                 android:id="@+id/community_story_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/city" />
+                android:scaleType="fitXY"/>
 
             <ImageButton
                 android:id="@+id/community_story_image_btn"
