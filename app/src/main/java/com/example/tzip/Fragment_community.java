@@ -90,8 +90,8 @@ public class Fragment_community extends Fragment {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("community")
-                .orderBy("timestamp")
                 .whereNotEqualTo(FieldPath.documentId(), uid)
+//                .orderBy("timestamp")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
