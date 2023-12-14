@@ -193,30 +193,34 @@ public class Fragment_schedule extends Fragment {
                             random++;
                         }
 
-                        random = (int)(Math.random() * (random+1))-1;
-                        Log.d("TAG", "onComplete: ddddd" + random);
-                        if(random < 0) random = 0;
+                        if(random != 0) {
+                            random = (int)(Math.random() * (random+1))-1;
+                            Log.d("TAG", "onComplete: ddddd" + random);
+                            if(random < 0) random = 0;
+                            DocumentReference dR = scheduleDB.collection("schedule").document(getUidOfCurrentUser()).collection("schedules").document(rlist.get(random));
 
-
-                        DocumentReference dR = scheduleDB.collection("schedule").document(getUidOfCurrentUser()).collection("schedules").document(rlist.get(random));
-
-                        dR.get()
-                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        String hphp = documentSnapshot.getString(FirebaseId.imageUrl);
-                                        if (hphp != null && !hphp.isEmpty()) {
-                                            Glide.with(binding.scheduleBackground.getContext())
-                                                    .load(hphp)
-                                                    .into(binding.scheduleBackground);
-                                        } else {
-                                            // 이미지 URL이 없을 때 디폴트 이미지 설정
-                                            Glide.with(binding.scheduleBackground.getContext())
-                                                    .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
-                                                    .into(binding.scheduleBackground);
+                            dR.get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            String hphp = documentSnapshot.getString(FirebaseId.imageUrl);
+                                            if (hphp != null && !hphp.isEmpty()) {
+                                                Glide.with(binding.scheduleBackground.getContext())
+                                                        .load(hphp)
+                                                        .into(binding.scheduleBackground);
+                                            } else {
+                                                // 이미지 URL이 없을 때 디폴트 이미지 설정
+                                                Glide.with(binding.scheduleBackground.getContext())
+                                                        .load(R.drawable.schedule_example_pic) // 여기서 R.drawable.default_image는 디폴트 이미지의 리소스 ID입니다.
+                                                        .into(binding.scheduleBackground);
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                        }
+
+
+
+
                     }
 
                 });
