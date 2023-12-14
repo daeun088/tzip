@@ -46,23 +46,6 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/schedule_trip_participant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/schedule_trip_period"
-            android:layout_marginTop="28dp"
-            android:layout_toRightOf="@+id/schedule_block_pic"
-            android:drawableStart="@drawable/ic_participant"
-            android:drawablePadding="3dp"
-            android:fontFamily="@font/notosanskr_bold"
-            android:includeFontPadding="false"
-            android:text="이준희님 외 4명의 여행"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-
 
     </RelativeLayout>
 
