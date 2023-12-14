@@ -259,8 +259,10 @@ public class Fragment_home extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId());
-                                ctempN[0] = document.getString(FirebaseId.nickname);
-                                ctempP[0] = document.getString("profileImage");
+                                String tmpN;
+                                String tmpP;
+                                tmpN = document.getString(FirebaseId.nickname);
+                                tmpP = document.getString("profileImage");
                                 CollectionReference getBlockSrd = db.collection("community")
                                         .document(document.getId())
                                         .collection("storys");
@@ -271,12 +273,16 @@ public class Fragment_home extends Fragment {
                                                 if (task2.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document2 : task2.getResult()) {
                                                         Log.d(TAG, document2.getId());
-                                                        ctempT[0] = document2.getString(FirebaseId.title);
-                                                        ctempL[0] = document2.getString(FirebaseId.place);
-                                                        tempH[0] = document2.getString(FirebaseId.peopleAll);
-                                                        tempD[0] = document2.getId();
+                                                        String tmpT;
+                                                        String tmpL;
+                                                        String tmpH;
+                                                        String tmpD;
+                                                        tmpT = document2.getString(FirebaseId.title);
+                                                        tmpL = document2.getString(FirebaseId.place);
+                                                        tmpH = document2.getString(FirebaseId.peopleAll);
+                                                        tmpD = document2.getId();
 
-                                                        clist.add(new CommunityDataSet(ctempT[0], ctempN[0], ctempL[0], ctempP[0]));
+                                                        clist.add(new CommunityDataSet(tmpT, tmpN, tmpL, tmpP));
 //                                                        Log.d(TAG, "title>> " + tempT[0]+" per>> " + tempP[0]+ " loc>> " + tempL[0] + " img>> " + tempI[0] + " people>> " + tempH[0]);
                                                         binding.homeCommunityList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                                                         binding.homeCommunityList.setAdapter(new CommunityAdapter(clist));

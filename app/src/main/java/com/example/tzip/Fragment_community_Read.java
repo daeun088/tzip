@@ -157,6 +157,7 @@ public class Fragment_community_Read extends Fragment {
             attachListenerToKakaoView(kakaoView);
             dialogKakao.show();
             addHyperlink(bindingKakao.communityStoryInnerKakaolink, "kakaoLink", kakaoLink);
+            Log.d(TAG, "attachListenerToContentView: " + kakaoLink);
         });
     }
 
@@ -170,12 +171,17 @@ public class Fragment_community_Read extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Linkify.addLinks(textView, Linkify.WEB_URLS);
+        Log.d(TAG, "addHyperlink: " + url);
 
         // 링크를 클릭할 때 처리를 추가
         textView.setOnClickListener(v -> {
             // 여기에서는 간단히 웹 브라우저를 열어 URL을 엽니다.
             // 더 복잡한 동작을 원한다면 여기에 적절한 로직을 추가하세요.
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            if(url != null)
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            else {
+                Log.d(TAG, "addHyperlink: 안돼요 안돼");
+            }
         });
     }
 
