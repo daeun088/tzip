@@ -89,7 +89,7 @@
     <EditText
         android:id="@+id/pw"
         android:hint="비밀번호를 입력해주세요."
-        android:inputType="text"
+        android:inputType="textPassword"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:textSize="15sp"
@@ -97,12 +97,14 @@
         android:background="@drawable/edittext_style"
         android:paddingStart="15dp"
         android:layout_margin="14dp"
+
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="비밀번호 확인"
+
         android:textColor="@color/black"
         android:layout_marginLeft="30dp"
         android:textSize="15sp"
@@ -112,7 +114,7 @@
     <EditText
         android:id="@+id/pw_check"
         android:hint="비밀번호를 다시 한 번 입력해주세요."
-        android:inputType="text"
+        android:inputType="textPassword"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:textSize="15sp"
