@@ -247,7 +247,7 @@ public class Fragment_home extends Fragment {
                                 CollectionReference getBlockSrd = db.collection("community")
                                         .document(document.getId())
                                         .collection("storys");
-                                getBlockSrd.get()
+                                getBlockSrd.orderBy("timestamp").get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
@@ -277,7 +277,6 @@ public class Fragment_home extends Fragment {
                 });
 
         final int[] count = {0};
-        count[0] = 0;
 
 
         db.collection("record").document(getUidOfCurrentUser()).collection("records")
