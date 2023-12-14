@@ -119,7 +119,7 @@
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/notosanskr_bold"
                 android:background="@drawable/orange_btn"
-                android:text="기록하기"
+                android:text="구하기"
                 android:includeFontPadding="false"
                 android:textColor="@color/white"
                 android:layout_marginTop="50dp"/>
