@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Fragment_record extends Fragment {
+    private static final String TAG = "Fragment_record";
     private FragmentRecordBinding binding;
     List<Record> recentRecords;
     List<Record> friendRecentRecords;
@@ -269,6 +270,7 @@ public class Fragment_record extends Fragment {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         List<String> friendIds = (List<String>) documentSnapshot.get("friendIds");
+                        Log.d(TAG, "retrieveFriendIds: " + friendIds.size());
                         if (friendIds != null) {
                             retrieveFriendRecords(friendIds);
                         }
@@ -294,6 +296,7 @@ public class Fragment_record extends Fragment {
                             Record record = document.toObject(Record.class);
                             if (record != null) {
                                 record.setDocumentId(document.getId());
+                                Log.d(TAG, "retrieveFriendRecords: " + document.getId());
                                 record.setFriendId(friendId);
                                 FirebaseFirestore.getInstance().collection("user").document(friendId).get()
                                         .addOnSuccessListener(documentSnapshot -> {
@@ -301,6 +304,7 @@ public class Fragment_record extends Fragment {
                                             String friendProfileImage = documentSnapshot.getString("profileImage");
 
                                             record.setFriendName(friendName);
+                                            Log.d(TAG, "retrieveFriendRecords: " + record.getFriendName());
                                             record.setFriendProfileImage(friendProfileImage);
                                         })
                                         .addOnFailureListener(e -> {
@@ -308,6 +312,7 @@ public class Fragment_record extends Fragment {
                                             Log.e("FetchRecords", "Error fetching friend name", e);
                                         })
                                                 .addOnCompleteListener(task -> {
+                                                    Log.d(TAG, "retrieveFriendRecords: 여기 됨?");
                                                     queryCount++;
                                                     onRecordFetchComplete(friendRecordList, friendIds.size());
                                                 });
@@ -323,6 +328,7 @@ public class Fragment_record extends Fragment {
     }
 
     private void onRecordFetchComplete(List<Record> friendRecordList, int totalFriends) {
+        Log.d(TAG, "onRecordFetchComplete: " + friendRecordList.size());
         // 모든 친구의 레코드를 가져왔을 때
         if (queryCount == totalFriends && friendRecordList.size() >= 2) {
             // 레코드를 timestamp를 기준으로 정렬
